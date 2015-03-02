@@ -7,7 +7,10 @@
 
 <ul>
   <% @todo_list.todo_items.incomplete.each do |todo_item| %>
-  <li><%= todo_item.content %></li>
+  <li>
+    <%= todo_item.content %>
+      - <%= todo_item.deadline.try(:strftime, '%d-%m-%Y %H:%M') %>
+  </li>
   <% end %>
 </ul>
 <% end %>
