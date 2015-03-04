@@ -24,6 +24,9 @@ ActiveRecord::Schema.define(version: 20150304110830) do
     t.integer "todo_item_id"
   end
 
+  add_index "tags_todo_items", ["tag_id"], name: "index_tags_todo_items_on_tag_id"
+  add_index "tags_todo_items", ["todo_item_id"], name: "index_tags_todo_items_on_todo_item_id"
+
   create_table "todo_items", force: true do |t|
     t.integer  "todo_list_id"
     t.string   "content"
