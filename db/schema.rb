@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20150304110830) do
   end
 
   create_table "tags_todo_items", id: false, force: true do |t|
-    t.integer "tag_id",       null: false
-    t.integer "todo_item_id", null: false
+    t.integer "tag_id"
+    t.integer "todo_item_id"
   end
 
   create_table "todo_items", force: true do |t|

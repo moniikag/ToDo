@@ -22,17 +22,17 @@
       <% end %>
     </td>
 
-    <% a = todo_item.deadline.try(:to_time).try(:-, Time.now).to_i - 25.hours%>
+    <% a = (todo_item.deadline.to_time - Time.now).to_i - 25.hours%>
     <td class="<%= 'urgent' if a.to_i < 0 %>">
       <%= todo_item.content %>
     </td>
 
     <td>
-      <%= todo_item.tags.all %>
+      <%= todo_item.tags.to_a %>
     </td>
 
     <td >
-      <%= todo_item.deadline.try(:strftime, '%d-%m-%Y %H:%M') %> 
+      <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %> 
     </td>
 
     <td>
