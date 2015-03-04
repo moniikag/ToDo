@@ -20,8 +20,16 @@
         <%= link_to "Mark Complete", complete_todo_list_todo_item_path(todo_item), method: :patch %>
       <% end %>
     </td>
-    <td><%= todo_item.content %></td>
-    <td><%= todo_item.deadline.strftime("%d-%m-%Y %H:%M") %></td>
+
+    <% a = todo_item.deadline.try(:to_time).try(:-, Time.now).to_i - 25.hours%>
+    <td class="<%= 'urgent' if a.to_i < 0 %>">
+      <%= todo_item.content %>
+    </td>
+
+    <td >
+      <%= todo_item.deadline.try(:strftime, '%d-%m-%Y %H:%M') %> 
+    </td>
+
     <td>
       <%= link_to "Edit", edit_todo_list_todo_item_path(todo_item) %>
       <%= link_to "Delete", todo_list_todo_item_path(todo_item), method: :delete, data: { confirm: "Are you sure?" } %>

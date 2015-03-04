@@ -63,4 +63,6 @@ class TodoItemsController < ApplicationController
     params[:todo_item].permit(:content, :deadline)
   end
 
+ 
+
 end

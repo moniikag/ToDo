@@ -7,7 +7,9 @@
 
 <ul>
   <% @todo_list.todo_items.incomplete.each do |todo_item| %>
-  <li>
+
+  <% a = todo_item.deadline.try(:to_time).try(:-, Time.now).to_i - 25.hours%>
+  <li class="<%= 'urgent' if a.to_i < 0 %>">
     <%= todo_item.content %>
       - <%= todo_item.deadline.try(:strftime, '%d-%m-%Y %H:%M') %>
   </li>
