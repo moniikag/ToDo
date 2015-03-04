@@ -16,4 +16,13 @@
  <%= form.label :deadline %>
  <%= form.datetime_select :deadline, :default => 3.days.from_now %>
 
+<p>
+  <% for tag in Tag.find(:all) %>
+  <div>
+    <%= check_box_tag "todo_item[tag_ids][]", tag.id, @todo_item.tags.include?(tag) %>
+    <%= tag.name %>
+  </div>
+  <% end %>
+</p>
+
 <%= form.submit "Save" %>

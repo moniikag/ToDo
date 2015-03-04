@@ -24,6 +24,7 @@ class TodoItemsController < ApplicationController
   end
 
   def update
+    params[:todo_item][:tag_ids] ||= []
     @todo_item = @todo_list.todo_items.find(params[:id])
     if @todo_item.update_attributes(todo_item_params)
       flash[:success] = "Saved todo list item."

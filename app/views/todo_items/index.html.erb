@@ -4,8 +4,9 @@
   <table class="todo_items">
   <thead>
     <tr>
-      <th width="25%">Completed?</th>
-      <th width="40%">Content</th>
+      <th width="15%">Completed?</th>
+      <th width="30%">Content</th>
+      <th width="20%">Tags</th>
       <th width="25%">Deadline</th>
       <th width="10%">Functions</th>
     </tr>
@@ -24,6 +25,10 @@
     <% a = todo_item.deadline.try(:to_time).try(:-, Time.now).to_i - 25.hours%>
     <td class="<%= 'urgent' if a.to_i < 0 %>">
       <%= todo_item.content %>
+    </td>
+
+    <td>
+      <%= todo_item.tags.all %>
     </td>
 
     <td >
