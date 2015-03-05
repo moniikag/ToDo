@@ -28,10 +28,12 @@
     </td>
 
     <td>
-      <%= todo_item.tags.to_a %>
+      <% todo_item.tags.each do |tag| %>
+        <%= tag.name %>
+      <% end %>
     </td>
 
-    <td >
+    <td>
       <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %> 
     </td>
 
