@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150304110830) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "tags", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -24,8 +27,8 @@ ActiveRecord::Schema.define(version: 20150304110830) do
     t.integer "todo_item_id"
   end
 
-  add_index "tags_todo_items", ["tag_id"], name: "index_tags_todo_items_on_tag_id"
-  add_index "tags_todo_items", ["todo_item_id"], name: "index_tags_todo_items_on_todo_item_id"
+  add_index "tags_todo_items", ["tag_id"], name: "index_tags_todo_items_on_tag_id", using: :btree
+  add_index "tags_todo_items", ["todo_item_id"], name: "index_tags_todo_items_on_todo_item_id", using: :btree
 
   create_table "todo_items", force: true do |t|
     t.integer  "todo_list_id"
@@ -36,7 +39,7 @@ ActiveRecord::Schema.define(version: 20150304110830) do
     t.datetime "deadline"
   end
 
-  add_index "todo_items", ["todo_list_id"], name: "index_todo_items_on_todo_list_id"
+  add_index "todo_items", ["todo_list_id"], name: "index_todo_items_on_todo_list_id", using: :btree
 
   create_table "todo_lists", force: true do |t|
     t.string   "title"
@@ -54,6 +57,6 @@ ActiveRecord::Schema.define(version: 20150304110830) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email"
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
 
 end
