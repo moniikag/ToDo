@@ -13,4 +13,14 @@ class TodoItem < ActiveRecord::Base
   def completed?
     !completed_at.blank?
   end
+
+  def tag_list
+    self.tags.map { |t| t.name }.join(", ")
+  end
+
+  def tag_list=(tags_given)
+    tag_names = tags_given.split(/\s*,\s*/)
+    self.tags = tag_names.map { |name| Tag.where('name = ?', name).first or Tag.create(:name => name)}
+  end
+
 end

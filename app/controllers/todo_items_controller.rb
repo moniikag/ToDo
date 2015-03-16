@@ -61,7 +61,7 @@ class TodoItemsController < ApplicationController
   end
 
   def todo_item_params
-    params[:todo_item].permit(:content, :deadline, :tag_ids => [])
+    params[:todo_item].permit(:content, :deadline, :tag_list)
   end
 
  
