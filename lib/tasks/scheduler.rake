@@ -1,6 +1,6 @@
 desc "This task is called by the Heroku scheduler add-on"
 
-task :send_reminders => :environment do
+task :remind => :environment do
   Mail.deliver do
 	  to 'monikaglier@gmail.com'
 	  from 'myaplication@heroku.com'
