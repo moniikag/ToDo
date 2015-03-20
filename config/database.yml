@@ -24,3 +24,4 @@ default: &default
 development:
   <<: *default
   database: my_app_development
+  host: localhost
