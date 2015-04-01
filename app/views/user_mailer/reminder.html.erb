@@ -1,0 +1,8 @@
+<p> Date: <%= Time.now %> </p>
+<p> Hello, here is a list of urgent tasks: </p>
+
+<% @urgent_items.each do |item| %>
+	<p><%= "Todo list: #{item.todo_list.title}: #{item.content}" %></p>
+<% end %>
+
+

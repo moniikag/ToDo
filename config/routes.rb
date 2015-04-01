@@ -7,6 +7,10 @@ Odot::Application.routes.draw do
   resources :user_sessions, only: [:new, :create]
 
   resources :todo_lists do
+    member do
+      post :choose_urgent_items
+    end
+
     resources :todo_items do
       member do
         patch :complete
