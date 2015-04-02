@@ -22,8 +22,7 @@
       <% end %>
     </td>
 
-    <% a = (todo_item.deadline.to_time - Time.now).to_i - 25.hours%>
-    <td class="<%= 'urgent' if a.to_i < 0 %>">
+    <td class="<%= 'urgent' if (todo_item.deadline.to_time - Time.now - 25.hours) < 0 %>">
       <%= todo_item.content %>
     </td>
 

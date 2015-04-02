@@ -1,8 +1,12 @@
-<p> Date: <%= Time.now %> </p>
-<p> Hello, here is a list of urgent tasks: </p>
+<p> Message sent on: <%= (Time.now+60*60*2).strftime("%d/%m/%Y %H:%M") %> </p>
+
+<p> Hello, here is a list of urgent tasks for today: </p>
 
 <% @urgent_items.each do |item| %>
-	<p><%= "Todo list: #{item.todo_list.title}: #{item.content}" %></p>
+	<p><%= "Todo list: #{item.todo_list.title}: Task: #{item.content}" %></p>
 <% end %>
+
+<p> Have a nice day!</p>
+<p> Your Team </p>
 
 
