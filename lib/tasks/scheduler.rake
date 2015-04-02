@@ -4,8 +4,7 @@ desc "This task is called by the Heroku scheduler add-on"
 #  TodoList.send_reminder
 #end
 
-task :remind => :environment do
-	@todo_list = TodoList.find(params[:id])
+task :remind => :environment do	
 	    @todo_lists = TodoList.all
 	    @urgent_items = []
 	    @todo_lists.each do |todo_list|
@@ -15,5 +14,5 @@ task :remind => :environment do
 	        end
 	      end
 	    end
-	 UserMailer.reminder(@urgent_items).deliver
+	 	UserMailer.reminder(@urgent_items).deliver
  end
