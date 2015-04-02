@@ -27,22 +27,19 @@ Odot::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.action_mailer.default_url_options = { :host => 'smtp.sendgrid.net'}
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.perform_deliveries = true 
-  config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.default_url_options = { :host => 'localhost:3000'}
+  #config.action_mailer.default_url_options = { :host => 'smtp.sendgrid.net'}
+  ActionMailer::Base.raise_delivery_errors = true
+  ActionMailer::Base.perform_deliveries = true 
+  ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-  #:address        => 'smtp.gmail.com',
   :address        => 'smtp.sendgrid.net',
   :port           => '587',
   :authentication => :plain,
-  #:user_name      => "tested for gmail", - worked
-  #:password       => "tested for gmail",
-  #:user_name      => "tested for sendgrid", - not working
-  #:password       => "tested for sendgrid",
-  :user_name      => ENV['SENDGRID_USERNAME'],
-  :password       => ENV['SENDGRID_PASSWORD'],
-  #:domain         => 'gmail.com',
+  :user_name      => "",
+  :password       => "",
+  #:user_name      => ENV['SENDGRID_USERNAME'],
+  #:password       => ENV['SENDGRID_PASSWORD'],
   :domain         => 'heroku.com',
   :enable_starttls_auto => true
 }
