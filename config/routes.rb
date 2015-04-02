@@ -8,7 +8,7 @@ Odot::Application.routes.draw do
 
   resources :todo_lists do
     member do
-      post :choose_urgent_items
+      get :send_reminder
     end
 
     resources :todo_items do

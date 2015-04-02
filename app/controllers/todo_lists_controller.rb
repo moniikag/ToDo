@@ -61,7 +61,7 @@ class TodoListsController < ApplicationController
     end
   end
 
-  def choose_urgent_items
+  def send_reminder
     @todo_lists = TodoList.all
     @urgent_items = []
     @todo_lists.each do |todo_list|
@@ -72,17 +72,8 @@ class TodoListsController < ApplicationController
       end
     end
     UserMailer.reminder(@urgent_items).deliver_now
-    redirect_to todo_lists_path
+    # redirect_to todo_lists_path
   end
-
-  #np <TodoItem id: 1, todo_list_id: 1, content: "sasdfasd", created_at: "2015-04-01 14:34:55", updated_at: "2015-04-01 14:34:55", completed_at: nil, deadline: "2015-04-02 14:34:00">
-# x.todo_list => ok
-
- # def send_email(urgent_items)
-  #  @urgent_items = urgent_items
-  #      UserMailer.reminder(@urgent_items).deliver_now
-   # redirect_to todo_lists_path
- # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
