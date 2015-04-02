@@ -62,7 +62,6 @@ class TodoListsController < ApplicationController
   end
 
   def send_reminder
-    @todo_list = TodoList.find(params[:id])
     @todo_lists = TodoList.all
     @urgent_items = []
     @todo_lists.each do |todo_list|

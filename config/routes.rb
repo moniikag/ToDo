@@ -7,8 +7,8 @@ Odot::Application.routes.draw do
   resources :user_sessions, only: [:new, :create]
 
   resources :todo_lists do
-    member do
-      get :send_reminder
+    collection do
+      post :send_reminder
     end
 
     resources :todo_items do
