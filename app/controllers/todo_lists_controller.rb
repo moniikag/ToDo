@@ -62,6 +62,7 @@ class TodoListsController < ApplicationController
   end
 
   def send_reminder
+    @todo_list = TodoList.find(params[:id])
     @todo_lists = TodoList.all
     @urgent_items = []
     @todo_lists.each do |todo_list|
@@ -71,8 +72,8 @@ class TodoListsController < ApplicationController
         end
       end
     end
-    UserMailer.reminder(@urgent_items).deliver_now
-    # redirect_to todo_lists_path
+    UserMailer.reminder(@urgent_items).deliver
+    redirect_to todo_lists_path
   end
 
   private
