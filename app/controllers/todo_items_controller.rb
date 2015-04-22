@@ -1,5 +1,6 @@
 class TodoItemsController < ApplicationController
-  before_action :find_todo_list
+  before_action :find_todo_list 
+  before_action :find_todo_item, only: [:edit, :update, :destroy, :complete]
 
   def index
   end
@@ -20,12 +21,9 @@ class TodoItemsController < ApplicationController
   end
 
   def edit
-    @todo_item = @todo_list.todo_items.find(params[:id])
   end
 
   def update
-    params[:todo_item][:tag_ids] ||= []
-    @todo_item = @todo_list.todo_items.find(params[:id])
     if @todo_item.update_attributes(todo_item_params)
       flash[:success] = "Saved todo list item."
       redirect_to todo_list_todo_items_path
@@ -36,7 +34,6 @@ class TodoItemsController < ApplicationController
   end
 
   def destroy
-    @todo_item = @todo_list.todo_items.find(params[:id])
     if @todo_item.destroy
       flash[:success] = "Todo list item was deleted."
     else
@@ -46,7 +43,6 @@ class TodoItemsController < ApplicationController
   end
 
   def complete
-    @todo_item = @todo_list.todo_items.find(params[:id])
     @todo_item.update_attribute(:completed_at, Time.now)
     redirect_to todo_list_todo_items_path, notice: "Todo item marked as complete."
   end
@@ -56,6 +52,10 @@ class TodoItemsController < ApplicationController
   end
 
   private
+  def find_todo_item
+    @todo_item = @todo_list.todo_items.find(params[:id])
+  end
+
   def find_todo_list
     @todo_list = current_user.todo_lists.find(params[:todo_list_id])
   end
