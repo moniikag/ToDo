@@ -25,3 +25,8 @@ development:
   <<: *default
   database: my_app_development
   host: localhost
+
+test:
+  <<: *default
+  database: my_app_test
+  host: localhost
