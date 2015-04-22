@@ -1,4 +1,4 @@
-class UserSessionController < ApplicationController
+class UserSessionsController < ApplicationController
  	 def new
  	 end
 
@@ -13,4 +13,13 @@ class UserSessionController < ApplicationController
   			render action: 'new'
   		end
 	end
+
+	def destroy
+		session[:user_id] = nil
+		redirect_to root_path
+	end
+
+
+
+
 end

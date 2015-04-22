@@ -4,7 +4,7 @@ Odot::Application.routes.draw do
 
   resources :users
   
-  resources :user_sessions, only: [:new, :create]
+  resource :user_sessions, only: [:new, :create, :destroy]
 
   resources :todo_lists do
     collection do
