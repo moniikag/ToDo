@@ -11,13 +11,12 @@
   <div class="nav">
     <h1><%= link_to "Odot", root_path %></h1>
     <ul>
-      <li><%= link_to "Todo Lists", todo_lists_path %></li>
-      <% unless current_user %>  
+      <% if current_user %>
+        <li><%= link_to "Todo Lists", todo_lists_path %></li>
+        <li><%= link_to "Log Out", user_sessions_path, method: :delete %></li>
+      <% else %>  
         <li><%= link_to "Sign Up", new_user_path %></li>
         <li><%= link_to "Log In", new_user_sessions_path %></li>
-      <% end %>
-      <% if current_user %>
-        <li><%= link_to "Log Out", user_sessions_path, method: :delete %></li>
       <% end %>
     </ul>
     <br class="clear" />
