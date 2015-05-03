@@ -4,13 +4,13 @@ describe 'Tags: ' do
 
 	let!(:user) { User.create!(first_name: "example", last_name: "example", email: "example@example.com", password: "password", password_confirmation: "password") }
 	let!(:todo_list) { user.todo_lists.create!(title: "Groceries", description: "Grocery list") }
-	let!(:todo_item) { todo_list.todo_items.create!(content: "Potato", deadline: Time.now) }
+	let!(:todo_item) { todo_list.todo_items.create!(content: "Item", deadline: Time.now) }
 
 
 	def log_in
 		visit "/user_sessions/new"
-		fill_in "email", with: "example@example.com"
-		fill_in "password", with: "password" 
+		fill_in "email", with: user.email
+		fill_in "password", with: user.password
 		click_button "Log In"
     expect(response.status).to eq(200)
     expect(page).to have_content("Thanks for logging in!")

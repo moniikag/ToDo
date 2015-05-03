@@ -2,61 +2,57 @@ require 'spec_helper'
 
 describe 'Displaying todo_list' do
 
-	# def register(options={})
-	# 	options[:name]||="Name"
-	# 	options[:surname]||="surname"
-	# 	options[:email]||="example@example.com"
-	# 	options[:password]||="password"
+  let!(:user) { User.create!(first_name: "example", last_name: "example", email: "example@example.com", password: "password", password_confirmation: "password") }
+	let!(:other_user) { User.create!(first_name: "test", last_name: "test", email: "test@example.com", password: "password", password_confirmation: "password") }
 
-	# 	visit "/users/new"
-	# 	fill_in "First Name", with: options[:name]
-	# 	fill_in "Last Name", with: options[:surname]
-	# 	fill_in "Email", with: options[:email]
-	# 	fill_in "Password", with: options[:password]
-	# 	fill_in "Password (again)", with: options[:password]
-	# 	click_button "Sign Up"
-	# end
-
-	# def create_todo_list(options={})
-	# 	options[:title]||="TodoList"
-	# 	options[:description]||="Description"
-
-	# 	visit "/todo_lists/new"
-	# 	fill_in "Title", with: options[:title]
-	# 	fill_in "Description", with: options[:description]
-	# 	click_button "Create Todo list"
-	# end
-	let(:user) { User.create(first_name: "example", last_name: "example", email: "example@example.com", password_digest: "password") }
-	let(:todo_list) { TodoList.create(title: "Groceries", description: "Grocery list", user_id: User.where("first_name = 'example'").id) }
-	let(:todo_list) { TodoList.create(title: "Fruits", description: "Fruits list") }
+	let!(:todo_list) { user.todo_lists.create!(title: "Groceries", description: "Grocery list") }
+	let!(:other_todo_list) { other_user.todo_lists.create!(title: "Fruits", description: "Fruit list") }
 
 	def log_in
-		visit "/user_sessions/new"
-		fill_in "Email Address", with: "example@example.com"
-		fill_in "Password", with: "password"
+    visit "/user_sessions/new"
+    fill_in "email", with: user.email
+    fill_in "password", with: user.password
+    click_button "Log In"
+    expect(response.status).to eq(200)
+    expect(page).to have_content("Thanks for logging in!")
+  end
+
+  context "user is not logged in" do
+
+    after(:each) do
+      expect(response.status).to eq(200)
+      expect(page.current_path).to eql('/user_sessions/new')
+    end
+
+    it "redirects to login page on todo list show" do
+      visit "/todo_lists/#{todo_list.id}"
+    end
+
+    it "redirects to login page on todo list edit" do
+      visit "/todo_lists/#{todo_list.id}/edit"
+    end
+
+  end
+
+  context "user is logged in" do
+  	before(:each) {log_in}
+
+		it 'displays todo list for current_user' do
+			visit "/todo_lists"
+			expect(page).to have_content("Groceries")
+			expect(response.status).to eq(200)
+		end
+
+		it "does not display todo lists that doesn't belong to current_user" do
+			visit "/todo_lists"
+			expect(page).to_not have_content("Fruits")
+		end
+
+		it "does not allow user enter todo list that doesn't belog to him" do
+			expect { visit "/todo_lists/#{other_todo_list.id}" }.to raise_error(ActiveRecord::RecordNotFound)
+		end
+
 	end
-
-	it 'displays todo list for current_user' do
-		log_in
-		visit "/todo_lists"
-		expect(page).to have_content("Groceries")
-		expect(response.status).to eq(200)
-	end
-
-	it "does not display todo lists that doesn't belong to current_user" do
-		log_in
-		visit "/todo_lists"
-		expect(page).to_not have_content("Fruits")
-	end
-
-	it "does not allow user enter todo list that doesn't belog to him" do |variable|
-		log_in
-		visit "/todo_lists/#{TodoList.last.id}"
-		expect(page).to_not have_content("Fruits")
-		expect(response.status).to eq(404)
-	end
-
-
 
 end
 

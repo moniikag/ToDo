@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 describe "Creating todo lists" do
+
+  let!(:user) { User.create!(first_name: "example", last_name: "example", email: "example@example.com", password: "password", password_confirmation: "password") }
+  before(:each) {log_in }
+
+  def log_in
+    visit "/user_sessions/new"
+    fill_in "email", with: user.email
+    fill_in "password", with: user.password
+    click_button "Log In"
+    expect(page).to have_content("Thanks for logging in!")
+  end
+
   def create_todo_list(options={})
     options[:title] ||= "My todo list"
     options[:description] ||= "This is my todo list."
@@ -25,10 +37,11 @@ describe "Creating todo lists" do
     create_todo_list title: ""
 
     expect(page).to have_content("error")
+    expect(page).to have_content("Title can't be blank")
     expect(TodoList.count).to eq(0)
 
     visit "/todo_lists"
-    expect(page).to_not have_content("This is what I'm doing today.")
+    expect(page).to_not have_content("This is my todo list.")
   end
 
   it "displays an error when the todo list has a title less than 3 characters" do
@@ -37,33 +50,24 @@ describe "Creating todo lists" do
     create_todo_list title: "Hi"
 
     expect(page).to have_content("error")
+    expect(page).to have_content("Title is too short")
     expect(TodoList.count).to eq(0)
 
     visit "/todo_lists"
-    expect(page).to_not have_content("This is what I'm doing today.")
+    expect(page).to_not have_content("This is my todo list.")
   end
 
   it "displays an error when the todo list has no description" do
     expect(TodoList.count).to eq(0)
 
-    create_todo_list title: "Grocery list", description: ""
+    create_todo_list description: ""
 
     expect(page).to have_content("error")
+    expect(page).to have_content("Description can't be blank")
     expect(TodoList.count).to eq(0)
 
     visit "/todo_lists"
-    expect(page).to_not have_content("Grocery list")
+    expect(page).to_not have_content("My todo list")
   end
 
-  it "displays an error when the todo list has no description" do
-    expect(TodoList.count).to eq(0)
-
-    create_todo_list title: "Grocery list", description: "Food"
-
-    expect(page).to have_content("error")
-    expect(TodoList.count).to eq(0)
-
-    visit "/todo_lists"
-    expect(page).to_not have_content("Grocery list")
-  end
 end

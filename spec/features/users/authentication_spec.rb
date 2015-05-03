@@ -1,24 +1,24 @@
 require "spec_helper"
 
 describe "Logging In" do
+
+	let!(:user) { User.create!(first_name: "example", last_name: "example", email: "example@example.com", password: "password", password_confirmation: "password") }
+
 	it "logs the user in and goes to the todo lists" do
-		User.create(first_name: "tom", last_name: "tom", email: "tom@tom.tom", password: "12345", password_confirmation: "12345")
-		visit new_user_session_path
-		fill_in "Email", with: "tom@tom.tom"
-		fill_in "Password", with: "12345"
-		click_button "Log In"
+		visit "/user_sessions/new"
+    fill_in "email", with: user.email
+    fill_in "password", with: user.password
+    click_button "Log In"
 		expect(page).to have_content("Todo Lists")
 		expect(page).to have_content("Thanks for logging in!")
 	end
 
-
 	it "displays the email address in the event of a failed login" do 
-		visit new_user_session_path
-		fill_in "Email", with: "tom@tom.tom"
-		fill_in "Password", with: "incorrect"
-		click_button "Log In"
-
+		visit "/user_sessions/new"
+    fill_in "email", with: user.email
+    fill_in "password", with: "something"
+    click_button "Log In"
 		expect(page).to have_content("Please check your email and password")
-		expect(page).to have_field("Email", with: "tom@tom.tom")
+		expect(page).to have_field("Email", with: "example@example.com")
 	end
 end

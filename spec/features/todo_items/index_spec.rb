@@ -1,31 +1,34 @@
 require 'spec_helper'
 
 describe "Viewing todo items" do
-  let!(:todo_list) { TodoList.create(title: "Grocery list", description: "Groceries") }
+  
+  let!(:user) { User.create!(first_name: "example", last_name: "example", email: "example@example.com", password: "password", password_confirmation: "password") }
+  let!(:todo_list) { user.todo_lists.create!(title: "Groceries", description: "Grocery list") }
 
-  it "displays the title of the todo list" do
-    visit_todo_list(todo_list)
-    within("h1") do
+  def log_in
+    visit "/user_sessions/new"
+    fill_in "email", with: user.email
+    fill_in "password", with: user.password
+    click_button "Log In"
+    expect(page).to have_content("Thanks for logging in!")
+  end
+
+  before(:each) { log_in }
+
+    it "displays the title of the todo list" do
+      visit "/todo_lists/#{todo_list.id}" 
       expect(page).to have_content(todo_list.title)
-    end
-  end  
+    end  
 
-  it "displays no items when a todo list is empty" do
-    visit_todo_list(todo_list)
-    expect(page.all("ul.todo_items li").size).to eq(0)
-  end
-
-  it "displays item content when a todo list has items" do
-    todo_list.todo_items.create(content: "Milk")
-    todo_list.todo_items.create(content: "Eggs")
-    
-    visit_todo_list(todo_list)
-    
-    expect(page.all("ul.todo_items li").size).to eq(2)
-    
-    within "ul.todo_items" do
-      expect(page).to have_content("Milk")
-      expect(page).to have_content("Eggs")
+    it "displays item content when a todo list has items" do
+      todo_list.todo_items.create!(content: "Apple", deadline: Time.now)
+      todo_list.todo_items.create!(content: "Pear", deadline: Time.now)
+      
+      visit "/todo_lists/#{todo_list.id}"     
+      expect(page).to have_content("Apple")
+      expect(page).to have_content("Pear")
     end
-  end
+
 end
+
+
