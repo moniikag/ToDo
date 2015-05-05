@@ -1,0 +1,3 @@
+john:
+  email: john@example.com
+  password_digest: 'asdfasdfasdf'

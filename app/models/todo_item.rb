@@ -11,7 +11,7 @@ class TodoItem < ActiveRecord::Base
   scope :incomplete, -> { where(completed_at: nil) }
 
   def completed?
-    !completed_at.blank?
+    completed_at.present?
   end
 
   def tag_list
@@ -19,8 +19,10 @@ class TodoItem < ActiveRecord::Base
   end
 
   def tag_list=(tags_given)
-    tag_names = tags_given.split(/\s*,\s*/)
-    self.tags = tag_names.map { |name| Tag.where('name = ?', name).first or Tag.create(:name => name)}
+    if tags_given
+      tag_names = tags_given.split(/\s*,\s*/)
+      self.tags = tag_names.map { |name| Tag.where('name = ?', name).first or Tag.create(:name => name)}
+    end
   end
 
 end
