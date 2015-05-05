@@ -1,8 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_user_not_logged_in, only: [:new, :create]
   skip_before_action :authenticate_user, only: [:new, :create]
-
-
 
   # GET /users/new
   def new
@@ -47,10 +46,14 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
+    if @user == current_user
+      @user.destroy
+      respond_to do |format|
+        format.html { redirect_to root_url }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to root_path
     end
   end
 
@@ -64,4 +67,9 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end
+
+    def ensure_user_not_logged_in
+      redirect_to root_path if current_user
+    end
+
 end

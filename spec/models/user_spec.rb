@@ -42,7 +42,12 @@ describe User do
       expect(subject).to be_valid
     end
 
-    it "doesn't validate user when no email is given" do
+    it "doesn't validate when no email is given" do
+      subject.email = nil
+      expect(subject).to_not be_valid
+    end
+
+    it "doesn't validate user when empty email is given" do
       subject.email = ''
       expect(subject).to_not be_valid
     end
@@ -61,9 +66,7 @@ describe User do
       subject.email = '@email.com'
       expect(subject).to_not be_valid
     end
-  end
 
-  context "#downcase_email" do
     it 'validates downcased email when downcase email given' do
       subject.email = 'downcase@email.com'
       subject.valid?
@@ -81,6 +84,7 @@ describe User do
       subject.valid?
       expect(subject.email).to eq('camelcase@email.com')
     end
+
   end  
 
 end

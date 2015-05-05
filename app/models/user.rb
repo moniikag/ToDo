@@ -11,6 +11,6 @@ class User < ActiveRecord::Base
 	before_validation :downcase_email
 
 	def downcase_email 
-		self.email = email.downcase
+		self.email = email.downcase if self.email
 	end
 end
