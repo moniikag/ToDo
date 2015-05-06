@@ -6,11 +6,6 @@ class TodoItemsController < ApplicationController
     @todo_items = @todo_list.todo_items
   end
 
-  def complete
-    @todo_item.update_attribute(:completed_at, Time.now)
-    redirect_to todo_list_todo_items_path, notice: "Todo item marked as complete."
-  end
-
   def new
     @todo_item = @todo_list.todo_items.new
   end
@@ -37,6 +32,11 @@ class TodoItemsController < ApplicationController
       flash[:error] = "That todo item could not be saved."
       render action: :edit
     end
+  end
+
+  def complete
+    @todo_item.update_attribute(:completed_at, Time.now)
+    redirect_to todo_list_todo_items_path, notice: "Todo item marked as complete."
   end
 
   def destroy

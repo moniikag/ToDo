@@ -1,7 +1,5 @@
 Odot::Application.routes.draw do
   
-  resources :tags
-
   resources :users, except: [:index, :show]
   
   resource :user_sessions, only: [:new, :create, :destroy]
