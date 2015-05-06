@@ -5,7 +5,9 @@ RSpec.describe TodoItemsController do
 
   let(:user) { users(:john) }
   let(:valid_session) { { user_id: user.id } }
+
   let(:todo_list) { todo_lists(:todo_list_1) }
+
   subject { todo_items(:todo_item_1) }
   let(:valid_todo_item_params) { { content: "Yet another content", deadline: "2015-05-25 10:52:00"} }
 
@@ -99,7 +101,7 @@ RSpec.describe TodoItemsController do
         expect {
           post :create, { todo_list_id: subject.todo_list_id, todo_item: invalid_todo_item_params }, valid_session
         }.to change { TodoItem.count }.by(1)
-        todo_item = TodoItem.where(content: valid_todo_item_params[:content]).first
+        todo_item = TodoItem.where(content: invalid_todo_item_params[:content]).first
         expect(todo_item.completed_at).to eq(nil)
         expect(response).to redirect_to(todo_list_todo_items_path)
       end      
@@ -115,23 +117,23 @@ RSpec.describe TodoItemsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do  
-        expect {
-          get :edit, { todo_list_id: subject.todo_list_id, id: other_todo_item.id  }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it "raises an error on attempt to edit todo item that doesn't belong to the user" do  
-        expect {
-          get :edit, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
       it "renders template edit and assigns proper todo item" do
         get :edit, { todo_list_id: subject.todo_list_id, id: subject.id }, valid_session
         expect(response.status).to eq(200)
         expect(response).to render_template(:edit)
         expect(assigns(:todo_item)).to eq(subject)
+      end
+
+      it "raises an error on attempt to edit todo item that doesn't belong to the user" do  
+        expect {
+          get :edit, { todo_list_id: subject.todo_list_id, id: other_todo_item.id  }, valid_session
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do  
+        expect {
+          get :edit, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -145,21 +147,21 @@ RSpec.describe TodoItemsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to update todo item from todo list that doesn't belong to the user" do  
+      it "given valid params it updates todo item & redirects to todo items" do
+        put :update, { todo_list_id: subject.todo_list_id, id: subject.id, todo_item: valid_todo_item_params }, valid_session
+        expect(response).to redirect_to(todo_list_todo_items_path)
+      end
+
+      it "raises an error on attempt to update todo item that doesn't belong to the user" do  
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: subject.id, todo_item: valid_todo_item_params }, valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      it "raises an error on attempt to update todo item that doesn't belong to the user" do  
+      it "raises an error on attempt to update todo item from todo list that doesn't belong to the user" do  
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: other_todo_item.id, todo_item: valid_todo_item_params}, valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it "given valid params it updates todo item & redirects to todo items" do
-        put :update, { todo_list_id: subject.todo_list_id, id: subject.id, todo_item: valid_todo_item_params }, valid_session
-        expect(response).to redirect_to(todo_list_todo_items_path)
       end
 
       it "given invalid params renders template edit & assings the todo item" do

@@ -84,6 +84,29 @@ RSpec.describe TodoListsController do
     end
   end
   
+  context "GET show: " do
+    context "if user not signed in" do
+      it "redirects to new user session path" do
+        get :show, id: subject.id
+        expect(response).to redirect_to(new_user_sessions_path)
+      end
+    end
+
+    context "if user signed in" do
+      it "redirects to action: index, controller: todo items" do
+        get :show, { id: subject.id }, valid_session
+        expect(response).to redirect_to(todo_list_todo_items_path(subject))
+        expect(assigns(:todo_list)).to eq(subject)
+      end
+
+      it "raises an error on attempt to show todo list that doesn't belong to the user" do  
+        expect {
+          get :show, { id: other_todo_list.id },valid_session
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   context "POST send_reminder: " do
     context "if user not signed in: " do
       it "redirects to new user session path" do
@@ -92,7 +115,7 @@ RSpec.describe TodoListsController do
       end
     end
 
-    context "if user signed in: " do  ########### DEPRECATION FROM HERE
+    context "if user signed in: " do 
       it "sends reminder" do
         post :send_reminder, { }, valid_session
         expect(response).to redirect_to(todo_lists_path)

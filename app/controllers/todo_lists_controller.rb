@@ -28,6 +28,10 @@ class TodoListsController < ApplicationController
     end
   end
 
+  def show
+    redirect_to todo_list_todo_items_path(@todo_list)
+  end
+
   def send_reminder
     @todo_lists = current_user.todo_lists
     @urgent_items = []
