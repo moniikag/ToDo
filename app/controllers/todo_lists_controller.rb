@@ -7,19 +7,9 @@ class TodoListsController < ApplicationController
     @todo_lists = current_user.todo_lists
   end
 
-
-  # GET /todo_lists/1
-  # GET /todo_lists/1.json
-  def show
-  end
-
   # GET /todo_lists/new
   def new
     @todo_list = TodoList.new
-  end
-
-  # GET /todo_lists/1/edit
-  def edit
   end
 
   # POST /todo_lists
@@ -36,6 +26,28 @@ class TodoListsController < ApplicationController
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # GET /todo_lists/1
+  # GET /todo_lists/1.json
+  def show
+  end
+
+  def send_reminder
+    @todo_lists = current_user.todo_lists
+    @urgent_items = []
+    @todo_lists.each do |todo_list|
+      todo_list.todo_items.all.each do |todo_item|
+        if (todo_item.deadline.to_time - Time.now - 25.hours) < 0
+          @urgent_items << todo_item
+        end
+      end
+    end
+    UserMailer.reminder(@urgent_items).deliver
+    redirect_to todo_lists_path
+  end
+  # GET /todo_lists/1/edit
+  def edit
   end
 
   # PATCH/PUT /todo_lists/1
@@ -55,25 +67,15 @@ class TodoListsController < ApplicationController
   # DELETE /todo_lists/1
   # DELETE /todo_lists/1.json
   def destroy
-    @todo_list.destroy
-    respond_to do |format|
-      format.html { redirect_to todo_lists_url }
-      format.json { head :no_content }
-    end
-  end
-
-  def send_reminder
-    @todo_lists = TodoList.all
-    @urgent_items = []
-    @todo_lists.each do |todo_list|
-      todo_list.todo_items.all.each do |todo_item|
-        if (todo_item.deadline.to_time - Time.now - 25.hours) < 0
-          @urgent_items << todo_item
-        end
+    @todo_lists = current_user.todo_lists
+    if @todo_list.destroy
+      respond_to do |format|
+        format.html { redirect_to todo_lists_url }
+        format.json { head :no_content }
       end
+    else
+      redirect_to root_path
     end
-    UserMailer.reminder(@urgent_items).deliver
-    redirect_to todo_lists_path
   end
 
   private

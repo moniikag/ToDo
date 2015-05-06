@@ -1,7 +1,10 @@
-<p> Hello, here is a list of urgent tasks for today: </p>
-
-<% @urgent_items.each do |item| %>
-	<p><%= "Todo list: #{item.todo_list.title}: Task: #{item.content}" %></p>
+<% unless @urgent_items.empty? %>
+  <p> Hello, here is a list of urgent tasks for today: </p>
+  <% @urgent_items.each do |item| %>
+  	<p><%= "Todo list: #{item.todo_list.title}: Task: #{item.content}" %></p>
+  <% end %>
+<% else %>
+  <p> Hurray! No urgent tasks for today </p>
 <% end %>
 
 <p> Have a nice day!</p>

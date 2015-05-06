@@ -1,3 +1,7 @@
 todo_list_1:
   title: "Todo List 1"
   description: "My first todo list"
+
+todo_list_2:
+  title: "Todo List 2"
+  description: "My second todo list"
