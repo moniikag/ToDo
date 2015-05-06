@@ -28,11 +28,6 @@ class TodoListsController < ApplicationController
     end
   end
 
-  # GET /todo_lists/1
-  # GET /todo_lists/1.json
-  def show
-  end
-
   def send_reminder
     @todo_lists = current_user.todo_lists
     @urgent_items = []

@@ -88,31 +88,6 @@ RSpec.describe TodoListsController do
     end
   end
   
-  context "GET show: " do
-    context "if user not signed in" do
-      it "redirects to new user session path" do
-        get :show, id: subject.id
-        expect(response).to redirect_to(new_user_sessions_path)
-      end
-    end
-
-    context "if user signed in" do
-      it "renders template show & displays the todo list" do
-        get :show, { id: subject.id }, valid_session
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:show)
-        expect(assigns(:todo_list)).to eq(subject)
-      end
-
-      it "raises an error on attempt to show todo list that doesn't belong to the user" do  
-        other_todo_list
-        expect {
-          get :show, { id: other_todo_list.id },valid_session
-        }.to raise_error()
-      end
-    end
-  end
-  
   context "POST send_reminder: " do
     context "if user not signed in" do
       it "redirects to new user session path" do

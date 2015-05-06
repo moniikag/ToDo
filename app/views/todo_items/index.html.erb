@@ -46,3 +46,8 @@
 <p>
   <%= link_to "New Todo Item", new_todo_list_todo_item_path %>
 </p>
+
+<p>
+  <%= link_to 'Edit Todo List', edit_todo_list_path(@todo_list) %> | 
+  <%= link_to 'Back to todo lists', todo_lists_path %>
+</p>
