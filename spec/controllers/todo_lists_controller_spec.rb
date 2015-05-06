@@ -9,8 +9,6 @@ RSpec.describe TodoListsController do
   let(:user) { users(:john) }
   let(:valid_session) { { user_id: user.id } }
 
-  before(:each) { user.todo_lists << subject }
-
   context "GET index: " do
     context "if user not signed in" do
       it "redirects to new user session path" do
@@ -20,16 +18,10 @@ RSpec.describe TodoListsController do
     end
 
     context "if user signed in" do
-      it "renders template index & displays user's todo lists" do
+      it "renders template index & displays todo lists that belong to user" do
         get :index, {}, valid_session
         expect(assigns(:todo_lists)).to eq([subject])
         expect(response).to render_template(:index)
-      end
-
-      it "displays only todo lists that belong to the user" do
-        get :index, {}, valid_session
-        other_todo_list
-        expect(assigns(:todo_lists)).to eq([subject])
       end
     end
   end
@@ -121,7 +113,6 @@ RSpec.describe TodoListsController do
       end
 
       it "raises an error on attempt to edit todo list that doesn't belong to the user" do  ################# ?
-        other_todo_list
         expect {
           get :edit, { id: other_todo_list.id },valid_session
         }.to raise_error()
@@ -152,7 +143,6 @@ RSpec.describe TodoListsController do
       end
 
       it "raises an error on attempt to update todo list that doesn't belong to the user" do  
-        other_todo_list
         expect {
           put :update, { id: other_todo_list.id, todo_list: valid_todo_list_params }, valid_session
         }.to raise_error()
@@ -179,7 +169,6 @@ RSpec.describe TodoListsController do
       end
 
       it "doesn't destroy todo list & raises an error on attempt to destroy todo list that doesn't belong to the user" do  
-        other_todo_list
         expect {
           expect {
             delete :destroy, { id: other_todo_list.id }, valid_session

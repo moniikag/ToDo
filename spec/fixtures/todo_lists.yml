@@ -1,7 +1,11 @@
 todo_list_1:
+  id: 1
+  user_id: 1
   title: "Todo List 1"
   description: "My first todo list"
 
 todo_list_2:
+  id: 2
+  user_id: 2
   title: "Todo List 2"
   description: "My second todo list"

@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @todo_list.todo_items.each do |todo_item| %>
+  <% @todo_items.each do |todo_item| %>
   <tr id="<%= dom_id(todo_item) %>">
     <td>
       <% if todo_item.completed? %>
