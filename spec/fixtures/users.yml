@@ -1,7 +1,7 @@
 john:
   id: 1
   email: john@example.com
-  password_digest: 'asdfasdfasdf'
+  password_digest: '$2a$10$G3QdKLKdQVczerRRr0kpSeZeUGMKl5VSwDzjADMDXC5aIWxD5jvca' #password: "secret"
 
 tom: 
   id: 2
