@@ -26,7 +26,7 @@ class TodoItemsController < ApplicationController
 
   def update
     if @todo_item.update_attributes(todo_item_params)
-      flash[:success] = "Saved todo list item."
+      flash[:success] = "Updated todo list item."
       redirect_to todo_list_todo_items_path
     else
       flash[:error] = "That todo item could not be saved."

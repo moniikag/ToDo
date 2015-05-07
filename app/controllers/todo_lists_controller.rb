@@ -43,14 +43,12 @@ class TodoListsController < ApplicationController
       end
     end
     UserMailer.reminder(@urgent_items).deliver
-    redirect_to todo_lists_path
+    redirect_to todo_lists_path, notice: 'Reminder was successfully sent.'
   end
-  # GET /todo_lists/1/edit
+
   def edit
   end
 
-  # PATCH/PUT /todo_lists/1
-  # PATCH/PUT /todo_lists/1.json
   def update
     respond_to do |format|
       if @todo_list.update(todo_list_params)
