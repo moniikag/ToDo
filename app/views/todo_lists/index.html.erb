@@ -6,9 +6,9 @@
   <h2><%= todo_list.title %></h2>
   <p><%= todo_list.description %></p>
   <ul class="functions">
-    <li><%= link_to "Show", todo_list_todo_items_path(todo_list) %></li>
-    <li><%= link_to 'Edit', edit_todo_list_path(todo_list) %></li>
-    <li><%= link_to 'Destroy', todo_list, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    <li><%= link_to "Show", todo_list_todo_items_path(todo_list), id: "todo-items-index-link" %></li>
+    <li><%= link_to 'Edit', edit_todo_list_path(todo_list), id: "edit-todo-list-link" %></li>
+    <li><%= link_to 'Delete', todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list-link" %></li>
   </ul>
   <br class="clear" />
 </div>
@@ -16,6 +16,6 @@
 
 <br>
 
-<%= link_to 'New Todo list', new_todo_list_path %>
+<%= link_to 'New Todo list', new_todo_list_path, id: "new-todo-list-link" %>
 
-<p><%= button_to 'Send Reminder', action: :send_reminder %></p>
+<p><%= button_to 'Send Reminder', { action: :send_reminder} , id: "send-reminder"  %></p>

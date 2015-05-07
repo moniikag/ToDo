@@ -35,8 +35,8 @@
     </td>
 
     <td>
-      <%= link_to "Edit", edit_todo_list_todo_item_path(todo_item) %>
-      <%= link_to "Delete", todo_list_todo_item_path(todo_item), method: :delete, data: { confirm: "Are you sure?" } %>
+      <%= link_to "Edit", edit_todo_list_todo_item_path(todo_item), id: "edit-todo-item-link"  %>
+      <%= link_to "Delete", todo_list_todo_item_path(todo_item), method: :delete, data: { confirm: "Are you sure?" }, id: "delete-todo-item-link"  %>
     </td>
   </tr>
   <% end %>
@@ -44,7 +44,7 @@
 </table>
 
 <p>
-  <%= link_to "New Todo Item", new_todo_list_todo_item_path %>
+  <%= link_to "New Todo Item", new_todo_list_todo_item_path, id: "new-todo-item-link" %>
 </p>
 
 <p>
