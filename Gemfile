@@ -22,8 +22,10 @@ group :development, :test do
 end
 
 group :test do
+  gem 'factory_girl_rails'
   gem 'capybara', '~> 2.1.0'
   gem 'shoulda-matchers', '~> 2.4.0'
+  gem 'selenium-webdriver'
 end
 
 gem 'rails_12factor', group: :production
