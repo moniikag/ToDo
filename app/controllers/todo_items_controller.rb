@@ -1,9 +1,8 @@
 class TodoItemsController < ApplicationController
-  before_action :find_todo_list 
-  before_action :find_todo_item, only: [:edit, :update, :destroy, :complete]
-
+  before_action :get_resources
+  
   def index
-    @todo_items = @todo_list.todo_items
+    @todo_items = policy_scope(TodoItem)
   end
 
   def new
@@ -48,23 +47,19 @@ class TodoItemsController < ApplicationController
     redirect_to todo_list_todo_items_path
   end
 
-  def url_options
-    { todo_list_id: params[:todo_list_id] }.merge(super)
-  end
-
   private
-  def find_todo_item
-    @todo_item = @todo_list.todo_items.find(params[:id])
-  end
-
-  def find_todo_list
-    @todo_list = current_user.todo_lists.find(params[:todo_list_id])
+  def get_resources
+    @todo_list = policy_scope(TodoList).find(params[:todo_list_id])
+    @todo_item = policy_scope(TodoItem).find(params[:id]) if params[:id]
+    if @todo_item
+      authorize @todo_item
+    else
+      authorize TodoItem
+    end
   end
 
   def todo_item_params
     params[:todo_item].permit(:content, :deadline, :tag_list)
   end
-
- 
 
 end

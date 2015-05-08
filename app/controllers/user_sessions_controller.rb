@@ -1,17 +1,20 @@
 class UserSessionsController < ApplicationController
 
 	skip_before_action :authenticate_user, only: [:new, :create]
+  skip_after_action :verify_authorized, only: [:destroy]
 
  	 def new
+    authorize User, :new?
  	 end
 
   	def create
+      authorize User, :new?
   		user = User.find_by(email: params[:email])
   		if user && user.authenticate(params[:password])
   			cookies.permanent[:user_id] = user.id
   			flash[:success] = "Thanks for logging in!"
   			redirect_to todo_lists_path
- 		else
+      else
  			flash[:error] = "There was a problem loggin in. Please check your email and password."
   			render action: 'new'
   		end

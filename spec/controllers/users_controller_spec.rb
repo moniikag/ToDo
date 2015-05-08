@@ -36,11 +36,19 @@ RSpec.describe UsersController do
     end
 
     context "if user signed in: " do
+      let(:other_user) { users(:tom) }
+
       it "redirects to edit" do
         get :edit, { id: subject.id }, valid_session
         expect(response.status).to be(200)
         expect(response).to render_template(:edit)
         expect(assigns(:user)).to eq(subject)
+      end
+
+      it "doesn't allow to edit user on attempt to edit another user & redirects to root_path" do
+        expect {
+          get :edit, { id: other_user.id }, valid_session
+        }.to raise_error()
       end
     end
   end
@@ -62,7 +70,7 @@ RSpec.describe UsersController do
         }.to change { User.count }.by(1)  
         user = User.find_by_email('newtest@example.com')
         expect(controller.current_user).to eq(user)
-        expect(response).to redirect_to(user)
+        expect(response).to redirect_to(root_path)
       end
 
       it "given extra params creates user and redirects to user " do
@@ -71,7 +79,7 @@ RSpec.describe UsersController do
         }.to change { User.count }.by(1)  
         user = User.find_by_email('newtest@example.com')
         expect(controller.current_user).to eq(user)
-        expect(response).to redirect_to(user)
+        expect(response).to redirect_to(root_path)
       end
 
       it "given invalid params renders template :new" do
@@ -98,7 +106,7 @@ RSpec.describe UsersController do
     context "if user signed in" do
       it "given correct params updates user and redirects to user" do
         put :update, { id: subject.id, user: { first_name: "name" } }, valid_session
-        expect(response).to redirect_to(subject)
+        expect(response).to redirect_to(root_path)
       end
 
       it "given invalid params renders tempate edit" do
@@ -129,8 +137,7 @@ RSpec.describe UsersController do
       it "doesn't destroy user on attempt to destroy another user & redirects to root_path" do
         expect {
           delete :destroy, { id: other_user.id }, valid_session
-        }.to change { User.count }.by(0)
-        expect(response).to redirect_to root_path
+        }.to raise_error()
       end
     end
   end

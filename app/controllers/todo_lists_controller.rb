@@ -1,21 +1,19 @@
 class TodoListsController < ApplicationController
-  before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
+  before_action :get_resources
 
-  # GET /todo_lists
-  # GET /todo_lists.json
   def index
-    @todo_lists = current_user.todo_lists
+    authorize TodoList
+    @todo_lists = policy_scope(TodoList)
   end
 
-  # GET /todo_lists/new
   def new
+    authorize TodoList
     @todo_list = TodoList.new
   end
 
-  # POST /todo_lists
-  # POST /todo_lists.json
   def create
-    @todo_list = current_user.todo_lists.new(todo_list_params)
+    authorize TodoList
+    @todo_list = policy_scope(TodoList).new(todo_list_params)
 
     respond_to do |format|
       if @todo_list.save
@@ -33,7 +31,8 @@ class TodoListsController < ApplicationController
   end
 
   def send_reminder
-    @todo_lists = current_user.todo_lists
+    authorize TodoList
+    @todo_lists = policy_scope(TodoList)
     @urgent_items = []
     @todo_lists.each do |todo_list|
       todo_list.todo_items.each do |todo_item|
@@ -61,10 +60,8 @@ class TodoListsController < ApplicationController
     end
   end
 
-  # DELETE /todo_lists/1
-  # DELETE /todo_lists/1.json
   def destroy
-    @todo_lists = current_user.todo_lists
+    @todo_lists = policy_scope(TodoList)
     if @todo_list.destroy
       respond_to do |format|
         format.html { redirect_to todo_lists_url }
@@ -76,13 +73,17 @@ class TodoListsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_todo_list
-      @todo_list = current_user.todo_lists.find(params[:id])
+  def get_resources
+    @todo_list = policy_scope(TodoList).find(params[:id]) if params[:id]
+    if @todo_list
+      authorize @todo_list
+    else
+      authorize TodoList
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def todo_list_params
-      params.require(:todo_list).permit(:title, :description)
-    end
+  def todo_list_params
+    params.require(:todo_list).permit(:title, :description)
+  end
+
 end

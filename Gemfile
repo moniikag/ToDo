@@ -11,6 +11,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'mail'
 gem 'figaro'
+gem 'pundit'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'

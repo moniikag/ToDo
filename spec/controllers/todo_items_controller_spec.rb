@@ -26,7 +26,7 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to view todo items from todo list that doesn't belong to the user" do  
         expect {
           get :index, { todo_list_id: other_todo_list.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "renders template index & assigns todo items that belong to user" do
@@ -50,7 +50,7 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to add new todo item to todo list that doesn't belong to the user" do  
         expect {
           get :new, { todo_list_id: other_todo_list.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "renders template new & assigns new todo item" do
@@ -81,7 +81,7 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to create todo item in todo list that doesn't belong to the user" do  
         expect {
           post :create, { todo_list_id: other_todo_list.id, todo_item: valid_todo_item_params }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "given invalid params doesn't create todo_item & renders template new" do
@@ -127,13 +127,13 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to edit todo item that doesn't belong to the user" do  
         expect {
           get :edit, { todo_list_id: subject.todo_list_id, id: other_todo_item.id  }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do  
         expect {
           get :edit, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
     end
   end
@@ -155,13 +155,13 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to update todo item that doesn't belong to the user" do  
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: subject.id, todo_item: valid_todo_item_params }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "raises an error on attempt to update todo item from todo list that doesn't belong to the user" do  
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: other_todo_item.id, todo_item: valid_todo_item_params}, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "given invalid params renders template edit & assings the todo item" do
@@ -196,13 +196,13 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to mark complete todo item from todo list that doesn't belong to the user" do  
         expect {
           patch :complete, { todo_list_id: other_todo_list.id, id: subject.id  }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "raises an error on attempt to mark complete todo item that doesn't belong to the user" do  
         expect {
           patch :complete, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "marks todo item complete & redirects to todo items" do
@@ -227,14 +227,14 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do  
         expect {
           delete :destroy, { todo_list_id: other_todo_list.id, id: subject.id  }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.to raise_error()
       end
 
       it "doesn't destroy todo item & raises an error on attempt to destroy todo item that doesn't belong to the user" do  
         expect {
           expect {
             delete :destroy, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
-          }.to raise_error(ActiveRecord::RecordNotFound)
+          }.to raise_error()
         }.to change { TodoItem.count }.by(0)
       end
 
