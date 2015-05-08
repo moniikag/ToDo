@@ -19,7 +19,6 @@ describe 'Todo items: ' do
 
   it "displays user's todo items" do
     log_in
-    print "/todo_lists/#{todo_list.id}/todo_items"
     visit "/todo_lists/#{todo_list.id}/todo_items"
     expect(page).to have_content(subject.content)
   end
@@ -79,6 +78,12 @@ describe 'Todo items: ' do
     expect(page).to have_content(todo_item_params[:tag])
   end
 
+  it "allows user to mark item complete" do
+    log_in
+    visit "/todo_lists/#{todo_list.id}/todo_items"
+    within("#todo_item_#{subject.id}") { click_link "mark-complete-link" }
+    within("#todo_item_#{subject.id}") { expect(page).to_not have_link("mark-complete-link") }
+  end
 
   xit "allows user to delete todo item", js: true do
     log_in
