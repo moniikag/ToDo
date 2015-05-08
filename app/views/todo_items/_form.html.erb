@@ -13,11 +13,9 @@
 
 <%= form.label :content %>
 <%= form.text_field :content %>
- <%= form.label :deadline %>
- <%= form.datetime_select :deadline, :default => 3.days.from_now %>
+<%= form.label :deadline %>
+<%= form.datetime_select :deadline, :default => 3.days.from_now %>
 <%= form.label :tag_list %>
 <%= form.text_field :tag_list %>
-
-
 
 <%= form.submit "Save", id: "save-todo-item"  %>
