@@ -1,18 +1,16 @@
 require 'spec_helper'
 
 RSpec.describe TodoItemsController do
-  fixtures :all
 
-  let(:user) { users(:john) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:valid_session) { { user_id: user.id } }
 
-  let(:todo_list) { todo_lists(:todo_list_1) }
+  let(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
 
-  subject { todo_items(:todo_item_1) }
-  let(:valid_todo_item_params) { { content: "Yet another content", deadline: "2015-05-25 10:52:00"} }
+  let!(:subject) { FactoryGirl.create(:todo_item, todo_list: todo_list) }
+  let(:valid_todo_item_params) { { content: "Yet another content", deadline: "2015-05-25 10:52:00" } }
 
-  let(:other_todo_list) { todo_lists(:todo_list_2) }
-  let(:other_todo_item) { todo_items(:todo_item_2) }
+  let(:other_todo_item) { FactoryGirl.create(:todo_item) }
 
   context "GET index: " do
     context "if user not signed in: " do

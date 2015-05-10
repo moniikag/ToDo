@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe UsersController do
-  fixtures :all
-  subject { users(:john) }
+
+  let!(:subject) { FactoryGirl.create(:user) }
   let(:valid_session) { { user_id: subject.id } }
   let(:valid_user_param) { { 
     first_name: "name", last_name: "last", email: "newtest@example.com", 

@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 RSpec.describe TodoListsController do
-  fixtures :all
 
-  let(:user) { users(:john) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:valid_session) { { user_id: user.id } }
-  subject { todo_lists(:todo_list_1) }
+
+  let!(:subject) { FactoryGirl.create(:todo_list, user: user) }
+
   let(:valid_todo_list_params) { { title: "Another Todo List", description: "Yet another todo list" } }
 
-  let(:other_todo_list) { todo_lists(:todo_list_2) }
+  let!(:other_todo_list) { FactoryGirl.create(:todo_list) }
 
   context "GET index: " do
     context "if user not signed in: " do
