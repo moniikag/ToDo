@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe TodoList do 
-  fixtures :todo_lists
-  subject { todo_lists(:todo_list_1)}
+  subject { FactoryGirl.create(:todo_list) }
 
   context '#has_completed_items?' do
     it 'returns true if todo_list has only completed items' do

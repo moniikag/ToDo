@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe TodoItem do
-
-  fixtures :all
-  subject { todo_items(:todo_item_1)}
+  subject { FactoryGirl.create(:todo_item) }
 
   context ".complete" do
     it "returns proper amount of complete items" do
@@ -90,21 +88,21 @@ describe TodoItem do
     end
 
     context "with existing tag existing" do
-      let!(:subject_tag) {tags(:tag_1) }
+      let!(:subject_tag) { FactoryGirl.create(:tag) }
 
       it "doesn't add existing tag to database if one tag given" do
         expect {
           subject.tag_list = subject_tag.name
         }.to change { Tag.count }.by(0)
-        expect(subject.tag_list).to eq("important")
+        expect(subject.tag_list).to eq(subject_tag.name)
         expect(subject.tags).to include(subject_tag)
       end
 
       it "doesn't add existing tag to database if two tags given (old one and new one)" do
         expect {
-          subject.tag_list = 'urgent, important'
+          subject.tag_list = "urgent, #{subject_tag.name}"
         }.to change { Tag.count }.by(1)
-        expect(subject.tag_list).to eq("urgent, important")
+        expect(subject.tag_list).to eq("urgent, #{subject_tag.name}")
         expect(subject.tags).to include(subject_tag)
       end    
     end

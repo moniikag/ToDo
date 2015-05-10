@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  fixtures :users
-  subject { users(:john) }
+  subject { FactoryGirl.create(:user) }
 
   it "validates" do
     expect(subject).to be_valid
@@ -12,7 +11,6 @@ describe User do
     user = User.new(email: 'example@example.com', password: 'password', password_confirmation: 'password')
     expect(user).to be_valid
   end
-
 
   context '#has_secure_password' do
     it "validates user when correct password is given" do
@@ -24,7 +22,7 @@ describe User do
     it "doesn't validate user with no password" do
       subject.password = ''
       subject.password_confirmation = ''
-      expect(subject).to be_valid
+      expect(subject).to_not be_valid
     end
   end
 
@@ -84,7 +82,6 @@ describe User do
       subject.valid?
       expect(subject.email).to eq('camelcase@email.com')
     end
-
   end  
 
 end

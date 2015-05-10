@@ -16,4 +16,9 @@ FactoryGirl.define do
     deadline "2015-05-30 10:00:00"
     todo_list
   end
+
+  factory :tag do |t|
+    t.sequence(:name) { |n| "Tag #{n}"}
+  end
+
 end
