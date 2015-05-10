@@ -47,6 +47,10 @@ class TodoItemsController < ApplicationController
     redirect_to todo_list_todo_items_path
   end
 
+  def url_options #####################################
+    { todo_list_id: params[:todo_list_id] }.merge(super)
+  end
+
   private
   def get_resources
     @todo_list = policy_scope(TodoList).find(params[:todo_list_id])

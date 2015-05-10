@@ -1,11 +1,7 @@
 require 'spec_helper'
 
 describe 'Todo items: ' do
-  # fixtures :users
-  # subject { todo_items(:todo_item_1) }
-  # let!(:todo_list) { todo_lists(:todo_list_1) }
-  # let!(:user) { users(:john) }
-
+ 
   let!(:user) { FactoryGirl.build(:user) }
 
   let!(:todo_list) { FactoryGirl.create(:todo_list, user: user) }

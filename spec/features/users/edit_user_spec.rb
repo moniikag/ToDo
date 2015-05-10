@@ -2,9 +2,6 @@ require "spec_helper"
 
 describe "Editing user" do
 
-  # fixtures :users
-  # subject { users(:john) }
-
   let!(:user) { FactoryGirl.create(:user) }
 
   let!(:valid_params) { {
