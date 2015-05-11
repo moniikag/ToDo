@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   def create
     authorize User, :create?
-    @user = User.new(user_params)
+    @user = User.new(permitted_attributes(User.new))
 
     respond_to do |format|
       if @user.save
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.update_attributes(permitted_attributes(@user))
         format.html { redirect_to root_path, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
@@ -56,10 +56,6 @@ class UsersController < ApplicationController
   def get_resources
     @user = User.find(params[:id]) if params[:id]
     authorize @user if @user
-  end
-
-  def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 
   def ensure_user_not_logged_in

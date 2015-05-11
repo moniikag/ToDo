@@ -13,7 +13,7 @@ class TodoListsController < ApplicationController
 
   def create
     authorize TodoList
-    @todo_list = policy_scope(TodoList).new(todo_list_params)
+    @todo_list = policy_scope(TodoList).new(permitted_attributes(TodoList.new))
 
     respond_to do |format|
       if @todo_list.save
@@ -50,7 +50,7 @@ class TodoListsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @todo_list.update(todo_list_params)
+      if @todo_list.update_attributes(permitted_attributes(@todo_list))
         format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,10 +80,6 @@ class TodoListsController < ApplicationController
     else
       authorize TodoList
     end
-  end
-
-  def todo_list_params
-    params.require(:todo_list).permit(:title, :description)
   end
 
 end

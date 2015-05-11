@@ -6,6 +6,10 @@ class TodoListPolicy < ApplicationPolicy
     end
   end
 
+  def permitted_attributes
+    [:title, :description]
+  end
+
   def index?
     !!@user
   end

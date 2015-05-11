@@ -10,7 +10,7 @@ class TodoItemsController < ApplicationController
   end
 
   def create
-    @todo_item = @todo_list.todo_items.new(todo_item_params)
+    @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
     if @todo_item.save
       flash[:success] = "Added todo list item."
       redirect_to todo_list_todo_items_path
@@ -24,7 +24,7 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    if @todo_item.update_attributes(todo_item_params)
+    if @todo_item.update_attributes(permitted_attributes(@todo_item))
       flash[:success] = "Updated todo list item."
       redirect_to todo_list_todo_items_path
     else
@@ -47,10 +47,6 @@ class TodoItemsController < ApplicationController
     redirect_to todo_list_todo_items_path
   end
 
-  def url_options #####################################
-    { todo_list_id: params[:todo_list_id] }.merge(super)
-  end
-
   private
   def get_resources
     @todo_list = policy_scope(TodoList).find(params[:todo_list_id])
@@ -60,10 +56,6 @@ class TodoItemsController < ApplicationController
     else
       authorize TodoItem
     end
-  end
-
-  def todo_item_params
-    params[:todo_item].permit(:content, :deadline, :tag_list)
   end
 
 end

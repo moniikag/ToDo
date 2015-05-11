@@ -6,6 +6,10 @@ class TodoItemPolicy < ApplicationPolicy
     end
   end
 
+  def permitted_attributes
+    [:content, :deadline, :tag_list]
+  end
+
   def index?
     !!@user
   end
