@@ -25,4 +25,8 @@ class TodoItem < ActiveRecord::Base
     end
   end
 
+  def urgent?
+    self.deadline < 25.hours.from_now
+  end
+
 end

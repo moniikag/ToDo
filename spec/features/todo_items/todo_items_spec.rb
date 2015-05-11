@@ -19,6 +19,13 @@ describe 'Todo items: ' do
     expect(page).to have_content(subject.content)
   end
 
+  it "set item's class 'urgent' if item's deadline is in less than 24 h" do
+    subject.update_attribute("deadline", 5.hours.from_now)
+    log_in
+    visit "/todo_lists/#{todo_list.id}/todo_items"
+    within("#todo_item_#{subject.id}") { expect(page).to have_selector("td.urgent") }
+  end
+
   it "allows user to create todo item & add tag to it" do
     log_in
     visit "/todo_lists/#{todo_list.id}/todo_items"
