@@ -21,6 +21,8 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara', '~> 2.1.0'
   gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem 'launchy'
 end
 
 gem 'rails_12factor', group: :production
