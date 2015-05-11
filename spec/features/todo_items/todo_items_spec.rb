@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'database_cleaner'
 
 describe 'Todo items: ' do
  
@@ -13,24 +14,23 @@ describe 'Todo items: ' do
     content: "Test", year: "2015", month: "May", day: "30", hour: "10", minutes: "30", tag: "fee" 
     } }
 
-  it "displays user's todo items" do
+  before(:each) do
     log_in
     visit "/todo_lists/#{todo_list.id}/todo_items"
+  end
+
+  it "displays user's todo items" do
     expect(page).to have_content(subject.content)
   end
 
   it "set item's class 'urgent' if item's deadline is in less than 24 h" do
     subject.update_attribute("deadline", 5.hours.from_now)
-    log_in
     visit "/todo_lists/#{todo_list.id}/todo_items"
     within("#todo_item_#{subject.id}") { expect(page).to have_selector("td.urgent") }
   end
 
   it "allows user to create todo item & add tag to it" do
-    log_in
-    visit "/todo_lists/#{todo_list.id}/todo_items"
     expect(page).to have_content(todo_list.title)
-
     click_link "new-todo-item-link"
     expect(current_path).to eq(new_todo_list_todo_item_path(todo_list))
 
@@ -49,8 +49,6 @@ describe 'Todo items: ' do
   end
 
   it "allows user to edit todo item" do
-    log_in
-    visit "/todo_lists/#{todo_list.id}/todo_items"
     expect(page).to have_content(todo_list.title)
 
     within("#todo_item_#{subject.id}") {click_link "Edit"}
@@ -67,8 +65,6 @@ describe 'Todo items: ' do
   end
 
   it "allows user to add tag to existing item" do
-    log_in
-    visit "/todo_lists/#{todo_list.id}/todo_items"
     expect(page).to have_content(todo_list.title)
 
     within("#todo_item_#{subject.id}") {click_link "Edit"}
@@ -82,15 +78,11 @@ describe 'Todo items: ' do
   end
 
   it "allows user to mark item complete" do
-    log_in
-    visit "/todo_lists/#{todo_list.id}/todo_items"
     within("#todo_item_#{subject.id}") { click_link "mark-complete-link" }
     within("#todo_item_#{subject.id}") { expect(page).to_not have_link("mark-complete-link") }
   end
 
-  xit "allows user to delete todo item", js: true do
-    log_in
-    visit "/todo_lists/#{todo_list.id}/todo_items"
+  it "allows user to delete todo item", js: true do
     expect(page).to have_content(todo_list.title)
 
     within("#todo_item_#{other_todo_item.id}") {click_link "delete-todo-item-link"}
