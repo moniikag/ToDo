@@ -1,6 +1,10 @@
 Odot::Application.routes.draw do
   
-  resources :users, except: [:index, :show]
+  resources :users, except: [:index, :show] do
+    member do
+      get :confirm_email
+    end
+  end
   
   resource :user_sessions, only: [:new, :create, :destroy]
 
