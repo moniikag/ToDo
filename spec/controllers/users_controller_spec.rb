@@ -64,22 +64,18 @@ RSpec.describe UsersController do
     end
 
     context "if user not signed in: " do
-      it "given valid params creates user and redirects to user " do
+      it "given valid params creates user and redirects to log in page " do
         expect {
           post :create, user: valid_user_param
         }.to change { User.count }.by(1)  
-        user = User.find_by_email('newtest@example.com')
-        expect(controller.current_user).to eq(user)
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(new_user_sessions_path)
       end
 
-      it "given extra params creates user and redirects to user " do
+      it "given extra params creates user and redirects to log in page " do
         expect {
           post :create, user: valid_user_param.merge(extra: 'homo sapiens') 
         }.to change { User.count }.by(1)  
-        user = User.find_by_email('newtest@example.com')
-        expect(controller.current_user).to eq(user)
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(new_user_sessions_path)
       end
 
       it "given invalid params renders template :new" do
@@ -91,6 +87,28 @@ RSpec.describe UsersController do
         expect(response.status).to be(200)
         expect(response).to render_template(:new)
         expect(assigns(:user)).to be_a_new(User)
+      end
+    end
+  end
+
+  context "GET confirm_email" do
+    context "if user not signed in" do
+      it "confirms email and redirects to new_user_sessions_path" do
+        subject.update_attribute('email_confirmed', false)
+        get :confirm_email, id: subject.id
+        expect(response).to redirect_to(new_user_sessions_path)
+      end
+
+      it "doesn't allow user to confirm email many times - pundit redirects to root path" do
+        get :confirm_email, id: subject.id
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    context "if user signed in" do
+      it "pundit doesn't allow to confirm_email & redirects to root path" do
+        get :confirm_email, { id: subject.id }, valid_session
+        expect(response).to redirect_to(root_path) 
       end
     end
   end

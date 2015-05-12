@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @user = User.new(permitted_attributes(User.new))
     if @user.save
       UserMailer.registration_confirmation(@user).deliver
-      redirect_to root_path, notice: 'User was successfully created. Please confirm your email.' 
+      redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.' 
     else
       render action: 'new' 
     end
