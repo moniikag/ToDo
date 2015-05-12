@@ -71,6 +71,12 @@ RSpec.describe UsersController do
         expect(response).to redirect_to(new_user_sessions_path)
       end
 
+      it "sends confirmation email when creating user" do
+        expect { 
+          post :create, user: valid_user_param
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
+
       it "given extra params creates user and redirects to log in page " do
         expect {
           post :create, user: valid_user_param.merge(extra: 'homo sapiens') 
