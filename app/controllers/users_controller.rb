@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   before_action :ensure_user_not_logged_in, only: [:new, :create, :confirm_email]
   skip_before_action :authenticate_user, only: [:new, :create, :confirm_email]
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def new
     authorize User, :new?
     @user = User.new

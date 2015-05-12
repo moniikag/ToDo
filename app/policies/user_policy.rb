@@ -13,7 +13,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def confirm_email?
-    !@user 
+    !@user && !@record.email_confirmed  
   end
 
   def show?
