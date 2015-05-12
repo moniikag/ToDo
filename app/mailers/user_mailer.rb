@@ -1,4 +1,5 @@
 class UserMailer < ApplicationMailer
+
   def reminder(urgent_items)
   	@urgent_items = urgent_items
   	mail(to: 'monikaglier@gmail.com', subject: 'Reminder from Todo List')
@@ -6,7 +7,8 @@ class UserMailer < ApplicationMailer
 
   def registration_confirmation(user)
     @user = user
-    mail(to: user.email, subject: "Registration Confirmation")
+    mail(to: 'monikaglier@gmail.com', subject: "Registration Confirmation")
   end
+  
 end
 

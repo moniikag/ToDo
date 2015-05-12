@@ -12,6 +12,10 @@ class UserPolicy < ApplicationPolicy
     !@user
   end
 
+  def confirm_email?
+    !@user 
+  end
+
   def show?
     edit?
   end

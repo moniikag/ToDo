@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :get_resources
-  before_action :ensure_user_not_logged_in, only: [:new, :create]
-  skip_before_action :authenticate_user, only: [:new, :create]
+  before_action :ensure_user_not_logged_in, only: [:new, :create, :confirm_email]
+  skip_before_action :authenticate_user, only: [:new, :create, :confirm_email]
 
   def new
     authorize User, :new?
@@ -15,17 +15,18 @@ class UsersController < ApplicationController
   def create
     authorize User, :create?
     @user = User.new(permitted_attributes(User.new))
-
-    respond_to do |format|
-      if @user.save
-        cookies.permanent[:user_id] = @user.id
-        format.html { redirect_to root_path, notice: 'User was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      UserMailer.registration_confirmation(@user).deliver
+      redirect_to root_path, notice: 'User was successfully created. Please confirm your email.' 
+    else
+      render action: 'new' 
     end
+  end
+
+  def confirm_email
+    @user.update_attribute('email_confirmed', true)
+    flash[:success] = 'Your email was successfully confirmed. You can now log in.'
+    redirect_to new_user_sessions_path
   end
 
   def update
