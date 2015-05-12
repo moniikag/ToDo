@@ -1,7 +1,7 @@
 require 'spec_helper'
  
 RSpec.describe "Registration confirmation" do
-  let!(:user) { FactoryGirl.create(:user, email_confirmed: false) }
+  let!(:user) { FactoryGirl.create(:user) }
   let(:mail) { UserMailer.registration_confirmation(user) }
 
   it 'renders the subject' do
@@ -21,7 +21,7 @@ RSpec.describe "Registration confirmation" do
   end
 
   it 'assigns confirmation_url' do
-    expect(mail.body.encoded).to match("http://localhost:3000/users/#{user.id}/confirm_email")
+    expect(mail.body.encoded).to match("http://localhost:3000/users/#{user.activation_token}/confirm_email")
   end
 end
 

@@ -1,9 +1,7 @@
 class UsersController < ApplicationController
-  before_action :get_resources
+  before_action :get_resources, except: [:confirm_email]
   before_action :ensure_user_not_logged_in, only: [:new, :create, :confirm_email]
   skip_before_action :authenticate_user, only: [:new, :create, :confirm_email]
-
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def new
     authorize User, :new?
@@ -26,8 +24,15 @@ class UsersController < ApplicationController
   end
 
   def confirm_email
-    @user.update_attribute('email_confirmed', true)
-    flash[:success] = 'Your email was successfully confirmed. You can now log in.'
+    @user = User.find_by_activation_token(params[:id])
+    if @user
+      authorize @user
+      @user.update_attribute('activation_token', nil)
+      flash[:success] = 'Your email was successfully confirmed. You can now log in.'
+    else
+      skip_authorization
+      flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
+    end
     redirect_to new_user_sessions_path
   end
 
@@ -62,7 +67,9 @@ class UsersController < ApplicationController
   end
 
   def ensure_user_not_logged_in
-    redirect_to root_path if current_user
+    if current_user
+      flash[:notice] = "You're already logged in"
+      redirect_to root_path 
+    end
   end
-
 end

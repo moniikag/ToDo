@@ -99,21 +99,16 @@ RSpec.describe UsersController do
 
   context "GET confirm_email" do
     context "if user not signed in" do
-      it "confirms email and redirects to new_user_sessions_path" do
-        subject.update_attribute('email_confirmed', false)
-        get :confirm_email, id: subject.id
+      it "redirects to new_user_sessions_path" do
+        get :confirm_email, id: subject.activation_token
         expect(response).to redirect_to(new_user_sessions_path)
-      end
-
-      it "doesn't allow user to confirm email many times - pundit redirects to root path" do
-        get :confirm_email, id: subject.id
-        expect(response).to redirect_to(root_path)
+        expect(assigns(:user)).to eq(subject)
       end
     end
 
     context "if user signed in" do
-      it "pundit doesn't allow to confirm_email & redirects to root path" do
-        get :confirm_email, { id: subject.id }, valid_session
+      it "before filter - if user signed in redirects to root path" do
+        get :confirm_email, { id: subject.activation_token }, valid_session
         expect(response).to redirect_to(root_path) 
       end
     end

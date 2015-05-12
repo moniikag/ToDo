@@ -15,6 +15,7 @@ describe 'Todo items: ' do
     } }
 
   before(:each) do
+    user.update_attribute('activation_token', nil)
     log_in
     visit "/todo_lists/#{todo_list.id}/todo_items"
   end

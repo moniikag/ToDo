@@ -11,6 +11,7 @@ describe 'Todo lists: ' do
   let!(:todo_list_params) { { title: "Test", description: "Todo list for features test" } }
 
   before(:each) do
+    user.update_attribute('activation_token', nil)
     log_in
     visit "/todo_lists"
   end

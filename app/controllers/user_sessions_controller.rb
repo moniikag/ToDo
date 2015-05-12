@@ -11,7 +11,7 @@ class UserSessionsController < ApplicationController
       authorize User, :new?
   		user = User.find_by(email: params[:email])
   		if user && user.authenticate(params[:password])
-        if user.email_confirmed
+        if user.activation_token == nil
     			cookies.permanent[:user_id] = user.id
     			flash[:success] = "Thanks for logging in!"
     			redirect_to todo_lists_path

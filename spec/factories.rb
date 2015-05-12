@@ -4,7 +4,6 @@ FactoryGirl.define do
     u.sequence(:email) { |n| "#{n}factory@example.com" }
     u.sequence(:password) { |n| "#{n}password" }
     u.sequence(:password_confirmation) { |n| "#{n}password" }
-    u.email_confirmed true
   end
 
   factory :todo_list do |l|

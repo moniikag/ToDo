@@ -9,8 +9,16 @@ class User < ActiveRecord::Base
 										format: { with: /\A[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]+\z/ }
 
 	before_validation :downcase_email
+	before_create :generate_activation_token
 
 	def downcase_email 
 		self.email = email.downcase if self.email
+	end
+
+	private
+	def generate_activation_token
+		if self.activation_token.blank?
+			self.activation_token = "#{SecureRandom.uuid}"
+		end
 	end
 end
