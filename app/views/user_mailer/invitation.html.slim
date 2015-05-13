@@ -1,0 +1,6 @@
+p Dear #{@invitation.user.first_name}
+
+p You were invited to joint TodoList: #{@invitation.todo_list.title} by #{@invitation.todo_list.user.first_name}
+
+p You can see it here: 
+= todo_list_todo_items_url(todo_list_id: @invitation.todo_list_id)
