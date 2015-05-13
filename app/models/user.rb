@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
 
   has_many :todo_lists
+	has_many :invitations
+	has_many :invited_todo_lists, class_name: "TodoList", through: :invitations, source: :todo_list
 
   has_secure_password
+
   validates :password, length: {minimum: 6, allow_nil: true}
   validates :email, presence: true,
     uniqueness: true,

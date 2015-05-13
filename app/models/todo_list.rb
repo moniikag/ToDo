@@ -3,6 +3,9 @@ class TodoList < ActiveRecord::Base
   has_many :todo_items
   belongs_to :user
 
+  has_many :invitations
+  has_many :invited_users, class_name: "User", through: :invitations, source: :user
+
   validates :title, presence: true, length: { minimum: 3 }
   validates :description, presence: true, length: { minimum: 5 }
 

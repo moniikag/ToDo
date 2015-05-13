@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 20150512132520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "invitations", force: true do |t|
+    t.integer "todo_list_id"
+    t.integer "user_id"
+  end
+
+  add_index "invitations", ["todo_list_id"], name: "index_invitations_on_todo_list_id", using: :btree
+  add_index "invitations", ["user_id"], name: "index_invitations_on_user_id", using: :btree
+
   create_table "tags", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
