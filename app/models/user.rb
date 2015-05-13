@@ -15,10 +15,16 @@ class User < ActiveRecord::Base
 		self.email = email.downcase if self.email
 	end
 
+  def activate
+    self.update_attribute('activation_token', nil)
+  end
+
 	private
+	
 	def generate_activation_token
 		if self.activation_token.blank?
-			self.activation_token = "#{SecureRandom.uuid}"
+			self.activation_token = "#{SecureRandom.hex(8)}"
 		end
 	end
+
 end

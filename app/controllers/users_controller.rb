@@ -24,10 +24,10 @@ class UsersController < ApplicationController
   end
 
   def confirm_email
-    @user = User.find_by_activation_token(params[:id])
-    if @user
+    @user = User.find_by_id(params[:id])
+    if @user && @user.activation_token == params[:token]
       authorize @user
-      @user.update_attribute('activation_token', nil)
+      @user.activate
       flash[:success] = 'Your email was successfully confirmed. You can now log in.'
     else
       skip_authorization
@@ -72,4 +72,5 @@ class UsersController < ApplicationController
       redirect_to root_path 
     end
   end
+
 end

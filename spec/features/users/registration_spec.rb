@@ -20,26 +20,25 @@ describe "Signing up: " do
 
 	context "confirming email: " do
 		let!(:user) { FactoryGirl.create(:user) }
+		let!(:link) { confirm_email_user_url(user, token: user.activation_token) }
 
 		it "allows user to confirm email for the first time" do
-			visit "/users/#{user.activation_token}/confirm_email"
+			visit link
 			expect(current_path).to eq(new_user_sessions_path)
 			expect(page).to have_content("Your email was successfully confirmed")
 		end
 
 		it "doesn't allow user to confirm email many times" do
-			token = user.activation_token
 			user.update_attribute('activation_token', nil)
-			visit "/users/#{token}/confirm_email"
+			visit link
 			expect(current_path).to eq(new_user_sessions_path)
 			expect(page).to have_content("The activation link has already been used or is invalid")
 		end
 
 		it "doesn't allow logged in user to confirm email again - before filter user logged in" do
-			token = user.activation_token
 			user.update_attribute('activation_token', nil)
 			log_in
-			visit "/users/#{token}/confirm_email"
+			visit link
 			expect(current_path).to eq(root_path)
 			expect(page).to have_content("You're already logged in")
 		end

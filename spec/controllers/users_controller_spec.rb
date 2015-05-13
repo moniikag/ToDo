@@ -99,10 +99,10 @@ RSpec.describe UsersController do
 
   context "GET confirm_email" do
     context "if user not signed in" do
-      it "redirects to new_user_sessions_path" do
-        get :confirm_email, id: subject.activation_token
-        expect(response).to redirect_to(new_user_sessions_path)
+      it "gets valid activation link and redirects to new_user_sessions_path" do
+        get :confirm_email, { id: subject.id, token: subject.activation_token }
         expect(assigns(:user)).to eq(subject)
+        expect(response).to redirect_to(new_user_sessions_path)
       end
     end
 

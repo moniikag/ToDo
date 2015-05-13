@@ -21,7 +21,8 @@ RSpec.describe "Registration confirmation" do
   end
 
   it 'assigns confirmation_url' do
-    expect(mail.body.encoded).to match("http://localhost:3000/users/#{user.activation_token}/confirm_email")
+    link = confirm_email_user_url(user, token: user.activation_token)
+    expect(mail.body).to have_content(link)
   end
 end
 
