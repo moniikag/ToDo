@@ -4,14 +4,18 @@ class InvitationsController < ApplicationController
   def create
     @invitation = Invitation.new(invitation_params)
     @invitation.user = User.find_by_email(params[:user_email])
-    if !@invitation.user.nil? && @invitation.save
-      UserMailer.invitation(@invitation).deliver
-      flash[:success] = "Invitation was successfully sent."
-      redirect_to root_path
+    unless @invitation.user.nil? 
+      if @invitation.save
+        UserMailer.invitation(@invitation).deliver
+        flash[:success] = "Invitation was successfully sent. User has now acces to your todo list"
+        redirect_to root_path
+      else
+        flash[:error] = "There was a problem with sending your invitation."
+      end
     else
-      flash[:error] = "There was a problem with sending your invitation."
-      redirect_to root_path
+      flash[:error] = "."
     end
+    redirect_to root_path
   end
 
   def destroy
