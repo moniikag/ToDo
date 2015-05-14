@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20150512132520) do
   create_table "invitations", force: true do |t|
     t.integer "todo_list_id"
     t.integer "user_id"
+    t.string  "invitation_token"
   end
 
   add_index "invitations", ["todo_list_id"], name: "index_invitations_on_todo_list_id", using: :btree

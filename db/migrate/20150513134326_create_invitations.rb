@@ -3,6 +3,7 @@ class CreateInvitations < ActiveRecord::Migration
     create_table :invitations do |t|
       t.integer :todo_list_id
       t.integer :user_id
+      t.string :invitation_token
     end
 
     add_index :invitations, :todo_list_id
