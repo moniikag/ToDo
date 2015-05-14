@@ -14,6 +14,8 @@ gem 'figaro'
 gem 'pundit'
 gem 'slim'
 
+gem "letter_opener", group: :development
+
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'
 end
