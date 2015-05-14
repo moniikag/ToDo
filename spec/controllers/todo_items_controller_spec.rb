@@ -21,7 +21,7 @@ RSpec.describe TodoItemsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to view todo items from todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to view todo items from todo list that doesn't belong to the user" do
         expect {
           get :index, { todo_list_id: other_todo_list.id }, valid_session
         }.to raise_error()
@@ -45,7 +45,7 @@ RSpec.describe TodoItemsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to add new todo item to todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to add new todo item to todo list that doesn't belong to the user" do
         expect {
           get :new, { todo_list_id: other_todo_list.id }, valid_session
         }.to raise_error()
@@ -76,7 +76,7 @@ RSpec.describe TodoItemsController do
         expect(response).to redirect_to(todo_list_todo_items_path)
       end
 
-      it "raises an error on attempt to create todo item in todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to create todo item in todo list that doesn't belong to the user" do
         expect {
           post :create, { todo_list_id: other_todo_list.id, todo_item: valid_todo_item_params }, valid_session
         }.to raise_error()
@@ -102,7 +102,7 @@ RSpec.describe TodoItemsController do
         todo_item = TodoItem.where(content: invalid_todo_item_params[:content]).first
         expect(todo_item.completed_at).to eq(nil)
         expect(response).to redirect_to(todo_list_todo_items_path)
-      end      
+      end
     end
   end
 
@@ -122,13 +122,13 @@ RSpec.describe TodoItemsController do
         expect(assigns(:todo_item)).to eq(subject)
       end
 
-      it "raises an error on attempt to edit todo item that doesn't belong to the user" do  
+      it "raises an error on attempt to edit todo item that doesn't belong to the user" do
         expect {
           get :edit, { todo_list_id: subject.todo_list_id, id: other_todo_item.id  }, valid_session
         }.to raise_error()
       end
 
-      it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do
         expect {
           get :edit, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
         }.to raise_error()
@@ -150,13 +150,13 @@ RSpec.describe TodoItemsController do
         expect(response).to redirect_to(todo_list_todo_items_path)
       end
 
-      it "raises an error on attempt to update todo item that doesn't belong to the user" do  
+      it "raises an error on attempt to update todo item that doesn't belong to the user" do
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: subject.id, todo_item: valid_todo_item_params }, valid_session
         }.to raise_error()
       end
 
-      it "raises an error on attempt to update todo item from todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to update todo item from todo list that doesn't belong to the user" do
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: other_todo_item.id, todo_item: valid_todo_item_params}, valid_session
         }.to raise_error()
@@ -191,13 +191,13 @@ RSpec.describe TodoItemsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to mark complete todo item from todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to mark complete todo item from todo list that doesn't belong to the user" do
         expect {
           patch :complete, { todo_list_id: other_todo_list.id, id: subject.id  }, valid_session
         }.to raise_error()
       end
 
-      it "raises an error on attempt to mark complete todo item that doesn't belong to the user" do  
+      it "raises an error on attempt to mark complete todo item that doesn't belong to the user" do
         expect {
           patch :complete, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
         }.to raise_error()
@@ -222,13 +222,13 @@ RSpec.describe TodoItemsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do
         expect {
           delete :destroy, { todo_list_id: other_todo_list.id, id: subject.id  }, valid_session
         }.to raise_error()
       end
 
-      it "doesn't destroy todo item & raises an error on attempt to destroy todo item that doesn't belong to the user" do  
+      it "doesn't destroy todo item & raises an error on attempt to destroy todo item that doesn't belong to the user" do
         expect {
           expect {
             delete :destroy, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session

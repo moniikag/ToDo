@@ -4,12 +4,12 @@ RSpec.describe UsersController do
 
   let!(:subject) { FactoryGirl.create(:user) }
   let(:valid_session) { { user_id: subject.id } }
-  let(:valid_user_param) { { 
-    first_name: "name", last_name: "last", email: "newtest@example.com", 
-    password:'password', password_confirmation: 'password' 
+  let(:valid_user_param) { {
+    first_name: "name", last_name: "last", email: "newtest@example.com",
+    password:'password', password_confirmation: 'password'
   }}
 
-  context "GET new: " do 
+  context "GET new: " do
     context "if user not signed in: " do
       it "renders action new" do
         get :new
@@ -22,12 +22,12 @@ RSpec.describe UsersController do
     context "if user signed in: " do
       it "redirects to root path" do
         get :new, {}, valid_session
-        expect(response).to redirect_to(root_path)  
+        expect(response).to redirect_to(root_path)
       end
     end
   end
 
-  context "GET edit: " do 
+  context "GET edit: " do
     context "if user not signed in: " do
       it "renders action edit" do
         get :edit, { id: subject.id }
@@ -58,7 +58,7 @@ RSpec.describe UsersController do
       it "redirects to root path" do
         expect {
           post :create, { user: valid_user_param } , valid_session
-        }.to change { User.count }.by(0)   
+        }.to change { User.count }.by(0)
         expect(response).to redirect_to(root_path)
       end
     end
@@ -67,20 +67,20 @@ RSpec.describe UsersController do
       it "given valid params creates user and redirects to log in page " do
         expect {
           post :create, user: valid_user_param
-        }.to change { User.count }.by(1)  
+        }.to change { User.count }.by(1)
         expect(response).to redirect_to(new_user_sessions_path)
       end
 
       it "sends confirmation email when creating user" do
-        expect { 
+        expect {
           post :create, user: valid_user_param
         }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
       it "given extra params creates user and redirects to log in page " do
         expect {
-          post :create, user: valid_user_param.merge(extra: 'homo sapiens') 
-        }.to change { User.count }.by(1)  
+          post :create, user: valid_user_param.merge(extra: 'homo sapiens')
+        }.to change { User.count }.by(1)
         expect(response).to redirect_to(new_user_sessions_path)
       end
 
@@ -89,7 +89,7 @@ RSpec.describe UsersController do
         params.delete(:email)
         expect {
           post :create, user: params
-        }.to change { User.count }.by(0)  
+        }.to change { User.count }.by(0)
         expect(response.status).to be(200)
         expect(response).to render_template(:new)
         expect(assigns(:user)).to be_a_new(User)
@@ -100,7 +100,7 @@ RSpec.describe UsersController do
   context "GET confirm_email" do
     let(:activation_token) { SecureRandom.hex(8) }
     let(:another_activation_token) { SecureRandom.hex(8) }
-    
+
     context "if user not signed in: " do
       context "if user not activated: " do
         it "gets valid activation link and redirects to new_user_sessions_path" do
@@ -116,7 +116,7 @@ RSpec.describe UsersController do
           expect(assigns(:user)).to eq(subject)
           expect(response).to redirect_to(new_user_sessions_path)
         end
-              
+
         it "gets no token and redirects to new_user_session_path" do
           subject.update_attribute('activation_token', activation_token)
           get :confirm_email, { email: subject.email }
@@ -155,14 +155,14 @@ RSpec.describe UsersController do
     context "if user signed in" do
       it "before filter - if user signed in it redirects to root path" do
         get :confirm_email, { email: subject.email, token: activation_token }, valid_session
-        expect(response).to redirect_to(root_path) 
+        expect(response).to redirect_to(root_path)
       end
     end
   end
 
   context "PUT update" do
     context "if user not signed in" do
-      it "redirects to new_user_sessions_path" do  
+      it "redirects to new_user_sessions_path" do
         put :update, id: subject.id
         expect(response).to redirect_to(new_user_sessions_path)
       end
@@ -183,7 +183,7 @@ RSpec.describe UsersController do
 
   context "DELETE destroy" do
     context "if user not signed in" do
-      it "doesn't destroy user & redirects to new_user_sessions_path" do  
+      it "doesn't destroy user & redirects to new_user_sessions_path" do
         expect {
           delete :destroy, { id: subject.id }
         }.to change { User.count }.by(0)

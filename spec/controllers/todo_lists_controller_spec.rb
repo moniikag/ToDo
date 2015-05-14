@@ -84,7 +84,7 @@ RSpec.describe TodoListsController do
       end
     end
   end
-  
+
   context "GET show: " do
     context "if user not signed in" do
       it "redirects to new user session path" do
@@ -100,7 +100,7 @@ RSpec.describe TodoListsController do
         expect(assigns(:todo_list)).to eq(subject)
       end
 
-      it "raises an error on attempt to show todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to show todo list that doesn't belong to the user" do
         expect {
           get :show, { id: other_todo_list.id },valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
@@ -116,14 +116,14 @@ RSpec.describe TodoListsController do
       end
     end
 
-    context "if user signed in: " do 
+    context "if user signed in: " do
       it "sends reminder" do
         post :send_reminder, { }, valid_session
         expect(response).to redirect_to(todo_lists_path)
       end
     end
   end
-  
+
   context "GET edit: " do
     context "if user not signed in: " do
       it "redirects to new user session path" do
@@ -133,7 +133,7 @@ RSpec.describe TodoListsController do
     end
 
     context "if user signed in: " do
-      it "raises an error on attempt to edit todo list that doesn't belong to the user" do 
+      it "raises an error on attempt to edit todo list that doesn't belong to the user" do
         expect {
           get :edit, { id: other_todo_list.id }, valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
@@ -147,7 +147,7 @@ RSpec.describe TodoListsController do
       end
     end
   end
-  
+
   context "PUT update: " do
     context "if user not signed in: " do
       it "redirects to new user session path" do
@@ -162,7 +162,7 @@ RSpec.describe TodoListsController do
         expect(response).to redirect_to(subject)
       end
 
-      it "raises an error on attempt to update todo list that doesn't belong to the user" do  
+      it "raises an error on attempt to update todo list that doesn't belong to the user" do
         expect {
           put :update, { id: other_todo_list.id, todo_list: valid_todo_list_params }, valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
@@ -178,7 +178,7 @@ RSpec.describe TodoListsController do
       end
     end
   end
-  
+
   context "DELETE destroy: " do
     context "if user not signed in: " do
       it "doesn't destroy todo list & redirects to new user session path" do
@@ -190,7 +190,7 @@ RSpec.describe TodoListsController do
     end
 
     context "if user signed in: " do
-      it "doesn't destroy todo list & raises an error on attempt to destroy todo list that doesn't belong to the user" do  
+      it "doesn't destroy todo list & raises an error on attempt to destroy todo list that doesn't belong to the user" do
         expect {
           expect {
             delete :destroy, { id: other_todo_list.id }, valid_session
@@ -206,5 +206,5 @@ RSpec.describe TodoListsController do
       end
     end
   end
-  
+
 end

@@ -1,5 +1,5 @@
 require 'spec_helper'
- 
+
 RSpec.describe "Registration confirmation" do
   let!(:user) { FactoryGirl.create(:user) }
   let(:mail) { UserMailer.registration_confirmation(user) }
@@ -26,4 +26,3 @@ RSpec.describe "Registration confirmation" do
     expect(mail.body).to have_content(link)
   end
 end
-

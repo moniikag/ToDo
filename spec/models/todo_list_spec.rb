@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TodoList do 
+describe TodoList do
   subject { FactoryGirl.create(:todo_list) }
 
   context '#has_completed_items?' do
@@ -17,7 +17,7 @@ describe TodoList do
 
     it 'returns false if todo_list has no items' do
       expect(subject.todo_items.count).to eq(0)
-      expect(subject.has_completed_items?).to eq(false)      
+      expect(subject.has_completed_items?).to eq(false)
     end
 
     it 'returns false if todo_list has only incomplete items' do
@@ -41,7 +41,7 @@ describe TodoList do
 
     it 'returns false if todo_list has no items' do
       expect(subject.todo_items.count).to eq(0)
-      expect(subject.has_incomplete_items?).to eq(false)      
+      expect(subject.has_incomplete_items?).to eq(false)
     end
 
     it 'returns false if todo_list has only completed items' do

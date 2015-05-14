@@ -1,5 +1,5 @@
 Odot::Application.routes.draw do
-  
+
   root 'todo_lists#index'
 
   resources :users, except: [:index, :show] do
@@ -7,7 +7,7 @@ Odot::Application.routes.draw do
       get :confirm_email
     end
   end
-  
+
   resource :user_sessions, only: [:new, :create, :destroy]
 
   resources :todo_lists do

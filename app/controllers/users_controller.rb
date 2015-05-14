@@ -17,9 +17,9 @@ class UsersController < ApplicationController
     @user = User.new(permitted_attributes(User.new))
     if @user.save
       UserMailer.registration_confirmation(@user).deliver
-      redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.' 
+      redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.'
     else
-      render action: 'new' 
+      render action: 'new'
     end
   end
 
@@ -69,7 +69,7 @@ class UsersController < ApplicationController
   def ensure_user_not_logged_in
     if current_user
       flash[:notice] = "You're already logged in"
-      redirect_to root_path 
+      redirect_to root_path
     end
   end
 

@@ -1,9 +1,9 @@
-require "spec_helper" 
+require "spec_helper"
 
 describe "Signing up: " do
 	it "allows a user to sign up for the site and creates the object in the same database" do
-		
-		visit "/" 
+
+		visit "/"
 		click_link "sign-up-link"
 		expect(page).to have_content("Register")
 

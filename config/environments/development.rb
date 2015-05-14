@@ -25,7 +25,7 @@ Odot::Application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  
+
   config.assets.debug = true
 
   config.action_mailer.delivery_method = :letter_opener
@@ -33,7 +33,7 @@ Odot::Application.configure do
 
 
   ActionMailer::Base.raise_delivery_errors = true
-  ActionMailer::Base.perform_deliveries = true 
+  ActionMailer::Base.perform_deliveries = true
 #   ActionMailer::Base.delivery_method = :smtp
 #   ActionMailer::Base.smtp_settings = {
 #   :address        => 'smtp.sendgrid.net',

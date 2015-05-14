@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 	before_validation :downcase_email
 	before_create :generate_activation_token
 
-	def downcase_email 
+	def downcase_email
 		self.email = email.downcase if self.email
 	end
 
@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   end
 
 	private
-	
+
 	def generate_activation_token
 		if self.activation_token.blank?
 			self.activation_token = "#{SecureRandom.hex(8)}"
