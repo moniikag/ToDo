@@ -13,7 +13,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def confirm_email?
-    !@user && @record.activation_token
+    !@user && @record.try(:activation_token)
   end
 
   def show?

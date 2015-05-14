@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :get_resources, except: [:confirm_email]
-  before_action :ensure_user_not_logged_in, only: [:new, :create, :confirm_email]
   skip_before_action :authenticate_user, only: [:new, :create, :confirm_email]
 
   def new
@@ -24,53 +23,33 @@ class UsersController < ApplicationController
   end
 
   def confirm_email
-    @user = User.find_by_email(params[:email])
-    if @user && @user.activation_token == params[:token]
-      authorize @user
-      @user.activate
-      flash[:success] = 'Your email was successfully confirmed. You can now log in.'
-    else
-      authorize User, :new?
-      flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
-    end
+    @user = User.find_by_email_and_activation_token(params[:email], params[:activation_token])
+    authorize @user || User
+    @user.activate!
+    flash[:success] = 'Your email was successfully confirmed. You can now log in.'
+  rescue Pundit::NotAuthorizedError
+    flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
+  ensure
     redirect_to new_user_sessions_path
   end
 
   def update
-    respond_to do |format|
-      if @user.update_attributes(permitted_attributes(@user))
-        format.html { redirect_to root_path, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.update_attributes(permitted_attributes(@user))
+      redirect_to root_path, notice: 'User was successfully updated.'
+    else
+      render action: 'edit'
     end
   end
 
   def destroy
-    if @user == current_user
-      @user.destroy
-      respond_to do |format|
-        format.html { redirect_to root_url }
-        format.json { head :no_content }
-      end
-    else
-      redirect_to root_path
-    end
+    @user.destroy
+    redirect_to root_path
   end
 
   private
   def get_resources
     @user = User.find(params[:id]) if params[:id]
     authorize @user if @user
-  end
-
-  def ensure_user_not_logged_in
-    if current_user
-      flash[:notice] = "You're already logged in"
-      redirect_to root_path
-    end
   end
 
 end

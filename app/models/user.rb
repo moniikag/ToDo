@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 		self.email = email.downcase if self.email
 	end
 
-  def activate
+  def activate!
     self.update_attribute('activation_token', nil)
   end
 
