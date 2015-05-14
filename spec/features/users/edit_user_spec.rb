@@ -10,7 +10,6 @@ describe "Editing user" do
   } }
 
   it "allows a user to edit his data" do
-    user.update_attribute('activation_token', nil)
     log_in
     visit "/users/#{user.id}/edit" 
     expect(page).to have_content("Editing user")

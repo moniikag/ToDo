@@ -18,6 +18,5 @@
 en:
   pundit:
     default: 'You cannot perform this action.'
-    user_policy:
-      confirm_email?: 'Your email has already been confirmed or the activation link is invalid'
+
 

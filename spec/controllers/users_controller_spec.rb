@@ -98,9 +98,12 @@ RSpec.describe UsersController do
   end
 
   context "GET confirm_email" do
+    let(:activation_token) { SecureRandom.hex(8) }
+    
     context "if user not signed in" do
       it "gets valid activation link and redirects to new_user_sessions_path" do
-        get :confirm_email, { id: subject.id, token: subject.activation_token }
+        subject.update_attribute('activation_token', activation_token)
+        get :confirm_email, { id: subject.id, token: activation_token }
         expect(assigns(:user)).to eq(subject)
         expect(response).to redirect_to(new_user_sessions_path)
       end
@@ -108,6 +111,7 @@ RSpec.describe UsersController do
 
     context "if user signed in" do
       it "before filter - if user signed in redirects to root path" do
+        subject.update_attribute('activation_token', activation_token)
         get :confirm_email, { id: subject.activation_token }, valid_session
         expect(response).to redirect_to(root_path) 
       end

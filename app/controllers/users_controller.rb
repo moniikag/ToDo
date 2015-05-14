@@ -30,7 +30,7 @@ class UsersController < ApplicationController
       @user.activate
       flash[:success] = 'Your email was successfully confirmed. You can now log in.'
     else
-      skip_authorization
+      authorize User, :new?
       flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
     end
     redirect_to new_user_sessions_path

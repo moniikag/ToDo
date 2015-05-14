@@ -3,7 +3,7 @@ require 'database_cleaner'
 
 describe 'Todo lists: ' do
 
-  let!(:user) { FactoryGirl.build(:user) }
+  let!(:user) { FactoryGirl.create(:user) }
 
   let!(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
   let!(:other_todo_list) { FactoryGirl.create(:todo_list, user: user) }
@@ -11,7 +11,6 @@ describe 'Todo lists: ' do
   let!(:todo_list_params) { { title: "Test", description: "Todo list for features test" } }
 
   before(:each) do
-    user.update_attribute('activation_token', nil)
     log_in
     visit "/todo_lists"
   end

@@ -41,7 +41,7 @@ class TodoListsController < ApplicationController
         end
       end
     end
-    UserMailer.reminder(@urgent_items).deliver
+    UserMailer.reminder(@urgent_items, current_user).deliver
     redirect_to todo_lists_path, notice: 'Reminder was successfully sent.'
   end
 

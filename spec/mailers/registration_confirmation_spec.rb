@@ -9,7 +9,7 @@ RSpec.describe "Registration confirmation" do
   end
 
   it 'renders the receiver email' do
-    expect(mail.to).to eql(['monikaglier@gmail.com'])
+    expect(mail.to).to eql([user.email])
   end
 
   it 'renders the sender email' do
@@ -17,7 +17,8 @@ RSpec.describe "Registration confirmation" do
   end
 
   it 'assigns user name' do
-    expect(mail.body.encoded).to match(user.first_name)
+    user.update_attribute('first_name', "john")
+    expect(mail.body.encoded).to match("#{user.first_name}")
   end
 
   it 'assigns confirmation_url' do

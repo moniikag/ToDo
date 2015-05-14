@@ -3,7 +3,7 @@ require 'database_cleaner'
 
 describe 'Todo items: ' do
  
-  let!(:user) { FactoryGirl.build(:user) }
+  let!(:user) { FactoryGirl.create(:user) }
 
   let!(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
   subject! { FactoryGirl.create(:todo_item, todo_list: todo_list)}
@@ -15,7 +15,6 @@ describe 'Todo items: ' do
     } }
 
   before(:each) do
-    user.update_attribute('activation_token', nil)
     log_in
     visit "/todo_lists/#{todo_list.id}/todo_items"
   end

@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe "Logging in" do
   let!(:user) { FactoryGirl.create(:user) }
+  let(:activation_token) { SecureRandom.hex(8) }
   
   it "doesn't allow user to log in when email not confirmed" do
+    user.update_attribute('activation_token', activation_token)
     visit "/"
     expect(page).to have_content("Log In")
     fill_in "email", with: user.email
@@ -13,7 +15,6 @@ describe "Logging in" do
   end
 
   it "allows user to log in when email confirmed" do
-    user.update_attribute('activation_token', nil)
     visit "/"
     expect(page).to have_content("Log In")
     fill_in "email", with: user.email
