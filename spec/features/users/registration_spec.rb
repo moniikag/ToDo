@@ -21,7 +21,7 @@ describe "Signing up: " do
 	context "confirming email: " do
 		let!(:user) { FactoryGirl.create(:user) }
 		let(:activation_token) { SecureRandom.hex(8) }
-		let(:link) { confirm_email_user_url(user, token: activation_token) }
+		let(:link) { confirm_email_users_url(email: user.email, token: activation_token) }
 
 		it "allows user to confirm email for the first time" do
 			user.update_attribute('activation_token', activation_token)

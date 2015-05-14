@@ -22,7 +22,7 @@ RSpec.describe "Registration confirmation" do
   end
 
   it 'assigns confirmation_url' do
-    link = confirm_email_user_url(user, token: user.activation_token)
+    link = confirm_email_users_url(email: user.email, token: user.activation_token)
     expect(mail.body).to have_content(link)
   end
 end

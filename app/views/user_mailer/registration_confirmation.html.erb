@@ -2,4 +2,4 @@ Hi <%= @user.first_name %>,
 
 Thanks for registering! To confirm your registration click the URL below.
 
-<%= confirm_email_user_url(@user, token: @user.activation_token) %>
+<%= confirm_email_users_url(email: @user.email, token: @user.activation_token) %>

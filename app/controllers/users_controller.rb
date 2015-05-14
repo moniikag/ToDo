@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def confirm_email
-    @user = User.find_by_id(params[:id])
+    @user = User.find_by_email(params[:email])
     if @user && @user.activation_token == params[:token]
       authorize @user
       @user.activate
