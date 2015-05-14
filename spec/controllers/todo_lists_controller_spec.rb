@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe TodoListsController do
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.build(:user) }
   let(:valid_session) { { user_id: user.id } }
 
   let!(:subject) { FactoryGirl.create(:todo_list, user: user) }

@@ -98,34 +98,31 @@ RSpec.describe UsersController do
   end
 
   context "GET confirm_email" do
-    let(:activation_token) { SecureRandom.hex(8) }
+    let(:unconfirmed_user) { FactoryGirl.create(:unconfirmed_user)}
     let(:another_activation_token) { SecureRandom.hex(8) }
 
     context "if user not signed in: " do
       context "if user not activated: " do
         it "gets valid activation link and redirects to new_user_sessions_path" do
-          subject.update_attribute('activation_token', activation_token)
-          get :confirm_email, { email: subject.email, token: activation_token }
-          expect(assigns(:user)).to eq(subject)
+          get :confirm_email, { email: unconfirmed_user.email, token: unconfirmed_user.activation_token }
+          expect(assigns(:user)).to eq(unconfirmed_user)
           expect(response).to redirect_to(new_user_sessions_path)
         end
 
         it "gets invalid token and redirects to new_user_session_path" do
-          subject.update_attribute('activation_token', activation_token)
-          get :confirm_email, { email: subject.email, token: another_activation_token }
-          expect(assigns(:user)).to eq(subject)
+          get :confirm_email, { email: unconfirmed_user.email, token: unconfirmed_user.activation_token }
+          expect(assigns(:user)).to eq(unconfirmed_user)
           expect(response).to redirect_to(new_user_sessions_path)
         end
 
         it "gets no token and redirects to new_user_session_path" do
-          subject.update_attribute('activation_token', activation_token)
-          get :confirm_email, { email: subject.email }
-          expect(assigns(:user)).to eq(subject)
+          get :confirm_email, { email: unconfirmed_user.email }
+          expect(assigns(:user)).to eq(unconfirmed_user)
           expect(response).to redirect_to(new_user_sessions_path)
         end
 
         it "gets unknown email and redirects to new_user_session_path" do
-          get :confirm_email, { email: "email", token: activation_token }
+          get :confirm_email, { email: "email", token: unconfirmed_user.activation_token }
           expect(assigns(:user)).to eq(nil)
           expect(response).to redirect_to(new_user_sessions_path)
         end
@@ -154,7 +151,7 @@ RSpec.describe UsersController do
 
     context "if user signed in" do
       it "before filter - if user signed in it redirects to root path" do
-        get :confirm_email, { email: subject.email, token: activation_token }, valid_session
+        get :confirm_email, { email: subject.email, token: another_activation_token }, valid_session
         expect(response).to redirect_to(root_path)
       end
     end
