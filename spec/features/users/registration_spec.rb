@@ -21,10 +21,9 @@ describe "Signing up: " do
 	context "confirming email: " do
 		let!(:user) { FactoryGirl.create(:user) }
 		let(:unconfirmed_user) { FactoryGirl.create(:unconfirmed_user) }
-		let(:link) { confirm_email_users_url(email: user.email, token: unconfirmed_user.activation_token) }
 
 		it "allows user to confirm email for the first time" do
-			visit confirm_email_users_url(email: unconfirmed_user.email, token: unconfirmed_user.activation_token)
+			visit confirm_email_users_url(email: unconfirmed_user.email, activation_token: unconfirmed_user.activation_token)
 			expect(current_path).to eq(new_user_sessions_path)
 			expect(page).to have_content("Your email was successfully confirmed")
 		end
@@ -32,16 +31,16 @@ describe "Signing up: " do
 		it "doesn't allow user to confirm email many times" do
       token = unconfirmed_user.activation_token
       unconfirmed_user.update_attribute('activation_token', nil)
-			visit confirm_email_users_url(email: unconfirmed_user.email, token: token)
+			visit confirm_email_users_url(email: unconfirmed_user.email, activation_token: token)
 			expect(current_path).to eq(new_user_sessions_path)
 			expect(page).to have_content("The activation link has already been used or is invalid")
 		end
 
-		it "doesn't allow logged in user to confirm email - before filter user logged in" do
+		it "doesn't allow logged in user to confirm email - Pundit error" do
 			log_in
-			visit confirm_email_users_url(email: user.email, token: user.activation_token)
-			expect(current_path).to eq(root_path)
-			expect(page).to have_content("You're already logged in")
+      expect {
+        visit confirm_email_users_url(email: user.email, activation_token: user.activation_token)
+      }. to raise_error(Pundit::NotAuthorizedError)
 		end
 	end
 

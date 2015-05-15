@@ -21,8 +21,9 @@ RSpec.describe UsersController do
 
     context "if user signed in: " do
       it "redirects to root path" do
-        get :new, {}, valid_session
-        expect(response).to redirect_to(root_path)
+        expect {
+          get :new, {}, valid_session
+        }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
   end
@@ -58,8 +59,7 @@ RSpec.describe UsersController do
       it "redirects to root path" do
         expect {
           post :create, { user: valid_user_param } , valid_session
-        }.to change { User.count }.by(0)
-        expect(response).to redirect_to(root_path)
+        }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
@@ -98,61 +98,79 @@ RSpec.describe UsersController do
   end
 
   context "GET confirm_email" do
-    let(:unconfirmed_user) { FactoryGirl.create(:unconfirmed_user)}
+    let(:unconfirmed_user) { FactoryGirl.create(:unconfirmed_user) }
+    let(:another_unconfirmed_user) { FactoryGirl.create(:unconfirmed_user) }
     let(:another_activation_token) { SecureRandom.hex(8) }
 
     context "if user not signed in: " do
       context "if user not activated: " do
-        it "gets valid activation link and redirects to new_user_sessions_path" do
-          get :confirm_email, { email: unconfirmed_user.email, token: unconfirmed_user.activation_token }
+        it "gets valid activation link -> assigns user, redirects to new_user_sessions_path, flash[:success]" do
+          get :confirm_email, { email: unconfirmed_user.email, activation_token: unconfirmed_user.activation_token }
           expect(assigns(:user)).to eq(unconfirmed_user)
           expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:success]).to be_present
         end
 
-        it "gets invalid token and redirects to new_user_session_path" do
-          get :confirm_email, { email: unconfirmed_user.email, token: unconfirmed_user.activation_token }
-          expect(assigns(:user)).to eq(unconfirmed_user)
-          expect(response).to redirect_to(new_user_sessions_path)
-        end
-
-        it "gets no token and redirects to new_user_session_path" do
-          get :confirm_email, { email: unconfirmed_user.email }
-          expect(assigns(:user)).to eq(unconfirmed_user)
-          expect(response).to redirect_to(new_user_sessions_path)
-        end
-
-        it "gets unknown email and redirects to new_user_session_path" do
-          get :confirm_email, { email: "email", token: unconfirmed_user.activation_token }
+        it "gets another user's token and redirects to new_user_session_path + flash[:error]" do
+          get :confirm_email, { email: unconfirmed_user.email, activation_token: another_unconfirmed_user.activation_token }
           expect(assigns(:user)).to eq(nil)
           expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
+        end
+
+        it "gets invalid token and redirects to new_user_session_path + flash[:error]" do
+          get :confirm_email, { email: unconfirmed_user.email, activation_token: "12345" }
+          expect(assigns(:user)).to eq(nil)
+          expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
+        end
+
+        it "gets no token and redirects to new_user_session_path + flash[:error]" do
+          get :confirm_email, { email: unconfirmed_user.email }
+          expect(assigns(:user)).to eq(nil)
+          expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
+        end
+
+        it "gets unknown email and redirects to new_user_session_path + flash[:error]" do
+          get :confirm_email, { email: "email@noemail.com", activation_token: unconfirmed_user.activation_token }
+          expect(assigns(:user)).to eq(nil)
+          expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
         end
       end
 
       context "if user activated: " do
-        it "gets another token and redirects to new_user_session_path" do
-          get :confirm_email, { email: subject.email, token: another_activation_token }
-          expect(assigns(:user)).to eq(subject)
+        it "gets the same token again and redirects to new_user_session_path + flash[:error]" do
+          token = unconfirmed_user.activation_token
+          unconfirmed_user.update_attribute('activation_token', nil)
+          get :confirm_email, { email: unconfirmed_user.email, activation_token: token }
+          expect(assigns(:user)).to eq(nil)
           expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
         end
 
-        it "gets invalid token and redirects to new user_session_path" do
-          get :confirm_email, { email: subject.email, token: '12345' }
-          expect(assigns(:user)).to eq(subject)
+        it "gets invalid token and redirects to new user_session_path + flash[:error]" do
+          get :confirm_email, { email: subject.email, activation_token: '12345' }
+          expect(assigns(:user)).to eq(nil)
           expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
         end
 
-        it "gets no token and raises an error" do
-          expect {
-            get :confirm_email, { email: subject.email }
-          }.to raise_error(Pundit::NotAuthorizedError)
+        it "gets no token -> assigns user & Pundit rescure redirects to new_user_sessions_path + flash[:error]" do
+          get :confirm_email, { email: subject.email }
+          expect(assigns(:user)).to eq(subject)
+          expect(response).to redirect_to(new_user_sessions_path)
+          expect(flash[:error]).to be_present
         end
       end
     end
 
     context "if user signed in" do
-      it "before filter - if user signed in it redirects to root path" do
+      it "if user signed in rescue from Pundit redirects to new_user_sessions_path + flash[:error]" do
         get :confirm_email, { email: subject.email, token: another_activation_token }, valid_session
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(new_user_sessions_path)
+        expect(flash[:error]).to be_present
       end
     end
   end
