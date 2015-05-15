@@ -53,7 +53,7 @@ describe TodoItem do
 
   context "#tag_list=" do
     it "adds new tag to database" do
-      expect { 
+      expect {
         subject.tag_list = 'urgent'
       }.to change { Tag.count }.by(1)
       expect(subject.tag_list).to eq("urgent")
@@ -63,28 +63,28 @@ describe TodoItem do
       expect {
         subject.tag_list = 'urgent, fee'
       }.to change { Tag.count }.by(2)
-      expect(subject.tag_list).to eq("urgent, fee")      
+      expect(subject.tag_list).to eq("urgent, fee")
     end
 
     it "properly adds to database two tags given with ' , '" do
-      expect { 
+      expect {
         subject.tag_list = 'urgent , fee'
       }.to change { Tag.count }.by(2)
-      expect(subject.tag_list).to eq("urgent, fee")      
+      expect(subject.tag_list).to eq("urgent, fee")
     end
 
     it "properly adds to database two tags given with ','" do
       expect {
         subject.tag_list = 'urgent,fee'
       }.to change { Tag.count }.by(2)
-      expect(subject.tag_list).to eq("urgent, fee")      
+      expect(subject.tag_list).to eq("urgent, fee")
     end
 
     it "properly adds to database tag consisting of two words" do
       expect {
         subject.tag_list = 'urgent fee'
       }.to change { Tag.count }.by(1)
-      expect(subject.tag_list).to eq("urgent fee")      
+      expect(subject.tag_list).to eq("urgent fee")
     end
 
     context "with existing tag existing" do
@@ -104,8 +104,8 @@ describe TodoItem do
         }.to change { Tag.count }.by(1)
         expect(subject.tag_list).to eq("urgent, #{subject_tag.name}")
         expect(subject.tags).to include(subject_tag)
-      end    
+      end
     end
-  end 
+  end
 
 end

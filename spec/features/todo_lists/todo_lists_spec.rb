@@ -3,7 +3,7 @@ require 'database_cleaner'
 
 describe 'Todo lists: ' do
 
-  let!(:user) { FactoryGirl.build(:user) }
+  let!(:user) { FactoryGirl.create(:user) }
 
   let!(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
   let!(:other_todo_list) { FactoryGirl.create(:todo_list, user: user) }

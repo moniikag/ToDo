@@ -1,8 +1,13 @@
 FactoryGirl.define do
-  factory :user do |u|
+
+  factory :unconfirmed_user, class: User do |u|
     u.sequence(:email) { |n| "#{n}factory@example.com" }
-    u.sequence(:password) { |n| "#{n}password" }
-    u.sequence(:password_confirmation) { |n| "#{n}password" }
+    u.password "password"
+    u.password_confirmation "password"
+  end
+
+  factory :user, parent: :unconfirmed_user do |u|
+    after(:create) { |user| user.update_attribute('activation_token', nil) }
   end
 
   factory :todo_list do |l|

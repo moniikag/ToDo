@@ -1,5 +1,5 @@
 class TodoList < ActiveRecord::Base
-  
+
   has_many :todo_items
   belongs_to :user
 
@@ -12,5 +12,5 @@ class TodoList < ActiveRecord::Base
 
   def has_incomplete_items?
     todo_items.incomplete.count > 0
-  end 
+  end
 end

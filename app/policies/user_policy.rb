@@ -1,5 +1,11 @@
 class UserPolicy < ApplicationPolicy
 
+  class Scope < Scope
+    def resolve
+      scope.where(activation_token: nil)
+    end
+  end
+
   def permitted_attributes
     [:first_name, :last_name, :email, :password, :password_confirmation]
   end
@@ -10,6 +16,10 @@ class UserPolicy < ApplicationPolicy
 
   def create?
     !@user
+  end
+
+  def confirm_email?
+    !@user && @record.try(:activation_token)
   end
 
   def show?

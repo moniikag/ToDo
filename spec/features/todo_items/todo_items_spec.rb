@@ -2,16 +2,16 @@ require 'spec_helper'
 require 'database_cleaner'
 
 describe 'Todo items: ' do
- 
-  let!(:user) { FactoryGirl.build(:user) }
+
+  let!(:user) { FactoryGirl.create(:user) }
 
   let!(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
   subject! { FactoryGirl.create(:todo_item, todo_list: todo_list)}
 
   let!(:other_todo_item) { FactoryGirl.create(:todo_item, todo_list: todo_list)}
 
-  let(:todo_item_params) { { 
-    content: "Test", year: "2015", month: "May", day: "30", hour: "10", minutes: "30", tag: "fee" 
+  let(:todo_item_params) { {
+    content: "Test", year: "2015", month: "May", day: "30", hour: "10", minutes: "30", tag: "fee"
     } }
 
   before(:each) do
@@ -35,11 +35,11 @@ describe 'Todo items: ' do
     expect(current_path).to eq(new_todo_list_todo_item_path(todo_list))
 
     fill_in "todo_item_content", with: todo_item_params[:content]
-    select todo_item_params[:year], from: "todo_item_deadline_1i" 
-    select todo_item_params[:month], from: "todo_item_deadline_2i" 
-    select todo_item_params[:day], from: "todo_item_deadline_3i" 
-    select todo_item_params[:hour], from: "todo_item_deadline_4i" 
-    select todo_item_params[:minutes], from: "todo_item_deadline_5i" 
+    select todo_item_params[:year], from: "todo_item_deadline_1i"
+    select todo_item_params[:month], from: "todo_item_deadline_2i"
+    select todo_item_params[:day], from: "todo_item_deadline_3i"
+    select todo_item_params[:hour], from: "todo_item_deadline_4i"
+    select todo_item_params[:minutes], from: "todo_item_deadline_5i"
     fill_in "todo_item_tag_list", with: todo_item_params[:tag]
 
     click_button "save-todo-item"

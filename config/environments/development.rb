@@ -25,20 +25,25 @@ Odot::Application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
+
   config.assets.debug = true
 
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+
   ActionMailer::Base.raise_delivery_errors = true
-  ActionMailer::Base.perform_deliveries = true 
-  ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-  :address        => 'smtp.sendgrid.net',
-  :port           => '587',
-  :authentication => :plain,
-  :user_name      => ENV['SENDGRID_USERNAME'],
-  :password       => ENV['SENDGRID_PASSWORD'],
-  :domain         => 'heroku.com',
-  :enable_starttls_auto => true
-}
+  ActionMailer::Base.perform_deliveries = true
+#   ActionMailer::Base.delivery_method = :smtp
+#   ActionMailer::Base.smtp_settings = {
+#   :address        => 'smtp.sendgrid.net',
+#   :port           => '587',
+#   :authentication => :plain,
+#   :user_name      => ENV['SENDGRID_USERNAME'],
+#   :password       => ENV['SENDGRID_PASSWORD'],
+#   :domain         => 'heroku.com',
+#   :enable_starttls_auto => true
+# }
 
 end
 

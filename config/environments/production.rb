@@ -79,7 +79,7 @@ Odot::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   ActionMailer::Base.raise_delivery_errors = true
-  ActionMailer::Base.perform_deliveries = true 
+  ActionMailer::Base.perform_deliveries = true
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
   :address        => 'smtp.sendgrid.net',

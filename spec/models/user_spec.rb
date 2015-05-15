@@ -82,6 +82,6 @@ describe User do
       subject.valid?
       expect(subject.email).to eq('camelcase@email.com')
     end
-  end  
+  end
 
 end

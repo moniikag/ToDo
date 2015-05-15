@@ -12,6 +12,9 @@ gem 'jbuilder', '~> 1.2'
 gem 'mail'
 gem 'figaro'
 gem 'pundit'
+gem 'slim'
+
+gem "letter_opener", group: :development
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'

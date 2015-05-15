@@ -1,8 +1,8 @@
 class TodoItemsController < ApplicationController
   before_action :get_resources
-  
+
   def index
-    @todo_items = policy_scope(TodoItem)
+    @todo_items = policy_scope(@todo_list.todo_items)
   end
 
   def new
@@ -50,12 +50,8 @@ class TodoItemsController < ApplicationController
   private
   def get_resources
     @todo_list = policy_scope(TodoList).find(params[:todo_list_id])
-    @todo_item = policy_scope(TodoItem).find(params[:id]) if params[:id]
-    if @todo_item
-      authorize @todo_item
-    else
-      authorize TodoItem
-    end
+    @todo_item = policy_scope(@todo_list.todo_items).find(params[:id]) if params[:id]
+    authorize @todo_item || TodoItem
   end
 
 end
