@@ -3,7 +3,6 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_user, only: [:new, :create, :confirm_email]
 
   def new
-    authorize User, :new?
     @user = User.new
   end
 
@@ -12,7 +11,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    authorize User, :create?
     @user = User.new(permitted_attributes(User.new))
     if @user.save
       UserMailer.registration_confirmation(@user).deliver
@@ -48,8 +46,8 @@ class UsersController < ApplicationController
 
   private
   def get_resources
-    @user = User.find(params[:id]) if params[:id]
-    authorize @user if @user
+    @user = policy_scope(User).find(params[:id]) if params[:id]
+    authorize @user || User
   end
 
 end
