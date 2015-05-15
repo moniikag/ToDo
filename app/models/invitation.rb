@@ -9,11 +9,11 @@ class Invitation < ActiveRecord::Base
     uniqueness: { scope: :todo_list_id, message: "This User have already been invited to the TodoList" }
   before_validation :downcase_email
 
-  private
-
   def activate!
     self.update_attribute('invitation_token', nil)
   end
+
+  private
 
   def generate_invitation_token
     self.invitation_token ||= SecureRandom.hex(8)

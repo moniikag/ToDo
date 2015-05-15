@@ -1,13 +1,14 @@
 class InvitationsController < ApplicationController
-  before_action :skip_authorization
   before_action :get_resources
 
   def new
+    authorize Invitation
     @invitation = @todo_list.invitations.new
   end
 
   def create
-    @invitation = @todo_list.invitations.new(invitation_params)
+    authorize Invitation
+    @invitation = @todo_list.invitations.new(permitted_attributes(Invitation.new))
     if @invitation.save
       UserMailer.invitation(@invitation, current_user).deliver
       flash[:success] = "Invitation was successfully sent. User now needs to confirm access to your TodoList"
@@ -20,11 +21,11 @@ class InvitationsController < ApplicationController
 
   def confirm #invited user confirms acceptance of invitation to todo list
     @invitation = Invitation.find_by_invited_user_email_and_invitation_token(params[:email], params[:token])
+    authorize @invitation || Invitation
     @todo_list = @invitation.todo_list
-    # authorize @invitation || Invitation
     @invitation.activate!
     flash[:success] = "Access to TodoList was successfully activated."
-    redirect_to todo_list_todo_items_path(@todo_list)
+    redirect_to root_path
   rescue Pundit::NotAuthorizedError
     flash[:error] = "You have already activated access to the todo list or the link is invalid"
     redirect_to root_path
@@ -36,11 +37,7 @@ class InvitationsController < ApplicationController
   private
 
   def get_resources
-    @todo_list = policy_scope(TodoList).find(params[:todo_list_id])
-  end
-
-  def invitation_params
-    params.require(:invitation).permit(:invited_user_email)
+    @todo_list = TodoList.find(params[:todo_list_id])
   end
 
 end

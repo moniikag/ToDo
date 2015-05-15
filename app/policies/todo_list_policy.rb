@@ -2,7 +2,9 @@ class TodoListPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.where(user_id: @user.id)
+      # owned_todo_lists = scope.where(user_id: @user.id)
+      invited_todo_lists = scope.includes(:invited_users).where('todo_lists.user_id = ? OR (invitations.user_id = ? AND invitations.invitation_token IS NULL)', @user.id, @user.id) ### activation irrelevant
+      # scope = owned_todo_lists + invited_todo_lists
     end
   end
 
