@@ -1,0 +1,7 @@
+h3 Invite another User to TodoList #{@todo_list.title}
+
+= form_for [@todo_list, @invitation] do |f|
+  label Type e-mail:
+  = f.text_field :invited_user_email
+  = f.submit "Invite user", 'class' => 'button'
+

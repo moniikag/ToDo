@@ -1,9 +1,0 @@
-
-Invite another User
-= form_for(@invitation) do |f|
-  label
-    Email
-  = text_field_tag :user_email
-  = f.hidden_field :todo_list_id
-  = f.submit "Invite user", 'class' => 'button'
-

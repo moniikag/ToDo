@@ -1,6 +1,10 @@
 p Dear #{@invitation.user.first_name}
 
-p You were invited to joint TodoList: #{@invitation.todo_list.title} by #{@invitation.todo_list.user.first_name}
+p #{@user.email} invited You to join TodoList: #{@invitation.todo_list.title}
 
-p You can see it here: 
+p Please click the following link to activate your access to the TodoList:
+= confirm_todo_list_invitations_url(@invitation.todo_list,
+token: @invitation.invitation_token, email: @invitation.invited_user_email)
+
+p You can then access the TodoList here:
 = todo_list_todo_items_url(todo_list_id: @invitation.todo_list_id)
