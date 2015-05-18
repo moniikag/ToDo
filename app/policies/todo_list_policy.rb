@@ -32,7 +32,7 @@ class TodoListPolicy < ApplicationPolicy
   end
 
   def edit?
-    @user && @record.user_id == @user.id
+    @user && ((@record.user_id == @user.id) || @record.invited_user_ids.include?(@user.id))
   end
 
   def update?
