@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  before_action :get_resources
+  before_action :get_resources, except: [:confirm]
   skip_before_action :authenticate_user, only: [:confirm]
 
 
@@ -23,6 +23,7 @@ class InvitationsController < ApplicationController
   def confirm #invited user accepts invitation to todo list
     @invitation = Invitation.find_by_invited_user_email_and_invitation_token(params[:email], params[:token])
     authorize(@invitation || Invitation)
+    @todo_list = @invitation.todo_list
     @invitation.activate!
     flash[:success] = "Access to TodoList was successfully activated."
     redirect_to todo_list_path(@todo_list)
