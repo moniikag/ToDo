@@ -1,5 +1,7 @@
 class InvitationsController < ApplicationController
   before_action :get_resources
+  skip_before_action :authenticate_user, only: [:confirm]
+
 
   def new
     authorize Invitation
@@ -21,11 +23,10 @@ class InvitationsController < ApplicationController
 
   def confirm #invited user accepts invitation to todo list
     @invitation = Invitation.find_by_invited_user_email_and_invitation_token(params[:email], params[:token])
-    authorize @invitation || Invitation
-    @todo_list = @invitation.todo_list
+    authorize(@invitation || Invitation)
     @invitation.activate!
     flash[:success] = "Access to TodoList was successfully activated."
-    redirect_to root_path
+    redirect_to todo_list_path(@todo_list)
   rescue Pundit::NotAuthorizedError
     flash[:error] = "You have already activated access to the todo list or the link is invalid"
     redirect_to root_path
