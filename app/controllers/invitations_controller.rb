@@ -19,7 +19,7 @@ class InvitationsController < ApplicationController
     end
   end
 
-  def confirm #invited user confirms acceptance of invitation to todo list
+  def confirm #invited user accepts invitation to todo list
     @invitation = Invitation.find_by_invited_user_email_and_invitation_token(params[:email], params[:token])
     authorize @invitation || Invitation
     @todo_list = @invitation.todo_list

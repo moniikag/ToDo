@@ -8,21 +8,16 @@ class TodoListsController < ApplicationController
 
   def new
     authorize TodoList
-    @todo_list = TodoList.new
+    @todo_list = current_user.todo_lists.new
   end
 
   def create
     authorize TodoList
-    @todo_list = policy_scope(TodoList).new(permitted_attributes(TodoList.new))
-
-    respond_to do |format|
-      if @todo_list.save
-        format.html { redirect_to @todo_list, notice: 'Todo list was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @todo_list }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @todo_list.errors, status: :unprocessable_entity }
-      end
+    @todo_list = current_user.todo_lists.new(permitted_attributes(TodoList.new))
+    if @todo_list.save
+      redirect_to @todo_list, notice: 'Todo list was successfully created.'
+    else
+      render action: 'new'
     end
   end
 
@@ -49,14 +44,10 @@ class TodoListsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @todo_list.update_attributes(permitted_attributes(@todo_list))
-        format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @todo_list.errors, status: :unprocessable_entity }
-      end
+    if @todo_list.update_attributes(permitted_attributes(@todo_list))
+      redirect_to @todo_list, notice: 'Todo list was successfully updated.'
+    else
+      render action: 'edit'
     end
   end
 
