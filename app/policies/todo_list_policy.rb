@@ -3,7 +3,7 @@ class TodoListPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve # owned todo_lists + invited todo_lists
       scope.includes(:invited_users).where('todo_lists.user_id = ?
-        OR (invitations.user_id = ? AND invitations.invitation_token IS NULL)', @user.id, @user.id)
+        OR (invitations.user_id = ? AND invitations.invitation_token IS NULL)', @user.id, @user.id).references(:invitations)
     end
   end
 
