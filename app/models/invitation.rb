@@ -1,12 +1,14 @@
 class Invitation < ActiveRecord::Base
+
+  before_create :generate_invitation_token, :set_invited_user
+
   belongs_to :user
   belongs_to :todo_list
-  before_create :generate_invitation_token
-  before_create :set_invited_user
 
   validates :invited_user_email, presence: true,
     format: { with: /\A[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]+\z/ },
     uniqueness: { scope: :todo_list_id, message: "This User have already been invited to the TodoList" }
+
   before_validation :downcase_email
 
   def activate!
@@ -14,7 +16,6 @@ class Invitation < ActiveRecord::Base
   end
 
   private
-
   def generate_invitation_token
     self.invitation_token ||= SecureRandom.hex(8)
   end
