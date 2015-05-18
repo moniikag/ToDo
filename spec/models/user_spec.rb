@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  subject { FactoryGirl.create(:user) }
+  subject { FactoryGirl.create(:unconfirmed_user) }
 
   it "validates" do
     expect(subject).to be_valid
@@ -81,6 +81,14 @@ describe User do
       subject.email = 'CamelCase@Email.CoM'
       subject.valid?
       expect(subject.email).to eq('camelcase@email.com')
+    end
+  end
+
+  context "#activate!" do
+    it "sets activation_token to nil" do
+      expect(subject.activation_token).to_not be_nil
+      subject.activate!
+      expect(subject.activation_token).to be_nil
     end
   end
 
