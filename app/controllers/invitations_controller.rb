@@ -16,7 +16,6 @@ class InvitationsController < ApplicationController
       flash[:success] = "Invitation was successfully sent. User now needs to confirm access to your TodoList"
       redirect_to todo_list_todo_items_path(@todo_list)
     else
-      flash[:error] = "There was a problem with sending your invitation."
       render action: :new
     end
   end
@@ -38,7 +37,7 @@ class InvitationsController < ApplicationController
   private
 
   def get_resources
-    @todo_list = TodoList.find(params[:todo_list_id])
+    @todo_list = policy_scope(TodoList).find(params[:todo_list_id])
   end
 
 end
