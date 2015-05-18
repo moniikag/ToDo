@@ -1,4 +1,4 @@
-p Dear #{@invitation.user.first_name}
+p Dear #{ @invitation.user.try(:first_name) }
 
 p #{@user.email} invited You to join TodoList: #{@invitation.todo_list.title}
 
