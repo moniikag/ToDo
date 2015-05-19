@@ -5,8 +5,7 @@ describe 'Sending invitation' do
   let(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
 
   let(:user_to_invite) { FactoryGirl.create(:user) }
-  let(:previous_invitation) { FactoryGirl.create(:invitation_without_invited_email,
-    todo_list: todo_list, invited_user_email: user_to_invite.email) }
+  let(:previous_invitation) { FactoryGirl.create(:invitation, todo_list: todo_list, invited_user_email: user_to_invite.email) }
 
   it "allows to send an invitation for the first time" do
     log_in

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Invitation do
-  let(:invitation) { FactoryGirl.create(:invitation) }
+  let(:invitation) { FactoryGirl.create(:invitation_with_email) }
 
   it "validates" do
     expect(invitation).to be_valid

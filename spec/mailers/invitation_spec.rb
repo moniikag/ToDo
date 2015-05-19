@@ -27,6 +27,15 @@ RSpec.describe "Invitation" do
     expect(mail.body.encoded).to match(inviting_user.email)
   end
 
+  it 'assings new_user_url if invitation sent to nonexistent user' do
+    invitation.update_attribute('invited_user_email', 'no@user.email')
+    expect(mail.body).to have_content(new_user_url)
+  end
+
+  it "it doesn't assing new_user_url if invitation sent to existing user" do
+    expect(mail.body).to_not have_content(new_user_url)
+  end
+
   it 'assigns invitation_url' do
     link = confirm_todo_list_invitations_url(invitation.todo_list, token: invitation.invitation_token, email: invitation.invited_user_email)
     expect(mail.body).to have_content(link)
