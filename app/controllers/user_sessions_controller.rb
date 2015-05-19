@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
 
-	skip_before_action :authenticate_user, only: [:new, :create]
+  skip_before_action :authenticate_user, only: [:new, :create]
   skip_after_action :verify_authorized, only: [:destroy]
 
   def new

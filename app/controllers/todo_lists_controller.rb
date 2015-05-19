@@ -54,10 +54,7 @@ class TodoListsController < ApplicationController
   def destroy
     @todo_lists = policy_scope(TodoList)
     if @todo_list.destroy
-      respond_to do |format|
-        format.html { redirect_to todo_lists_url }
-        format.json { head :no_content }
-      end
+      redirect_to todo_lists_url
     else
       redirect_to root_path
     end
