@@ -17,6 +17,25 @@ RSpec.describe UsersController do
         expect(response).to render_template(:new)
         expect(assigns(:user)).to be_a_new(User)
       end
+
+      context "following invitation+registration link " do
+        let(:invitation_for_not_registered) { FactoryGirl.create(:invitation, invited_user_email: 'some@email.com') }
+        let(:invitation_for_registered) { FactoryGirl.create(:invitation, invited_user_email: subject.email) }
+
+        it "renders action new if user not registered yet" do
+          get :new, { email: invitation_for_not_registered.invited_user_email, invitation_token: invitation_for_not_registered.invitation_token }
+          expect(response.status).to be(200)
+          expect(response).to render_template(:new)
+          expect(assigns(:user)).to be_a_new(User)
+        end
+
+        it 'redirects to Invitation#confirm if user already registered' do
+          get :new, { email: invitation_for_registered.invited_user_email,
+            invitation_token: invitation_for_registered.invitation_token, list: '1' }
+          expect(response).to redirect_to(confirm_todo_list_invitations_path(email: invitation_for_registered.invited_user_email,
+            token: invitation_for_registered.invitation_token, todo_list_id: '1'))
+        end
+      end
     end
 
     context "if user signed in: " do
@@ -24,32 +43,6 @@ RSpec.describe UsersController do
         expect {
           get :new, {}, valid_session
         }.to raise_error(Pundit::NotAuthorizedError)
-      end
-    end
-  end
-
-  context "GET edit: " do
-    context "if user not signed in: " do
-      it "renders action edit" do
-        get :edit, { id: subject.id }
-        expect(response).to redirect_to(new_user_sessions_path)
-      end
-    end
-
-    context "if user signed in: " do
-      let(:other_user) { users(:tom) }
-
-      it "redirects to edit" do
-        get :edit, { id: subject.id }, valid_session
-        expect(response.status).to be(200)
-        expect(response).to render_template(:edit)
-        expect(assigns(:user)).to eq(subject)
-      end
-
-      it "doesn't allow to edit user on attempt to edit another user & redirects to root_path" do
-        expect {
-          get :edit, { id: other_user.id }, valid_session
-        }.to raise_error()
       end
     end
   end
@@ -93,6 +86,12 @@ RSpec.describe UsersController do
         expect(response.status).to be(200)
         expect(response).to render_template(:new)
         expect(assigns(:user)).to be_a_new(User)
+      end
+
+      context "registration after following invitation-to-todo_list-link" do
+        xit "" do
+
+        end
       end
     end
   end
@@ -171,6 +170,32 @@ RSpec.describe UsersController do
         get :confirm_email, { email: subject.email, token: another_activation_token }, valid_session
         expect(response).to redirect_to(new_user_sessions_path)
         expect(flash[:error]).to be_present
+      end
+    end
+  end
+
+  context "GET edit: " do
+    context "if user not signed in: " do
+      it "renders action edit" do
+        get :edit, { id: subject.id }
+        expect(response).to redirect_to(new_user_sessions_path)
+      end
+    end
+
+    context "if user signed in: " do
+      let(:other_user) { users(:tom) }
+
+      it "redirects to edit" do
+        get :edit, { id: subject.id }, valid_session
+        expect(response.status).to be(200)
+        expect(response).to render_template(:edit)
+        expect(assigns(:user)).to eq(subject)
+      end
+
+      it "doesn't allow to edit user on attempt to edit another user & redirects to root_path" do
+        expect {
+          get :edit, { id: other_user.id }, valid_session
+        }.to raise_error()
       end
     end
   end
