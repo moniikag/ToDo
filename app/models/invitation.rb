@@ -15,13 +15,17 @@ class Invitation < ActiveRecord::Base
     self.update_attribute('invitation_token', nil)
   end
 
-  private
-  def generate_invitation_token
-    self.invitation_token ||= SecureRandom.hex(8)
+  def new_user?
+    User.where(email: self.invited_user_email).empty?
   end
 
+  private
   def downcase_email
     self.invited_user_email = invited_user_email.downcase if self.invited_user_email
+  end
+
+  def generate_invitation_token
+    self.invitation_token ||= SecureRandom.hex(8)
   end
 
   def set_invited_user

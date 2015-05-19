@@ -1,10 +1,18 @@
-p Dear #{ @invitation.user.try(:first_name) }
+p Hi #{ @invitation.user.try(:first_name) }
 
-p #{@user.email} invited You to join TodoList: #{@invitation.todo_list.title}
+p User #{@user.email} invited you to join TodoList: #{@invitation.todo_list.title}.
 
-p Please click the following link to activate your access to the TodoList:
+- if @invitation.new_user?
+  p In order to join our TodoList Service please register here:
+  = new_user_url
+  br
+  br
+
+p If you want to activate your access to the TodoList, please click the following link:
 = confirm_todo_list_invitations_url(@invitation.todo_list,
 token: @invitation.invitation_token, email: @invitation.invited_user_email)
+br
+br
 
 p You can then access the TodoList here:
 = todo_list_todo_items_url(todo_list_id: @invitation.todo_list_id)
