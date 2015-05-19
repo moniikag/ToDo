@@ -3,14 +3,13 @@ p Hi #{ @invitation.user.try(:first_name) }
 p User #{@user.email} invited you to join TodoList: #{@invitation.todo_list.title}.
 
 - if @invitation.new_user?
-  p In order to join our TodoList Service please register here:
-  = new_user_url
+  p In order to join this TodoList please register in our Service using the following link:
+  = new_user_url(list: @invitation.todo_list.id, invitation_token: @invitation.invitation_token, email: @invitation.invited_user_email)
   br
   br
 
-p If you want to activate your access to the TodoList, please click the following link:
-= confirm_todo_list_invitations_url(@invitation.todo_list,
-token: @invitation.invitation_token, email: @invitation.invited_user_email)
+p If you are already registered, you can activate your access to the TodoList by clicking on the following link:
+= confirm_todo_list_invitations_url(@invitation.todo_list, token: @invitation.invitation_token, email: @invitation.invited_user_email)
 br
 br
 

@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   end
 
   def activate!
-    self.update_attribute('activation_token', nil)
+    self.update_attribute('activation_token', nil) unless self.activation_token.nil?
   end
 
   private

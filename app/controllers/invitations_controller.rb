@@ -26,7 +26,7 @@ class InvitationsController < ApplicationController
   def confirm #invited user accepts invitation to todo list
     @invitation = Invitation.find_by_invited_user_email_and_invitation_token(params[:email], params[:token])
     authorize(@invitation || Invitation)
-    if @invitation.new_user?
+    if @invitation.new_user? # if user followed activation link instead of registration+activation link
       flash[:success] = "Welcome to our TodoList Service! Please register here and then active your access to the TodoList"
       redirect_to new_user_path
     else
@@ -45,11 +45,11 @@ class InvitationsController < ApplicationController
     @todo_list = policy_scope(TodoList).find(params[:todo_list_id])
   end
 
-  def activate_access #for invited user
-    @todo_list = @invitation.todo_list
+  def activate_access
     @invitation.activate!
+    User.where(email: @invitation.invited_user_email).first.activate! # in case of invitation+registration
     flash[:success] = "Access to TodoList was successfully activated."
-    redirect_to todo_list_path(@todo_list)
+    redirect_to todo_list_path(@invitation.todo_list)
   end
 
 end

@@ -106,8 +106,7 @@ RSpec.describe InvitationsController do
 
   context "GET confirm: " do
     context "nonexistent user: " do
-      let(:invitation_for_nonexistent_user) { FactoryGirl.create(:invitation_without_invited_email,
-        todo_list: todo_list, invited_user_email: "no@user.email") }
+      let(:invitation_for_nonexistent_user) { FactoryGirl.create(:invitation, todo_list: todo_list, invited_user_email: "no@user.email") }
 
       it "redirects to new_user_path with flash[:success]" do
         get :confirm, { email: invitation_for_nonexistent_user.invited_user_email, token: invitation_for_nonexistent_user.invitation_token,

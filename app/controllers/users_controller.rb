@@ -3,7 +3,13 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_user, only: [:new, :create, :confirm_email]
 
   def new
-    @user = User.new
+    if (User.where(email: params[:email]).present?) && params[:invitation_token]
+    # invited user follows todolist_activation & new_user link after already being registered
+      redirect_to confirm_todo_list_invitations_path(todo_list_id: params[:list],
+        email: params[:email], token: params[:invitation_token])
+    else
+      @user = User.new
+    end
   end
 
   def edit
@@ -13,8 +19,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new(permitted_attributes(User.new))
     if @user.save
-      UserMailer.registration_confirmation(@user).deliver
-      redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.'
+      if params[:invitation_token].blank? || Invitation.find_by_invited_user_email_and_invitation_token(@user.email, params[:invitation_token]).nil?
+        UserMailer.registration_confirmation(@user).deliver
+        redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.'
+      else
+        redirect_to confirm_todo_list_invitations_path(todo_list_id: params[:todo_list_id],
+          email: @user.email, token: params[:invitation_token])
+      end
     else
       render action: 'new'
     end
