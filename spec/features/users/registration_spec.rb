@@ -24,7 +24,7 @@ describe "Signing up: " do
 
 		it "allows user to confirm email for the first time" do
 			visit confirm_email_users_url(email: unconfirmed_user.email, activation_token: unconfirmed_user.activation_token)
-			expect(current_path).to eq(new_user_sessions_path)
+			expect(current_path).to eq(root_path)
 			expect(page).to have_content("Your email was successfully confirmed")
 		end
 

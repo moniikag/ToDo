@@ -17,8 +17,9 @@ class UsersController < ApplicationController
     if @user.save
       if params[:invitation_token].blank? || Invitation.find_by_invited_user_email_and_invitation_token(@user.email, params[:invitation_token]).nil?
         UserMailer.registration_confirmation(@user).deliver
-        redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.'
+        redirect_to root_path, notice: 'User was successfully created. Please confirm your email.'
       else
+        log_in(@user)
         redirect_to confirm_todo_list_invitations_path(todo_list_id: params[:todo_list_id],
           email: @user.email, token: params[:invitation_token])
       end
@@ -31,10 +32,11 @@ class UsersController < ApplicationController
     @user = User.find_by_email_and_activation_token(params[:email], params[:activation_token])
     authorize @user || User
     @user.activate!
-    flash[:success] = 'Your email was successfully confirmed. You can now log in.'
+    flash[:success] = 'Your email was successfully confirmed.'
+    log_in(@user)
+    redirect_to root_path
   rescue Pundit::NotAuthorizedError
     flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
-  ensure
     redirect_to new_user_sessions_path
   end
 
@@ -48,7 +50,8 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    redirect_to root_path
+    log_out
+    redirect_to new_user_sessions_path
   end
 
   private

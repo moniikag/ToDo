@@ -67,11 +67,11 @@ RSpec.describe UsersController do
     end
 
     context "if user not signed in: " do
-      it "given valid params creates user and redirects to log in page " do
+      it "given valid params creates user and redirects to root_path " do
         expect {
           post :create, user: valid_user_param
         }.to change { User.count }.by(1)
-        expect(response).to redirect_to(new_user_sessions_path)
+        expect(response).to redirect_to(root_path)
       end
 
       it "sends confirmation email when creating user" do
@@ -80,11 +80,11 @@ RSpec.describe UsersController do
         }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
-      it "given extra params creates user and redirects to log in page " do
+      it "given extra params creates user and redirects to root_path " do
         expect {
           post :create, user: valid_user_param.merge(extra: 'homo sapiens')
         }.to change { User.count }.by(1)
-        expect(response).to redirect_to(new_user_sessions_path)
+        expect(response).to redirect_to(root_path)
       end
 
       it "given invalid params renders template :new" do
@@ -111,21 +111,21 @@ RSpec.describe UsersController do
             token: invitation_for_not_registered.invitation_token, todo_list_id: invitation_for_not_registered.todo_list_id))
         end
 
-        it "creates user and redirects to new_user_sessions_path if invalid token provided" do
+        it "creates user and redirects to root_path if invalid token provided" do
           invitation_for_not_registered
           expect {
             post :create, { user: valid_user_param, invitation_token: '12345',
               todo_list_id: invitation_for_not_registered.todo_list_id }
           }.to change{ User.count }.by(1)
-          expect(response).to redirect_to(new_user_sessions_path)
+          expect(response).to redirect_to(root_path)
         end
 
-        it "creates user and redirects to new_user_sessions_path if blank token provided" do
+        it "creates user and redirects to root_path if blank token provided" do
           invitation_for_not_registered
           expect {
             post :create, { user: valid_user_param, invitation_token: '', todo_list_id: invitation_for_not_registered.todo_list_id }
           }.to change{ User.count }.by(1)
-          expect(response).to redirect_to(new_user_sessions_path)
+          expect(response).to redirect_to(root_path)
         end
       end
     end
@@ -138,10 +138,10 @@ RSpec.describe UsersController do
 
     context "if user not signed in: " do
       context "if user not activated: " do
-        it "gets valid activation link -> assigns user, redirects to new_user_sessions_path, flash[:success]" do
+        it "gets valid activation link -> assigns user, redirects to root_path, flash[:success]" do
           get :confirm_email, { email: unconfirmed_user.email, activation_token: unconfirmed_user.activation_token }
           expect(assigns(:user)).to eq(unconfirmed_user)
-          expect(response).to redirect_to(new_user_sessions_path)
+          expect(response).to redirect_to(root_path)
           expect(flash[:success]).to be_present
         end
 
@@ -272,7 +272,7 @@ RSpec.describe UsersController do
 
       it "destroys the user on attempt to destroy himself & recirects to users" do
         delete :destroy, { id: subject.id }, valid_session
-        expect(response).to redirect_to(root_url)
+        expect(response).to redirect_to(new_user_sessions_path)
       end
 
       it "doesn't destroy user on attempt to destroy another user & redirects to root_path" do
