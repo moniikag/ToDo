@@ -32,7 +32,7 @@ FactoryGirl.define do
 
   factory :invitation_with_email, parent: :invitation do |inv|
     before(:create) do |inv|
-      user = FactoryGirl.create(:user)
+      user = FactoryGirl.create(:unconfirmed_user)
       inv.invited_user_email = user.email
     end
   end

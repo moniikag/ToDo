@@ -2,14 +2,16 @@ require 'spec_helper'
 
 RSpec.describe UsersController do
 
-  let!(:subject) { FactoryGirl.create(:user) }
+  let(:subject) { FactoryGirl.create(:user) }
   let(:valid_session) { { user_id: subject.id } }
   let(:valid_user_param) { {
     first_name: "name", last_name: "last", email: "newtest@example.com",
     password:'password', password_confirmation: 'password'
-  }}
+  } }
 
   context "GET new: " do
+    let(:invitation_for_not_registered) { FactoryGirl.create(:invitation, invited_user_email: 'some@email.com') }
+
     context "if user not signed in: " do
       it "renders action new" do
         get :new
@@ -19,9 +21,6 @@ RSpec.describe UsersController do
       end
 
       context "following invitation+registration link " do
-        let(:invitation_for_not_registered) { FactoryGirl.create(:invitation, invited_user_email: 'some@email.com') }
-        let(:invitation_for_registered) { FactoryGirl.create(:invitation, invited_user_email: subject.email) }
-
         it "renders action new if user not registered yet" do
           get :new, { email: invitation_for_not_registered.invited_user_email, invitation_token: invitation_for_not_registered.invitation_token }
           expect(response.status).to be(200)
@@ -29,11 +28,12 @@ RSpec.describe UsersController do
           expect(assigns(:user)).to be_a_new(User)
         end
 
-        it 'redirects to Invitation#confirm if user already registered' do
-          get :new, { email: invitation_for_registered.invited_user_email,
-            invitation_token: invitation_for_registered.invitation_token, list: '1' }
-          expect(response).to redirect_to(confirm_todo_list_invitations_path(email: invitation_for_registered.invited_user_email,
-            token: invitation_for_registered.invitation_token, todo_list_id: '1'))
+        it 'redirects to Invitation#confirm if user registered in the meantime' do
+          invitation_for_not_registered.update_attribute('invited_user_email', subject.email)
+          get :new, { email: invitation_for_not_registered.invited_user_email,
+            invitation_token: invitation_for_not_registered.invitation_token, list: '1' }
+          expect(response).to redirect_to(confirm_todo_list_invitations_path(email: invitation_for_not_registered.invited_user_email,
+            token: invitation_for_not_registered.invitation_token, todo_list_id: '1'))
         end
       end
     end
@@ -43,6 +43,16 @@ RSpec.describe UsersController do
         expect {
           get :new, {}, valid_session
         }.to raise_error(Pundit::NotAuthorizedError)
+      end
+
+      context "following invitation+registration link " do
+        it 'redirects to Invitation#confirm if user registered in the meantime' do
+          invitation_for_not_registered.update_attribute('invited_user_email', subject.email)
+          get :new, { email: invitation_for_not_registered.invited_user_email,
+            invitation_token: invitation_for_not_registered.invitation_token, list: '1' }, valid_session
+          expect(response).to redirect_to(confirm_todo_list_invitations_path(email: invitation_for_not_registered.invited_user_email,
+            token: invitation_for_not_registered.invitation_token, todo_list_id: '1'))
+        end
       end
     end
   end
@@ -89,8 +99,33 @@ RSpec.describe UsersController do
       end
 
       context "registration after following invitation-to-todo_list-link" do
-        xit "" do
+        let(:invitation_for_not_registered) { FactoryGirl.create(:invitation, invited_user_email: valid_user_param[:email]) }
 
+        it "creates user and redirects to Invitation#confirm if valid link provided" do
+          invitation_for_not_registered
+          expect {
+            post :create, { user: valid_user_param, invitation_token: invitation_for_not_registered.invitation_token,
+              todo_list_id: invitation_for_not_registered.todo_list_id }
+          }.to change{ User.count }.by(1)
+          expect(response).to redirect_to(confirm_todo_list_invitations_path(email: valid_user_param[:email],
+            token: invitation_for_not_registered.invitation_token, todo_list_id: invitation_for_not_registered.todo_list_id))
+        end
+
+        it "creates user and redirects to new_user_sessions_path if invalid token provided" do
+          invitation_for_not_registered
+          expect {
+            post :create, { user: valid_user_param, invitation_token: '12345',
+              todo_list_id: invitation_for_not_registered.todo_list_id }
+          }.to change{ User.count }.by(1)
+          expect(response).to redirect_to(new_user_sessions_path)
+        end
+
+        it "creates user and redirects to new_user_sessions_path if blank token provided" do
+          invitation_for_not_registered
+          expect {
+            post :create, { user: valid_user_param, invitation_token: '', todo_list_id: invitation_for_not_registered.todo_list_id }
+          }.to change{ User.count }.by(1)
+          expect(response).to redirect_to(new_user_sessions_path)
         end
       end
     end
@@ -224,6 +259,7 @@ RSpec.describe UsersController do
   context "DELETE destroy" do
     context "if user not signed in" do
       it "doesn't destroy user & redirects to new_user_sessions_path" do
+        subject
         expect {
           delete :destroy, { id: subject.id }
         }.to change { User.count }.by(0)

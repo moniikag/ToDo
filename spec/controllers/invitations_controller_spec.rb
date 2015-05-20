@@ -105,10 +105,10 @@ RSpec.describe InvitationsController do
   end
 
   context "GET confirm: " do
-    context "nonexistent user: " do
-      let(:invitation_for_nonexistent_user) { FactoryGirl.create(:invitation, todo_list: todo_list, invited_user_email: "no@user.email") }
+    let(:invitation_for_nonexistent_user) { FactoryGirl.create(:invitation, todo_list: todo_list, invited_user_email: "no@user.email") }
 
-      it "redirects to new_user_path with flash[:success]" do
+    context "nonexistent user: " do
+      it "redirects to new_user_path with flash[:success]-inviting to register" do
         get :confirm, { email: invitation_for_nonexistent_user.invited_user_email, token: invitation_for_nonexistent_user.invitation_token,
          todo_list_id: todo_list.id }
         expect(response).to redirect_to(new_user_path)
@@ -118,12 +118,11 @@ RSpec.describe InvitationsController do
 
     context "existing user: " do
       context "if user not signed in: " do
-        it "gets valid token: activates access and redirects to todo_list_path with flash[:success]" do
+        it "gets valid token: activates access with flash[:success]" do
           expect(invitation.invitation_token).to_not be_nil
           get :confirm, { email: invitation.invited_user_email, token: invitation.invitation_token, todo_list_id: todo_list.id }
           invitation.reload
           expect(invitation.invitation_token).to be_nil
-          expect(response).to redirect_to(todo_list_path(todo_list))
           expect(flash[:success]).to be_present
         end
 
@@ -136,24 +135,41 @@ RSpec.describe InvitationsController do
         end
 
         it "gets invalid token: redirects to root_path with flash[:error]" do
-          token = '12345'
-          get :confirm, { email: invitation.invited_user_email, token: token, todo_list_id: todo_list.id }
+          get :confirm, { email: invitation.invited_user_email, token: '12345', todo_list_id: todo_list.id }
           expect(response).to redirect_to(root_path)
           expect(flash[:error]).to be_present
         end
 
         it "gets no token: redirects to root_path with flash[:error]" do
-          token = ''
-          get :confirm, { email: invitation.invited_user_email, token: token, todo_list_id: todo_list.id }
+          get :confirm, { email: invitation.invited_user_email, todo_list_id: todo_list.id }
           expect(response).to redirect_to(root_path)
           expect(flash[:error]).to be_present
         end
 
         it "gets unknown email: redirects to root_path with flash[:error]" do
-          email = 'some@email.com'
-          get :confirm, { email: email, token: invitation.invitation_token, todo_list_id: todo_list.id }
+          get :confirm, { email: 'some@email.com', token: invitation.invitation_token, todo_list_id: todo_list.id }
           expect(response).to redirect_to(root_path)
           expect(flash[:error]).to be_present
+        end
+
+        context 'if user not activated yet' do
+          let(:unconfirmed_user) { FactoryGirl.create(:unconfirmed_user) }
+
+          it 'gets valid token: activates user, activates access, flash[:succes]' do
+            invitation_for_nonexistent_user.update_attribute('invited_user_email', unconfirmed_user.email)
+            expect(invitation_for_nonexistent_user.invitation_token).to_not be_nil
+            expect(unconfirmed_user.activation_token).to_not be_nil
+
+            get :confirm, { email: invitation_for_nonexistent_user.invited_user_email,
+              token: invitation_for_nonexistent_user.invitation_token, todo_list_id: todo_list.id }
+
+            invitation_for_nonexistent_user.reload
+            unconfirmed_user.reload
+
+            expect(invitation_for_nonexistent_user.invitation_token).to be_nil
+            expect(unconfirmed_user.activation_token).to be_nil
+            expect(flash[:success]).to be_present
+          end
         end
       end
 
@@ -176,22 +192,19 @@ RSpec.describe InvitationsController do
         end
 
         it "gets invalid token: redirects to root_path with flash[:error]" do
-          token = '12345'
-          get :confirm, { email: invitation.invited_user_email, token: token, todo_list_id: todo_list.id }, other_valid_session
+          get :confirm, { email: invitation.invited_user_email, token: '12345', todo_list_id: todo_list.id }, other_valid_session
           expect(response).to redirect_to(root_path)
           expect(flash[:error]).to be_present
         end
 
         it "gets no token: redirects to root_path with flash[:error]" do
-          token = ''
-          get :confirm, { email: invitation.invited_user_email, token: token, todo_list_id: todo_list.id }, other_valid_session
+          get :confirm, { email: invitation.invited_user_email, todo_list_id: todo_list.id }, other_valid_session
           expect(response).to redirect_to(root_path)
           expect(flash[:error]).to be_present
         end
 
         it "gets unknown email: redirects to root_path with flash[:error]" do
-          email = 'some@email.com'
-          get :confirm, { email: email, token: invitation.invitation_token, todo_list_id: todo_list.id }, other_valid_session
+          get :confirm, { email: 'some@email.com', token: invitation.invitation_token, todo_list_id: todo_list.id }, other_valid_session
           expect(response).to redirect_to(root_path)
           expect(flash[:error]).to be_present
         end

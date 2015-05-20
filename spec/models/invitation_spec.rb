@@ -65,7 +65,7 @@ describe Invitation do
   end
 
   context "#set_invited_user" do
-    it "sets user_id when creating invitation" do
+    it "sets user_id when creating invitation if existing_user was invited" do
       expect(invitation.user_id).to be_true
     end
   end
@@ -75,6 +75,18 @@ describe Invitation do
       expect(invitation.invitation_token).to_not be_nil
       invitation.activate!
       expect(invitation.invitation_token).to be_nil
+    end
+
+    it "sets invitation_token to nil and set's user_id if not_registered_user was invited" do
+      invitation_new = FactoryGirl.create(:invitation, invited_user_email: "not@existing.user")
+      user = FactoryGirl.create(:user)
+      user.update_attribute('email', "not@existing.user")
+
+      expect(invitation_new.invitation_token).to_not be_nil
+      expect(invitation_new.user_id).to be_nil
+      invitation_new.activate!
+      expect(invitation_new.invitation_token).to be_nil
+      expect(invitation_new.user_id).to eq(user.id)
     end
   end
 
