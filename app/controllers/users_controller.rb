@@ -15,7 +15,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(permitted_attributes(User.new))
     if @user.save
-
       if params[:invitation_token].blank? || Invitation.find_by_invited_user_email_and_invitation_token(@user.email, params[:invitation_token]).nil?
         UserMailer.registration_confirmation(@user).deliver
         redirect_to new_user_sessions_path, notice: 'User was successfully created. Please confirm your email.'
