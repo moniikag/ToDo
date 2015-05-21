@@ -20,7 +20,7 @@ class UsersController < ApplicationController
         UserMailer.registration_confirmation(@user).deliver
         redirect_to root_path, notice: 'User was successfully created. Please confirm your email.'
       else
-        log_in(@user)
+        sign_in(@user)
         redirect_to confirm_todo_list_invitations_path(todo_list_id: params[:todo_list_id],
           email: @user.email, token: params[:invitation_token])
       end
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     authorize @user || User
     @user.activate!
     flash[:success] = 'Your email was successfully confirmed.'
-    log_in(@user)
+    sign_in(@user)
     redirect_to root_path
   rescue Pundit::NotAuthorizedError
     flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    log_out
+    sign_out
     redirect_to new_user_sessions_path
   end
 

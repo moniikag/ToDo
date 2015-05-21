@@ -1,11 +1,11 @@
 module Authenticate
 
-  def log_in(user)
+  def sign_in(user)
     @user = user
     cookies.permanent[:user_id] = @user.id
   end
 
-  def log_out
+  def sign_out
     cookies[:user_id] = nil
   end
 
