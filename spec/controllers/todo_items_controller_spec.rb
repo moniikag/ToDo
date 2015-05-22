@@ -204,10 +204,10 @@ RSpec.describe TodoItemsController do
       end
 
       it "marks todo item complete & redirects to todo items" do
+        expect(subject.completed_at).to be(nil)
         patch :complete, { todo_list_id: subject.todo_list_id, id: subject.id }, valid_session
         subject.reload
         expect(subject.completed_at).to_not be(nil)
-        expect(subject.completed?).to be_true
         expect(response).to redirect_to(todo_list_todo_items_path)
       end
     end
