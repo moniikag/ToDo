@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   def confirm_email
     @user = User.find_by_email_and_activation_token(params[:email], params[:activation_token])
     authorize @user || User
-    UserActivationService.call(user: @user)
+    UserActivationService.new(user: @user).activate!
     flash[:success] = 'Your email was successfully confirmed.'
     sign_in(@user)
     redirect_to root_path

@@ -84,12 +84,4 @@ describe User do
     end
   end
 
-  context "#activate!" do
-    it "sets activation_token to nil" do
-      expect(subject.activation_token).to_not be_nil
-      subject.activate!
-      expect(subject.activation_token).to be_nil
-    end
-  end
-
 end

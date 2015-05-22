@@ -12,7 +12,7 @@ describe ReminderService do
   let!(:other_todo_item_2_urgent) { FactoryGirl.create(:todo_item, todo_list: other_todo_list, deadline: 1.hour.from_now) }
 
   it "returns correct urgent items" do
-    expect(ReminderService.call(todo_lists: user.todo_lists)).to eq([other_todo_item_2_urgent, todo_item_2_urgent])
+    expect(ReminderService.new(todo_lists: user.todo_lists).return_urgent_items).to eq([other_todo_item_2_urgent, todo_item_2_urgent])
   end
 
 end

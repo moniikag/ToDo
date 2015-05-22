@@ -28,7 +28,7 @@ class TodoListsController < ApplicationController
   def send_reminder
     authorize TodoList
     @todo_lists = policy_scope(TodoList)
-    @urgent_items = ReminderService.call(todo_lists: @todo_lists)
+    @urgent_items = ReminderService.new(todo_lists: @todo_lists).return_urgent_items
     UserMailer.reminder(@urgent_items, current_user).deliver
     redirect_to todo_lists_path, notice: 'Reminder was successfully sent.'
   end
