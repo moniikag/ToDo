@@ -11,11 +11,6 @@ class Invitation < ActiveRecord::Base
 
   before_validation :downcase_email
 
-  def activate!
-    self.update_attribute('invitation_token', nil)
-    self.update_attribute('user_id', User.find_by_email(self.invited_user_email).id) if self.user_id.nil?
-  end
-
   def new_user?
     User.where(email: self.invited_user_email).empty?
   end

@@ -145,6 +145,13 @@ RSpec.describe UsersController do
           expect(flash[:success]).to be_present
         end
 
+        it 'gets valid activation link and activates user' do
+          expect(unconfirmed_user.activation_token).to_not be_nil
+          get :confirm_email, { email: unconfirmed_user.email, activation_token: unconfirmed_user.activation_token }
+          unconfirmed_user.reload
+          expect(unconfirmed_user.activation_token).to be_nil
+        end
+
         it "gets another user's token and redirects to new_user_session_path + flash[:error]" do
           get :confirm_email, { email: unconfirmed_user.email, activation_token: another_unconfirmed_user.activation_token }
           expect(assigns(:user)).to eq(nil)

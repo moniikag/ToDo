@@ -14,19 +14,16 @@ class TodoItem < ActiveRecord::Base
     completed_at.present?
   end
 
+  def urgent?
+    self.deadline < 25.hours.from_now
+  end
+
   def tag_list
-    self.tags.map { |t| t.name }.join(", ")
+    TagService.new(todo_item: self).tag_list
   end
 
   def tag_list=(tags_given)
-    if tags_given
-      tag_names = tags_given.split(/\s*,\s*/)
-      self.tags = tag_names.map { |name| Tag.find_or_create_by(name: name) }
-    end
-  end
-
-  def urgent?
-    self.deadline < 25.hours.from_now
+    TagService.new(todo_item: self, tags: tags_given).set_tag_list
   end
 
 end
