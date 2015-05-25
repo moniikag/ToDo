@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
 
   include Authenticate
   before_action :authenticate_user
-  helper_method(:current_user)
 
   include Pundit
   after_action :verify_authorized

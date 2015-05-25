@@ -4,6 +4,9 @@ describe Authenticate do
   let(:user) { FactoryGirl.create(:user) }
 
   class ExampleClass
+    def self.helper_method(arg)
+    end
+
     include Authenticate
   end
 
