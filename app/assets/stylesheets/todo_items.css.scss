@@ -28,3 +28,35 @@ table.todo_items tbody tr:nth-child(even) td {
     display: block;
   }
 }
+
+/*####### NEW TODO ITEM FORM ########*/
+
+form#new_todo_item, form#edit_todo_item {
+  margin: 50px 0;
+}
+
+input#todo_item_content, input#tag_list {
+  width: 300px;
+}
+
+@media screen and (max-width: 1200px) {
+  div.todo_item_form h1 {
+    line-height: 40px;
+  }
+  form.new_todo_item label, input#save-todo-item {
+    display: block;
+    margin: 10px;
+  }
+  form.edit_todo_item label, input#save-todo-item {
+    display: block;
+    margin: 10px;
+  }
+  input#todo_item_content, input#tag_list {
+    min-width: 50%;
+  }
+}
+@media screen and (max-width: 340px) {
+  form#new_todo_item {
+    margin: 20px 0;
+  }
+}
