@@ -40,7 +40,7 @@ describe 'Todo items: ' do
     select todo_item_params[:day], from: "todo_item_deadline_3i"
     select todo_item_params[:hour], from: "todo_item_deadline_4i"
     select todo_item_params[:minutes], from: "todo_item_deadline_5i"
-    fill_in "tag_list", with: todo_item_params[:tag]
+    fill_in "todo_item_tag_list", with: todo_item_params[:tag]
 
     click_button "save-todo-item"
     expect(current_path).to eq(todo_list_todo_items_path(todo_list))
@@ -56,7 +56,7 @@ describe 'Todo items: ' do
 
     fill_in "todo_item_content", with: "New content"
     select "25", from: "todo_item_deadline_3i"
-    fill_in "tag_list", with: "New Tag"
+    fill_in "todo_item_tag_list", with: "New Tag"
 
     click_button "save-todo-item"
     expect(current_path).to eq(todo_list_todo_items_path(todo_list))
@@ -69,7 +69,7 @@ describe 'Todo items: ' do
 
     within("#todo_item_#{subject.id}") {click_link "Edit"}
     expect(current_path).to eq(edit_todo_list_todo_item_path(todo_list, subject.id))
-    fill_in "tag_list", with: todo_item_params[:tag]
+    fill_in "todo_item_tag_list", with: todo_item_params[:tag]
     click_button "save-todo-item"
 
     expect(current_path).to eq(todo_list_todo_items_path(todo_list))

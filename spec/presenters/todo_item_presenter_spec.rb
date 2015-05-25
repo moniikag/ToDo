@@ -21,24 +21,4 @@ describe TodoItemPresenter do
     end
   end
 
-  context "#tag_list" do
-    it "displays one tag properly" do
-      todo_item.tags.new(name: "urgent")
-      expect(@presenter.tag_list).to eq("urgent")
-    end
-
-    it "displays two tags properly" do
-      todo_item.tags.new(name: "urgent")
-      todo_item.tags.new(name: "important")
-      expect(@presenter.tag_list).to eq("urgent, important")
-    end
-
-    it "displays three tags properly" do
-      todo_item.tags.new(name: "urgent")
-      todo_item.tags.new(name: "important")
-      todo_item.tags.new(name: "fee")
-      expect(@presenter.tag_list).to eq("urgent, important, fee")
-    end
-  end
-
 end

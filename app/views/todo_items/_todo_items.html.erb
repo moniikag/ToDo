@@ -1,5 +1,5 @@
 <% @todo_items.each do |todo_item| %>
-  <% present(todo_item, TodoItemPresenter) do |todo_item| %>
+  <% present(todo_item) do |todo_item| %>
     <tr id="<%= dom_id(todo_item) %>">
       <td class="<%= 'urgent' if todo_item.urgent?%>" class ='item_content'>
         <%= todo_item.content %>
