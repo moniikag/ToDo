@@ -3,10 +3,7 @@ require 'spec_helper'
 describe Authenticate do
   let(:user) { FactoryGirl.create(:user) }
 
-  class ExampleClass
-    def self.helper_method(arg)
-    end
-
+  class ExampleClass < ActionController::Base
     include Authenticate
   end
 
