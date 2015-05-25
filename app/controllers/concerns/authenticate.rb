@@ -1,8 +1,11 @@
 module Authenticate
 
+  def self.included(location)
+    location.helper_method :current_user
+  end
+
   def sign_in(user)
-    @user = user
-    cookies.permanent[:user_id] = @user.id
+    cookies.permanent[:user_id] = user.id
   end
 
   def sign_out

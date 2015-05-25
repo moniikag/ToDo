@@ -88,7 +88,6 @@ RSpec.describe InvitationsController do
         invitation_invalid_params[:invited_user_email] = user.email
         post :create, { todo_list_id: todo_list.id, invitation: invitation_invalid_params }, valid_session
         expect(response).to render_template(:new)
-        expect(flash[:error]).to be_present
       end
 
       it "given extra params creates Invitation and redirects to todo_list_todo_items_path" do

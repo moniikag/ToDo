@@ -4,17 +4,14 @@ class InvitationsController < ApplicationController
 
 
   def new
-    authorize Invitation
     @invitation = @todo_list.invitations.new
+    authorize @invitation
   end
 
   def create
     authorize Invitation
     @invitation = @todo_list.invitations.new(permitted_attributes(Invitation.new))
-    if @invitation.invited_user_email == current_user.email
-      flash[:error] = "You can't invite yourself to your own TodoList"
-      render action: :new
-    elsif @invitation.save
+    if @invitation.save
       UserMailer.invitation(@invitation, current_user).deliver
       flash[:success] = "Invitation was successfully sent. User now needs to confirm access to your TodoList"
       redirect_to todo_list_todo_items_path(@todo_list)
@@ -24,7 +21,7 @@ class InvitationsController < ApplicationController
   end
 
   def confirm #invited user accepts invitation to todo list
-    @invitation = Invitation.find_by_invited_user_email_and_invitation_token(params[:email], params[:token])
+    @invitation = Invitation.where(invited_user_email: params[:email], invitation_token: params[:token]).first
     authorize(@invitation || Invitation)
     if @invitation.new_user? # if user followed activation link instead of registration+activation link
       flash[:success] = "Welcome to our TodoList Service! Please register here and then active your access to the TodoList"

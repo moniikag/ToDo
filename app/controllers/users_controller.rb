@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   end
 
   def confirm_email
-    @user = User.find_by_email_and_activation_token(params[:email], params[:activation_token])
+    @user = User.where(email: params[:email], activation_token: params[:activation_token]).first
     authorize @user || User
     @user.activate!
     flash[:success] = 'Your email was successfully confirmed.'
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
 
   # invited user follows todolist_activation & new_user link after already being registered
   def redirect_to_invitation_confirm
-    if (User.where(email: params[:email]).present?) && params[:invitation_token]
+    if User.exists?(email: params[:email]) && params[:invitation_token]
       redirect_to confirm_todo_list_invitations_path(todo_list_id: params[:list],
         email: params[:email], token: params[:invitation_token])
     end
