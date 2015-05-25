@@ -1,19 +1,21 @@
 <h1><%= @todo_list.title %></h1>
 
-<table class="todo_items">
-  <thead>
-    <tr>
-      <th width="15%">Completed?</th>
-      <th width="30%">Content</th>
-      <th width="20%">Tags</th>
-      <th width="25%">Deadline</th>
-      <th width="10%">Functions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: 'todo_items' %>
-  </tbody>
-</table>
+<div class="todo_items_table">
+  <table class="todo_items">
+    <thead>
+      <tr>
+        <th>Completed?</th>
+        <th>Content</th>
+        <th>Tags</th>
+        <th>Deadline</th>
+        <th>Functions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'todo_items' %>
+    </tbody>
+  </table>
+</div>
 
 <p>
   <%= link_to "New Todo Item", new_todo_list_todo_item_path(@todo_list), id: "new-todo-item-link" %>
