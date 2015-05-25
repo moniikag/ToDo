@@ -1,13 +1,16 @@
 class TodoItemsController < ApplicationController
+  include TodoItemPresenter
 
   before_action :get_resources
 
   def index
     @todo_items = policy_scope(@todo_list.todo_items)
+    @todo_items.map! { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
   def new
     @todo_item = @todo_list.todo_items.new
+    @todo_item = TodoItemPresenter.new(@todo_item)
   end
 
   def create
