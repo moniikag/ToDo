@@ -6,7 +6,7 @@ describe UserActivationService do
 
   it "updates activation_token to nil" do
     expect(user.activation_token).to_not eq(nil)
-    UserActivationService.new(user: user).activate!
+    UserActivationService.call(user: user)
     expect(user.activation_token).to eq(nil)
   end
 

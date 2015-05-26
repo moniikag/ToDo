@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReminderService do
+describe ReminderSendService do
 
   let!(:user) { FactoryGirl.create(:user) }
   let!(:todo_list) { FactoryGirl.create(:todo_list, user: user) }
@@ -13,12 +13,12 @@ describe ReminderService do
 
   it "sends email" do
     expect {
-      ReminderService.new(current_user: user, todo_lists: user.todo_lists).send_message
+      ReminderSendService.call(current_user: user, todo_lists: user.todo_lists)
     }.to change{ ActionMailer::Base.deliveries.count }.by(1)
   end
 
   it "returns correct urgent items" do
-    ReminderService.new(current_user: user, todo_lists: user.todo_lists).send_message
+    ReminderSendService.call(current_user: user, todo_lists: user.todo_lists)
     mail = ActionMailer::Base.deliveries.last
     expect(mail.body.raw_source).to match(other_todo_item_2_urgent.content)
     expect(mail.body.raw_source).to match(todo_item_2_urgent.content)
