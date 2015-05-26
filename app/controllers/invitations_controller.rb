@@ -43,8 +43,8 @@ class InvitationsController < ApplicationController
   end
 
   def activate_access
-    @invitation.activate!
-    User.where(email: @invitation.invited_user_email).first.activate! # in case of invitation+registration
+    InvitationActivationService.new(invitation: @invitation).activate!
+    UserActivationService.new(user: User.where(email: @invitation.invited_user_email).first).activate!
     flash[:success] = "Access to TodoList was successfully activated."
     redirect_to todo_list_path(@invitation.todo_list)
   end

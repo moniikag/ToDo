@@ -14,15 +14,11 @@ class User < ActiveRecord::Base
   before_validation :downcase_email
   before_create :generate_activation_token
 
+  private
   def downcase_email
     self.email = email.downcase if self.email
   end
 
-  def activate!
-    self.update_attribute('activation_token', nil) unless self.activation_token.nil?
-  end
-
-  private
   def generate_activation_token
     self.activation_token ||= SecureRandom.hex(8)
   end

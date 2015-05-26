@@ -28,15 +28,7 @@ class TodoListsController < ApplicationController
   def send_reminder
     authorize TodoList
     @todo_lists = policy_scope(TodoList)
-    @urgent_items = []
-    @todo_lists.each do |todo_list|
-      todo_list.todo_items.each do |todo_item|
-        if (todo_item.deadline.to_time - Time.now - 25.hours) < 0
-          @urgent_items << todo_item
-        end
-      end
-    end
-    UserMailer.reminder(@urgent_items, current_user).deliver
+    ReminderService.new(current_user: current_user, todo_lists: @todo_lists).send_message
     redirect_to todo_lists_path, notice: 'Reminder was successfully sent.'
   end
 

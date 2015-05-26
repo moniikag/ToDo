@@ -18,7 +18,7 @@ FactoryGirl.define do
 
   factory :todo_item do |i|
     i.sequence(:content) { |n| "#{n} Todo Item" }
-    deadline "2015-05-30 10:00:00"
+    deadline 10.days.from_now
     todo_list
   end
 
