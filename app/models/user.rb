@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
 
   has_many :todo_lists
+  has_many :invitations
+  has_many :invited_todo_lists, class_name: "TodoList", through: :invitations, source: :todo_list
 
   has_secure_password
+
   validates :password, length: {minimum: 6, allow_nil: true}
   validates :email, presence: true,
     uniqueness: true,
@@ -16,11 +19,10 @@ class User < ActiveRecord::Base
   end
 
   def activate!
-    self.update_attribute('activation_token', nil)
+    self.update_attribute('activation_token', nil) unless self.activation_token.nil?
   end
 
   private
-
   def generate_activation_token
     self.activation_token ||= SecureRandom.hex(8)
   end

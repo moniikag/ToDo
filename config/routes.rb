@@ -20,6 +20,12 @@ Odot::Application.routes.draw do
         patch :complete
       end
     end
+
+    resources :invitations, only: [:new, :create] do
+      collection do
+        get :confirm
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

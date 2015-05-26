@@ -11,5 +11,11 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: "Registration Confirmation")
   end
 
+  def invitation(invitation, inviting_user)
+    @invitation = invitation
+    @user = inviting_user
+    mail(to: invitation.invited_user_email, subject: "Invitation to TodoList")
+  end
+
 end
 

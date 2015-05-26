@@ -51,3 +51,5 @@
   <%= link_to 'Edit Todo List', edit_todo_list_path(@todo_list) %> |
   <%= link_to 'Back to todo lists', todo_lists_path %>
 </p>
+
+<p><%= link_to 'Invite another User to this TodoList', new_todo_list_invitation_path(@todo_list), id: "new-invitation-link" %></p>

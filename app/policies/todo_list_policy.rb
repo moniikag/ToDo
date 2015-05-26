@@ -1,8 +1,9 @@
 class TodoListPolicy < ApplicationPolicy
 
   class Scope < Scope
-    def resolve
-      scope.where(user_id: @user.id)
+    def resolve # owned todo_lists + invited todo_lists
+      scope.includes(:invited_users).where('todo_lists.user_id = ?
+        OR (invitations.user_id = ? AND invitations.invitation_token IS NULL)', @user.id, @user.id).references(:invitations)
     end
   end
 
@@ -31,7 +32,7 @@ class TodoListPolicy < ApplicationPolicy
   end
 
   def edit?
-    @user && @record.user_id == @user.id
+    @user && ((@record.user_id == @user.id) || @record.invited_user_ids.include?(@user.id))
   end
 
   def update?

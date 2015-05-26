@@ -14,7 +14,12 @@ gem 'figaro'
 gem 'pundit'
 gem 'slim'
 
-gem "letter_opener", group: :development
+group :development do
+  gem "letter_opener"
+  gem "better_errors"
+  gem 'binding_of_caller'
+  gem 'quiet_assets'
+end
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'
@@ -27,5 +32,3 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
 end
-
-gem 'rails_12factor', group: :production

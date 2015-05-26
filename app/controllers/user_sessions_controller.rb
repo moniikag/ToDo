@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
 
-	skip_before_action :authenticate_user, only: [:new, :create]
+  skip_before_action :authenticate_user, only: [:new, :create]
   skip_after_action :verify_authorized, only: [:destroy]
 
   def new
@@ -12,7 +12,7 @@ class UserSessionsController < ApplicationController
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
       if user.activation_token == nil
-        cookies.permanent[:user_id] = user.id
+        sign_in(user)
         flash[:success] = "Thanks for logging in!"
         redirect_to todo_lists_path
       else
@@ -26,7 +26,7 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    cookies[:user_id] = nil
+    sign_out
     flash[:success] = "You have successfully logged out."
     redirect_to root_path
   end

@@ -17,6 +17,6 @@ class ApplicationPolicy
       @user = user
       @scope = scope
     end
-
   end
+
 end

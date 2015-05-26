@@ -26,4 +26,15 @@ FactoryGirl.define do
     t.sequence(:name) { |n| "Tag #{n}"}
   end
 
+  factory :invitation, class: Invitation do
+    todo_list
+  end
+
+  factory :invitation_with_email, parent: :invitation do |inv|
+    before(:create) do |inv|
+      user = FactoryGirl.create(:unconfirmed_user)
+      inv.invited_user_email = user.email
+    end
+  end
+
 end
