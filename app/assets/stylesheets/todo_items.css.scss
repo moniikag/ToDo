@@ -2,10 +2,116 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+/*########## INDEX TODO ITEMS TABLE #########*/
+/* STANDARD */
 table.todo_items {
   width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #bbb;
 
   th {
     text-align: left;
+  }
+}
+
+table.todo_items td, th {
+  border-top: 1px solid #ddd;
+  padding: 4px 8px;
+}
+
+table.todo_items tbody tr:nth-child(even) td {
+  background-color: #eee;
+}
+
+/* 640px */
+@media (max-width: 640px){
+  table.todo_items thead{
+    display: none;
+  }
+  table.todo_items td{
+    min-height: 1em;
+  }
+
+  table.todo_items td:nth-child(1):before{
+    content: 'Content:';
+  }
+  table.todo_items td:nth-child(2):before{
+    content: 'Done:';
+  }
+  table.todo_items td:nth-child(3):before{
+    content: 'Tags:';
+  }
+  table.todo_items td:nth-child(4):before{
+    content: 'Deadline:';
+  }
+
+  table.todo_items td:nth-child(1),
+  table.todo_items td:nth-child(2),
+  table.todo_items td:nth-child(3),
+  table.todo_items td:nth-child(4){
+    padding-left: 25%;
+  }
+
+  table.todo_items td:before{
+    position: absolute;
+    left: .5em;
+    font-weight: bold;
+  }
+
+  table.todo_items tr,
+  table.todo_items td{
+    display: block;
+  }
+  table.todo_items tr{
+    position: relative;
+    margin-bottom: 1em;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  }
+  table.todo_items td{
+    border-top: none;
+  }
+  table.todo_items td.item_content{
+    background: #D5E0CC;
+    border-top: 1px solid #B3BFAA;
+  }
+  table.todo_items td.actions{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: none;
+  }
+}
+
+/*####### NEW TODO ITEM FORM ########*/
+
+form#new_todo_item, form#edit_todo_item {
+  margin: 50px 0;
+}
+
+input#todo_item_content, input#tag_list {
+  width: 300px;
+}
+
+@media screen and (max-width: 1200px) {
+  div.todo_item_form h1 {
+    line-height: 40px;
+  }
+  form.new_todo_item label, input#save-todo-item {
+    display: block;
+    margin: 10px;
+  }
+  form.edit_todo_item label, input#save-todo-item {
+    display: block;
+    margin: 10px;
+  }
+  input#todo_item_content, input#tag_list {
+    min-width: 50%;
+  }
+}
+@media screen and (max-width: 340px) {
+  form#new_todo_item {
+    margin: 20px 0;
   }
 }

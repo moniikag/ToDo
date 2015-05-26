@@ -8,26 +8,6 @@ describe TagService do
 
   let(:params_all) { { todo_item: todo_item, tags: "tag1, other_tag, tag3" } }
 
-  context "tag_list" do
-    it "given todo_item displays todo_items tag_list" do
-      todo_item.tags << tag
-      todo_item.tags << other_tag
-      expect(TagService.new(todo_item: todo_item).tag_list).to eq("#{tag.name}, #{other_tag.name}")
-    end
-
-    it "given extra params displays todo_item tag_list properly" do
-      todo_item.tags << tag
-      todo_item.tags << other_tag
-      expect(TagService.new(params_all).tag_list).to eq("#{tag.name}, #{other_tag.name}")
-    end
-
-    it "not given todo_item raises an error" do
-      expect {
-        TagService.new().tag_list
-      }.to raise_error(ArgumentError)
-    end
-  end
-
   context "set_tag_list" do
     it "given all params sets todo item's tags" do
       expect {
@@ -55,6 +35,63 @@ describe TagService do
         TagService.new(tags: "tag1, tag2, tag3").set_tag_list
       }.to raise_error(ArgumentError)
     end
+
+    it "adds new tag to database" do
+      expect {
+        TagService.new(todo_item: todo_item, tags: 'urgent').set_tag_list
+      }.to change { Tag.count }.by(1)
+      expect(todo_item.tags).to eq(Tag.where(name: "urgent"))
+    end
+
+    it "properly adds to database two tags given with ', '" do
+      expect {
+        TagService.new(todo_item: todo_item, tags: 'urgent, fee').set_tag_list
+      }.to change { Tag.count }.by(2)
+      expect(todo_item.tags).to include(Tag.where(name: "urgent").first)
+      expect(todo_item.tags).to include(Tag.where(name: "fee").first)
+    end
+
+    it "properly adds to database two tags given with ' , '" do
+      expect {
+        TagService.new(todo_item: todo_item, tags: 'urgent , fee').set_tag_list
+      }.to change { Tag.count }.by(2)
+      expect(todo_item.tags).to include(Tag.where(name: "urgent").first)
+      expect(todo_item.tags).to include(Tag.where(name: "fee").first)
+    end
+
+    it "properly adds to database two tags given with ','" do
+      expect {
+        TagService.new(todo_item: todo_item, tags: 'urgent,fee').set_tag_list
+      }.to change { Tag.count }.by(2)
+      expect(todo_item.tags).to include(Tag.where(name: "urgent").first)
+      expect(todo_item.tags).to include(Tag.where(name: "fee").first)
+    end
+
+    it "properly adds to database tag consisting of two words" do
+      expect {
+        TagService.new(todo_item: todo_item, tags: 'urgent fee').set_tag_list
+      }.to change { Tag.count }.by(1)
+      expect(todo_item.tags).to include(Tag.where(name: "urgent fee").first)
+    end
+
+    context "with tag already existing" do
+      let!(:todo_item_tag) { FactoryGirl.create(:tag) }
+
+      it "doesn't add existing tag to database if one tag given" do
+        expect {
+          TagService.new(todo_item: todo_item, tags: todo_item_tag.name).set_tag_list
+        }.to change { Tag.count }.by(0)
+        expect(todo_item.tags).to include(todo_item_tag)
+      end
+
+      it "doesn't add existing tag to database if two tags given (old one and new one)" do
+        expect {
+          TagService.new(todo_item: todo_item, tags: "urgent, #{todo_item_tag.name}").set_tag_list
+        }.to change { Tag.count }.by(1)
+        expect(todo_item.tags).to include(todo_item_tag)
+      end
+    end
   end
 
 end
+

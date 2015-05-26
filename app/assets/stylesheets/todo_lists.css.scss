@@ -26,3 +26,12 @@ div.todo_list {
 .urgent {
   color: red;
 }
+
+form #todo_list_title {
+  min-width: 45%;
+}
+
+form #todo_list_description {
+  width: 90%;
+  min-height: 100px;
+}

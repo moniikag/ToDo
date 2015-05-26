@@ -1,21 +1,20 @@
 <% if @todo_item.errors.any? %>
-<div id="error_explanation">
-  <h2><%= pluralize(@todo_item.errors.count, "error") %> prohibited this todo item from being saved:</h2>
-
-  <ul>
-    <% @todo_item.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-  </ul>
-</div>
+  <div id="error_explanation">
+    <h2><%= pluralize(@todo_item.errors.count, "error") %> prohibited this todo item from being saved:</h2>
+    <ul>
+      <% @todo_item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>
 
-
-<%= form.label :content %>
-<%= form.text_field :content %>
-<%= form.label :deadline %>
-<%= form.datetime_select :deadline, :default => 3.days.from_now %>
-<%= form.label :tag_list %>
-<%= form.text_field :tag_list %>
-
-<%= form.submit "Save", id: "save-todo-item"  %>
+<% present(@todo_item, TodoItemPresenter) do |todo_item| %>
+  <%= form.label :content %>
+  <%= form.text_field :content %>
+  <%= form.label :deadline %>
+  <%= form.datetime_select :deadline, :default => 3.days.from_now %>
+  <label> Tag list </label>
+  <%= text_field_tag :tag_list, todo_item.tag_list %>
+  <%= form.submit "Save", id: "save-todo-item"  %>
+<% end %>
