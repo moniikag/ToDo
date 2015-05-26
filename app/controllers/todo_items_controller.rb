@@ -1,5 +1,4 @@
 class TodoItemsController < ApplicationController
-  include TodoItemPresenter
 
   before_action :get_resources
 
@@ -10,7 +9,6 @@ class TodoItemsController < ApplicationController
 
   def new
     @todo_item = @todo_list.todo_items.new
-    @todo_item = TodoItemPresenter.new(@todo_item)
   end
 
   def create
