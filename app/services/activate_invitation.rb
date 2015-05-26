@@ -1,4 +1,4 @@
-class InvitationActivationService
+class ActivateInvitation
 
   def self.call(invitation:)
     invitation.update_attribute('invitation_token', nil)
