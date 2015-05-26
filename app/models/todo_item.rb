@@ -21,7 +21,7 @@ class TodoItem < ActiveRecord::Base
     if tags_given
       tag_names = tags_given.split(/,+/)
       tag_names.map! {|tag| tag.strip }
-      self.tags = tag_names.map { |name| Tag.find_or_create_by_name(name: name) }
+      self.tags = tag_names.map { |name| Tag.find_or_create_by(name: name) }
     end
   end
 

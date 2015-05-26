@@ -10,4 +10,10 @@ describe ActivateUser do
     expect(user.activation_token).to eq(nil)
   end
 
+  it "it doesn't change activation token if nil" do
+    user.update_attribute('activation_token', nil)
+    ActivateUser.call(user: user)
+    expect(user.activation_token).to eq(nil)
+  end
+
 end
