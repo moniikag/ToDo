@@ -19,8 +19,9 @@ class TodoItem < ActiveRecord::Base
 
   def tag_list=(tags_given)
     if tags_given
-      tag_names = tags_given.split(/\s*,\s*/)
-      self.tags = tag_names.map { |name| Tag.where('name = ?', name).first or Tag.create(:name => name)}
+      tag_names = tags_given.split(/,+/)
+      tag_names.map! {|tag| tag.strip }
+      self.tags = tag_names.map { |name| Tag.find_or_create_by_name(name: name) }
     end
   end
 
