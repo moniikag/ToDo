@@ -61,7 +61,7 @@ div.nav ul li a:hover {
   color: #eee;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 520px) {
 
   div.nav ul {
     display: block;
