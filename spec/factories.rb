@@ -22,8 +22,15 @@ FactoryGirl.define do
     todo_list
   end
 
-  factory :tag do |t|
+  factory :tag, class: ActsAsTaggableOn::Tag do |t|
     t.sequence(:name) { |n| "Tag #{n}"}
+  end
+
+  factory :tagging, class: ActsAsTaggableOn::Tagging do |t|
+    tag_id {}
+    taggable_id {}
+    taggable_type {}
+    context "tags"
   end
 
   factory :invitation, class: Invitation do
