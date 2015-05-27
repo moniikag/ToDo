@@ -4,6 +4,7 @@ class TodoItemsController < ApplicationController
 
   def index
     @todo_items = policy_scope(@todo_list.todo_items)
+    @todo_items.map! { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
   def new
@@ -12,7 +13,6 @@ class TodoItemsController < ApplicationController
 
   def create
     @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
-    TagService.new(todo_item: @todo_item, tags: params[:tag_list]).set_tag_list unless params[:tag_list].blank?
     if @todo_item.save
       flash[:success] = "Added todo list item."
       redirect_to todo_list_todo_items_path
@@ -26,7 +26,6 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    TagService.new(todo_item: @todo_item, tags: params[:tag_list]).set_tag_list unless params[:tag_list].blank?
     if @todo_item.update_attributes(permitted_attributes(@todo_item))
       flash[:success] = "Updated todo list item."
       redirect_to todo_list_todo_items_path

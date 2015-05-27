@@ -13,4 +13,16 @@ class TodoItem < ActiveRecord::Base
     self.deadline < 25.hours.from_now
   end
 
+  def tag_list
+    self.tags.map { |t| t.name }.join(", ")
+  end
+
+  def tag_list=(tags_given)
+    if tags_given
+      tag_names = tags_given.split(/,+/)
+      tag_names.map! {|tag| tag.strip }
+      self.tags = tag_names.map { |name| Tag.find_or_create_by(name: name) }
+    end
+  end
+
 end

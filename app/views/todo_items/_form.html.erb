@@ -9,12 +9,11 @@
   </div>
 <% end %>
 
-<% present(@todo_item, TodoItemPresenter) do |todo_item| %>
-  <%= form.label :content %>
-  <%= form.text_field :content %>
-  <%= form.label :deadline %>
-  <%= form.datetime_select :deadline, :default => 3.days.from_now %>
-  <label> Tag list </label>
-  <%= text_field_tag :tag_list, todo_item.tag_list %>
-  <%= form.submit "Save", id: "save-todo-item"  %>
-<% end %>
+<%= form.label :content %>
+<%= form.text_field :content %>
+<%= form.label :deadline %>
+<%= form.datetime_select :deadline, :default => 3.days.from_now %>
+<%= form.label :tag_list %>
+<%= form.text_field :tag_list %>
+
+<%= form.submit "Save", id: "save-todo-item"  %>

@@ -1,30 +1,28 @@
 <% @todo_items.each do |todo_item| %>
-  <% present(todo_item, TodoItemPresenter) do |todo_item| %>
-    <tr id="<%= dom_id(todo_item) %>">
-      <td class="<%= 'urgent' if todo_item.urgent?%>" class ='item_content'>
-        <%= todo_item.content %>
-      </td>
+  <tr>
+    <td>
+      <% if todo_item.completed? %>
+        <%= todo_item.completed_at %>
+      <% else %>
+        <%= link_to "Mark Complete", complete_todo_list_todo_item_path(@todo_list, todo_item), { method: :patch, id: "mark-complete-link" } %>
+      <% end %>
+    </td>
 
-      <td class="item_completed">
-        <% if todo_item.completed? %>
-          <%= todo_item.completed_at %>
-        <% else %>
-          <%= link_to "Mark Complete", complete_todo_list_todo_item_path(@todo_list, todo_item), { method: :patch, id: "mark-complete-link" } %>
-        <% end %>
-      </td>
+    <td class="<%= 'urgent' if todo_item.urgent?%>">
+      <%= todo_item.content %>
+    </td>
 
-      <td class='item_tags'>
-        <%= todo_item.tag_list %>
-      </td>
+    <td>
+      <%= todo_item.tag_list %>
+    </td>
 
-      <td class='item_deadline'>
-        <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
-      </td>
+    <td>
+      <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
+    </td>
 
-      <td class='actions'>
-        <%= link_to "Edit", edit_todo_list_todo_item_path(@todo_list, todo_item), id: "edit-todo-item-link"  %>
-        <%= link_to "Delete", todo_list_todo_item_path(@todo_list, todo_item), method: :delete, data: { confirm: "Are you sure?" }, id: "delete-todo-item-link"  %>
-      </td>
-    </tr>
-  <% end %>
+    <td>
+      <%= link_to "Edit", edit_todo_list_todo_item_path(@todo_list, todo_item), id: "edit-todo-item-link"  %>
+      <%= link_to "Delete", todo_list_todo_item_path(@todo_list, todo_item), method: :delete, data: { confirm: "Are you sure?" }, id: "delete-todo-item-link"  %>
+    </td>
+  </tr>
 <% end %>
