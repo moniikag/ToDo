@@ -22,10 +22,6 @@ FactoryGirl.define do
     todo_list
   end
 
-  factory :tag do |t|
-    t.sequence(:name) { |n| "Tag #{n}"}
-  end
-
   factory :invitation, class: Invitation do
     todo_list
   end

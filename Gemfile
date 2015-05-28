@@ -13,6 +13,7 @@ gem 'mail'
 gem 'figaro'
 gem 'pundit'
 gem 'slim'
+gem 'acts-as-taggable-on', '~> 3.4'
 
 group :development do
   gem "letter_opener"
