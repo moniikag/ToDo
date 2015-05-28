@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @user.email = params[:email]
+    @token = params[:invitation_token] if params[:invitation_token]
   end
 
   def edit

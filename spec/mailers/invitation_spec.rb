@@ -15,7 +15,7 @@ RSpec.describe "Invitation" do
   end
 
   it 'renders the sender email' do
-    expect(mail.from).to eql(['testingemail486@gmail.com'])
+    expect(mail.from).to eql(['app34940850@heroku.com'])
   end
 
   it 'assigns invited user name' do

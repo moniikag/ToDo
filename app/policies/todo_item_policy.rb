@@ -2,7 +2,7 @@ class TodoItemPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.where(todo_list_id: @user.todo_list_ids)
+      scope.where(todo_list_id: (@user.todo_list_ids + @user.invited_todo_list_ids))
     end
   end
 
