@@ -1,29 +1,26 @@
 <h1><%= @todo_list.title %></h1>
 
-<div class="todo_items_table">
-  <table class="todo_items">
-    <thead>
-      <tr>
-        <th>Content</th>
-        <th>Completed?</th>
-        <th>Tags</th>
-        <th>Deadline</th>
-        <th>Functions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render partial: 'todo_items' %>
-    </tbody>
-  </table>
-</div>
+<ul id="todo_items">
+  <% @todo_items.each do |todo_item| %>
+    <li id="todo_item_<%= todo_item.id %>", class="<%= 'urgent' if todo_item.urgent?%>">
+      <%= check_box_tag false, todo_item.id, todo_item.completed? %>
+      <%= todo_item.content %>
+      <%= link_to "Edit", edit_todo_list_todo_item_path(@todo_list, todo_item), class: "edit-todo-item"  %>
+    </li>
+  <% end %>
+  <li>
+    <%= form_for :todo_item do |f| %>
+      <%= f.text_field :content %>
+      <%= f.submit "Add new TodoItem" %>
+    <% end %>
+  </li>
+</ul>
+
+</h3>
+
+<p><%= link_to 'Invite another User to this TodoList', new_todo_list_invitation_path(@todo_list), id: "new-invitation" %></p>
 
 <p>
-  <%= link_to "New Todo Item", new_todo_list_todo_item_path(@todo_list), id: "new-todo-item-link" %>
-</p>
-
-<p>
-  <%= link_to 'Edit Todo List', edit_todo_list_path(@todo_list) %> |
   <%= link_to 'Back to todo lists', todo_lists_path %>
 </p>
 
-<p><%= link_to 'Invite another User to this TodoList', new_todo_list_invitation_path(@todo_list), id: "new-invitation-link" %></p>

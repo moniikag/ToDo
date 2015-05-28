@@ -7,7 +7,6 @@ class TodoList < ActiveRecord::Base
   has_many :invited_users, class_name: "User", through: :invitations, source: :user
 
   validates :title, presence: true, length: { minimum: 3 }
-  validates :description, presence: true, length: { minimum: 5 }
 
   def has_completed_items?
     todo_items.complete.count > 0

@@ -3,4 +3,5 @@
 <%= render 'form' %>
 
 <%= link_to 'Show', @todo_list %> |
-<%= link_to 'Back', todo_lists_path %>
+<%= link_to 'Delete', @todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list-link" %> </br>
+<%= link_to 'Back to TodoLists', todo_lists_path %>
