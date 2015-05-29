@@ -4,3 +4,6 @@
     <%= render partial: form %>
   <% end %>
 </div>
+<br><br>
+<%= button_to 'Delete TodoItem', todo_list_todo_item_path(@todo_item.todo_list_id, @todo_item), method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-item", class: "danger" %>
+<%= link_to image_tag("back2.png", {id:"Back"}), todo_list_todo_items_path(@todo_list) %>

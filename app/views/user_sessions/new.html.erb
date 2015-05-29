@@ -2,11 +2,11 @@
 <%= form_tag user_sessions_path do %>
 	<%= label_tag :email, "Email Address" %>
 	<%= text_field_tag :email, params[:email] %>
-	<br />
+	</br></br>
 
 	<%= label_tag :password, "Password" %>
 	<%= password_field_tag :password %>
-	<br />
+	</br></br>
 
 	<%= submit_tag "Log In", id: "log-in" %>
 <% end %>

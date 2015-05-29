@@ -1,7 +1,7 @@
-<h1>Editing Todo List</h1>
+<h3>Editing Todo List</h3>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @todo_list %> |
-<%= link_to 'Delete', @todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list-link" %> </br>
-<%= link_to 'Back to TodoLists', todo_lists_path %>
+<br>
+<%= link_to 'Cancel', todo_lists_path, id: "cancel" %>
+<%= button_to 'Delete TodoList', @todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list", class: "danger" %> </br>

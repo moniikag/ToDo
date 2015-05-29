@@ -1,14 +1,20 @@
+<%= link_to image_tag("circle_plus.png"), new_todo_list_path, id:"new-list" %>
+</br>
+</br>
+
+
 <ul class="todo_lists">
   <% @todo_lists.each do |todo_list| %>
     <li id="todo_list_<%= todo_list.id %>">
       <%= link_to todo_list.title, todo_list_todo_items_path(todo_list) %>
-      <%= link_to 'Edit', edit_todo_list_path(todo_list), class: "edit-todo-list" %>
+      <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(todo_list), class: "edit-todo-list" %>
+
     </li>
   <% end %>
   <li>
-    <%= form_for :todo_list, url: { action: "create" } do |f| %>
-      <%= f.text_field :title %>
-      <%= f.submit "Add new TodoList" %>
+    <%= form_for TodoList.new do |f| %>
+      <%= f.text_field :title, class: "text-field-in-list" %>
+      <%= f.submit "Add new TodoList", class: "submit-in-list" %>
     <% end %>
   </li>
 
@@ -18,3 +24,6 @@
 
 
 <p><%= button_to 'Send Reminder', { action: :send_reminder} , id: "send-reminder"  %></p>
+
+
+
