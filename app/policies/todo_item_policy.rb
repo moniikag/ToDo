@@ -22,8 +22,12 @@ class TodoItemPolicy < ApplicationPolicy
     new?
   end
 
+  def show?
+    edit?
+  end
+
   def edit?
-    @user && @record.todo_list.user_id == @user.id
+    @user && (@record.todo_list.user_id == @user.id || @record.todo_list.invited_user_ids.include?(@user.id))
   end
 
   def update?
