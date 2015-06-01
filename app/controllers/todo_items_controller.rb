@@ -1,10 +1,12 @@
 class TodoItemsController < ApplicationController
 
-  before_action :get_resources
+  before_action :get_resources, except: [:complete]
 
   def index
     @todo_items = policy_scope(@todo_list.todo_items)
-    @todo_items.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+    # @todo_items.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+    @todo_items_complete = @todo_items.complete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+    @todo_items_incomplete = @todo_items.incomplete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
   def new
@@ -39,8 +41,13 @@ class TodoItemsController < ApplicationController
   end
 
   def complete
-    @todo_item.update_attribute(:completed_at, Time.now)
-    redirect_to todo_list_todo_items_path, notice: "Todo item marked as complete."
+    @todo_item = TodoItem.find(params[:id])
+    authorize @todo_item
+    if params[:completed] == "true"
+      @todo_item.update_attribute(:completed_at, Time.now)
+    else
+      @todo_item.update_attribute(:completed_at, nil)
+    end
   end
 
   def destroy

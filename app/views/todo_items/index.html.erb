@@ -5,11 +5,40 @@
 </div>
 
 <ul id="todo_items">
-  <% @todo_items.each do |todo_item| %>
+
+  <% if @todo_items_complete.present? %>
+    Completed: <%= @todo_items_complete.count %>
+
+    <div id='show-completed'>show/hide</div>
+
+    <div id="completed">
+      <% @todo_items_complete.each do |todo_item| %>
+        <li id="todo_item_<%= todo_item.id %>", class="<%= 'urgent' if todo_item.urgent?%>">
+
+          <div class="for-checkbox">
+            <%= check_box_tag "", todo_item.id, todo_item.completed?, class: "checkbox-completed", id: "checkbox-#{todo_item.id}", :onchange => "functionCompleted(this);" %>
+            <label for="checkbox-<%= todo_item.id %>"></label>
+          </div>
+
+          <%= link_to todo_item.content, todo_list_todo_item_path(@todo_list, todo_item) %>
+          <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_todo_item_path(@todo_list, todo_item), class: "edit-todo-item" %></br>
+
+          <div class="deadline <%= 'urgent' if todo_item.urgent? %>">
+            <% if todo_item.deadline.present? %>
+              <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
+            <% end %>
+          </div>
+
+        </li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% @todo_items_incomplete.each do |todo_item| %>
     <li id="todo_item_<%= todo_item.id %>", class="<%= 'urgent' if todo_item.urgent?%>">
 
       <div class="for-checkbox">
-        <%= check_box_tag "", todo_item.id, todo_item.completed?, class: "checkbox-completed", id: "checkbox-#{todo_item.id}" %>
+        <%= check_box_tag "", todo_item.id, todo_item.completed?, class: "checkbox-completed", id: "checkbox-#{todo_item.id}", :onchange => "functionCompleted(this);" %>
         <label for="checkbox-<%= todo_item.id %>"></label>
       </div>
       <%= link_to todo_item.content, todo_list_todo_item_path(@todo_list, todo_item) %>
@@ -23,12 +52,14 @@
 
     </li>
   <% end %>
+
   <li>
     <%= form_for [@todo_list, TodoItem.new] do |f| %>
       <%= f.text_field :content, class: "text-field-in-list" %>
       <%= f.submit "Add new TodoItem", class: "submit-in-list" %>
     <% end %>
   </li>
+
 </ul>
 
 </h3>

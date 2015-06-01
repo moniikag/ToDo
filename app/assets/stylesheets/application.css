@@ -193,4 +193,10 @@ input[type=checkbox]:checked + label:before {
   background-size: 20px 20px;
 }
 
+div#show-completed {
+  display: inline;
+  margin-left: 20px;
+  color:blue;
+}
 
+*/
