@@ -4,7 +4,6 @@ class TodoItemsController < ApplicationController
 
   def index
     @todo_items = policy_scope(@todo_list.todo_items)
-    # @todo_items.map! { |todo_item| TodoItemPresenter.new(todo_item) }
     @todo_items_complete = @todo_items.complete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
     @todo_items_incomplete = @todo_items.incomplete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
   end
