@@ -35,6 +35,7 @@ class TodoListsController < ApplicationController
   end
 
   def edit
+    @todo_lists = policy_scope(TodoList)
   end
 
   def update

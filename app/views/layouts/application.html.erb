@@ -28,12 +28,13 @@
     </section>
 
     <section id='main'>
-
-    <% flash.each do |type, message| %>
-      <div class="alert flash <%= type %>">
-        <%= message %>
+      <div id="flash-messages">
+        <% flash.each do |type, message| %>
+          <div class="alert flash <%= type %>">
+            <%= message %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
 
       <%= yield %>
 

@@ -1,7 +1,31 @@
-<h3>Editing Todo List</h3>
+<section id="todo_lists">
+  <ul id="todo_lists">
+    <% @todo_lists.each do |todo_list| %>
+      <li id="todo_list_<%= todo_list.id %>">
+        <%= link_to todo_list.title, todo_list_path(todo_list) %>
+        <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(todo_list), class: "edit-todo-list" %>
+      </li>
+    <% end %>
+    <li class='invisible' id="new-list-form">
+      <%= form_for TodoList.new do |f| %>
+        <%= f.text_field :title, class: "text-field-in-list" %>
+        <%= f.submit "Add new TodoList", class: "submit-in-list" %>
+      <% end %>
+    </li>
+  </ul>
+  <div><img src='/assets/circle_plus.png' id="new-list"> </div>
+  <br>
+  <p><%= button_to 'Send Reminder', { action: :send_reminder} , id: "send-reminder"  %></p>
+</section>
+<section id="todo_items">
+  <h3>Editing TodoList</h3>
+  <%= render 'form' %>
+  <br>
+  <%= link_to 'Cancel', todo_lists_path, id: "cancel" %>
+  <%= button_to 'Delete TodoList', @todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list", class: "danger" %> </br>
+</section>
 
-<%= render 'form' %>
 
-<br>
-<%= link_to 'Cancel', todo_lists_path, id: "cancel" %>
-<%= button_to 'Delete TodoList', @todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list", class: "danger" %> </br>
+
+
+

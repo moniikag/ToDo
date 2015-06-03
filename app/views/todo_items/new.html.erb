@@ -1,7 +1,21 @@
-<div class="todo_item_form">
-  <h1><%= @todo_list.title %> - Add Todo List Item</h1>
+<section id="todo_lists">
+  <ul id="todo_lists">
+    <li>
+      <%= link_to "#{@todo_list.title}", todo_list_path(@todo_list) %>
+      <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(@todo_list), class: "edit-todo-list" %>
+    </li>
+  </ul>
+</section>
+<section id="todo_items">
+  <div class="todo_item_form">
+    <h1><%= @todo_list.title %> - Add Todo List Item</h1>
+    <%= form_for [@todo_list, @todo_item] do |form| %>
+      <%= render partial: form %>
+   <% end %>
+  </div>
+</section>
 
-  <%= form_for [@todo_list, @todo_item] do |form| %>
-    <%= render partial: form %>
-  <% end %>
-</div>
+
+
+
+

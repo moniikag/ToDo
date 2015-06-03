@@ -1,13 +1,5 @@
-<table id="table1">
-  <thead>
-    <th width="40%"></th>
-    <th width="60%"></th>
-  </thead>
-  <tbody>
-    <td id="todo_lists" valign="top">
 
-
-
+<section id="todo_lists">
   <ul id="todo_lists">
     <% @todo_lists.each do |todo_list| %>
       <li id="todo_list_<%= todo_list.id %>">
@@ -21,22 +13,12 @@
         <%= f.submit "Add new TodoList", class: "submit-in-list" %>
       <% end %>
     </li>
-
   </ul>
 
   <div><img src='assets/circle_plus.png' id="new-list"> </div>
   <br>
 
-
   <p><%= button_to 'Send Reminder', { action: :send_reminder} , id: "send-reminder"  %></p>
-    </td>
-
-
-
-    <td id="todo_items" valign="top">
-
-    </td>
-    </tbody>
-
-
-</table>
+</section>
+<section id="todo_items">
+</section>
