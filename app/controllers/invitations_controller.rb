@@ -14,10 +14,10 @@ class InvitationsController < ApplicationController
     if @invitation.save
       UserMailer.invitation(@invitation, current_user).deliver
       flash[:success] = "Invitation was successfully sent. User now needs to confirm access to your TodoList"
-      redirect_to todo_list_todo_items_path(@todo_list)
     else
-      render action: :new
+      flash[:success] = "There was a problem sending your invitation."
     end
+    redirect_to todo_list_path(@todo_list)
   end
 
   def confirm #invited user accepts invitation to todo list

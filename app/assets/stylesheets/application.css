@@ -90,6 +90,17 @@ a {
   display: none;
 }
 
+
+td#todo_lists {
+  border-right: solid black;
+  background-color: #ccc;
+}
+
+table#table1 {
+  width: 100%;
+  min-height: 500px;
+}
+
 /* TODO LISTS */
 
 #title {
@@ -101,7 +112,7 @@ a {
 ul#todo_lists li {
   list-style: none;
   font-size: 20px;
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px black;
   min-height: 40px;
 }
 
@@ -119,11 +130,24 @@ ul#todo_lists li:hover .edit-todo-list {
   opacity: 1;
 }
 
-#new-item, #new-list, #delete-todo-item, #delete-todo-list, #new-invitation {
+#new-item, #delete-todo-item, #delete-todo-list, #new-invitation {
   float: right;
 }
 
+#send-reminder {
+  display: none;
+}
+
+#new-list {
+  float: left;
+  margin-left: 40px;
+}
+
 /* TODO ITEMS */
+
+div#title {
+  margin-left: 40px;
+}
 
 ul#todo_items li {
   list-style: none;
@@ -151,7 +175,7 @@ div.urgent {
 }
 
 div.alert {
-  color: blue;
+  color: #ccc;
 }
 
 div#show-completed {
@@ -201,4 +225,31 @@ input[type=checkbox]:checked + label:before {
   background:url('/assets/tag-tagged-green.png');
   background-size: 20px 20px;
 }
+
+/* INVITATION IN LIST#SHOW */
+
+div#new-invitation {
+  display: block;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-family: arial;
+}
+
+div#invitation-form {
+  float: right;
+}
+
+input#invitation_invited_user_email {
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+
 

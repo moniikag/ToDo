@@ -1,0 +1,9 @@
+ <div id="new-invitation">Invite another User to this TodoList</div>
+  <br><br>
+
+<div id="invitation-form" class="invisible">
+  <%= form_for [@todo_list, Invitation.new] do |f| %>
+    <%= f.text_field :invited_user_email, placeholder: "email@example.com" %>
+    <%= f.submit "Invite user", class: 'invisible', id: 'send-invitation' %>
+  <% end %>
+</div>

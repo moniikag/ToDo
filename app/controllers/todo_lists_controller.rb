@@ -15,14 +15,16 @@ class TodoListsController < ApplicationController
     authorize TodoList
     @todo_list = current_user.todo_lists.new(permitted_attributes(TodoList.new))
     if @todo_list.save
-      redirect_to @todo_list, notice: 'Todo list was successfully created.'
+      redirect_to @todo_list
     else
       render action: 'new'
     end
   end
 
   def show
-    redirect_to todo_list_todo_items_path(@todo_list)
+    @todo_lists = policy_scope(TodoList)
+    @todo_items_complete = @todo_list.todo_items.complete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+    @todo_items_incomplete = @todo_list.todo_items.incomplete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
   def send_reminder

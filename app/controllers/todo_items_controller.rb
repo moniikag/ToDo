@@ -14,13 +14,10 @@ class TodoItemsController < ApplicationController
 
   def create
     @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
-    if @todo_item.save
-      flash[:success] = "Added todo list item."
-      redirect_to todo_list_todo_items_path
-    else
+    unless @todo_item.save
       flash[:error] = "There was a problem adding that todo list item."
-      render action: :new
     end
+    redirect_to todo_list_path(@todo_list)
   end
 
   def show
@@ -55,7 +52,7 @@ class TodoItemsController < ApplicationController
     else
       flash[:error] = "Todo list item could not be deleted."
     end
-    redirect_to todo_list_todo_items_path
+    redirect_to todo_list_path(@todo_list)
   end
 
   private

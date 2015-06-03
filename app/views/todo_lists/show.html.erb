@@ -24,9 +24,8 @@
 
   </ul>
 
-  <div><img src='assets/circle_plus.png' id="new-list"> </div>
+  <div><img src='/assets/circle_plus.png' id="new-list"> </div>
   <br>
-
 
   <p><%= button_to 'Send Reminder', { action: :send_reminder} , id: "send-reminder"  %></p>
     </td>
@@ -34,6 +33,10 @@
 
 
     <td id="todo_items" valign="top">
+
+    <%= render :partial => "todo_items" %>
+    <%= render :partial => "invite_to_todo_list" %>
+
 
     </td>
     </tbody>
