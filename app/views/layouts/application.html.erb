@@ -9,6 +9,7 @@
 
 <body>
   <div id='wraper'>
+
     <header>
       <div id="nav">
         <ul>
@@ -22,9 +23,6 @@
         </ul>
       </div></br>
       <h2><i><%= link_to "TodoListMVC", root_path %></i></h2>
-    </header>
-
-    <section id='main'>
       <div id="flash-messages">
         <% flash.each do |type, message| %>
           <div class="alert flash <%= type %>">
@@ -32,17 +30,15 @@
           </div>
         <% end %>
       </div>
+    </header>
 
+    <section id='main'>
       <%= yield %>
-
-    </section>
-    <br><br>
+    </section><br><br>
 
     <footer>
       <i> page made by mon </i>
     </footer>
-
-
 
   </div>
 </body>

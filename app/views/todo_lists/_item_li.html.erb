@@ -5,15 +5,44 @@
   </div>
 
   <%= link_to todo_item.content, todo_list_todo_item_path(@todo_list, todo_item) %>
-  <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_todo_item_path(@todo_list, todo_item), class: "edit" %></br>
-  <%= link_to "dialog", "#item-dialog", class: "dialog" %></br>
-
+    <%= link_to image_tag("glyphicons_edit.png"), "#edit-item-dialog", class: "edit" %>
+    <%= link_to image_tag("eye_open.png"), "#show-item-dialog", class: "show" %></br>
   <div class="deadline <%= 'urgent' if todo_item.urgent? %>">
     <% if todo_item.deadline.present? %>
       <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
     <% end %>
   </div>
 
+  <div id="edit-item-dialog" class="invisible" title="Editing TodoItem" >
+    <%= form_for [@todo_list, todo_item] do |form| %>
+      Content <%= form.text_field :content %><br><br>
+      Deadline <%= form.datetime_select :deadline, :default => 3.days.from_now %><br><br>
+      Tags <%= form.text_field :tag_list %><br><br>
+      <%= form.submit "Save", id: "save-todo-item"  %>
+    <% end %>
+    <%= button_to 'Delete TodoItem', todo_list_todo_item_path(todo_item.todo_list_id, todo_item), method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-item", class: "danger" %>
+  </div>
+
+  <div id="show-item-dialog" class="invisible" >
+    <p> TodoItem: <%= todo_item.content %> </p>
+    <p>
+      Deadline:
+      <% if todo_item.deadline.present? %>
+        <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
+      <% else %>
+        -
+      <% end %>
+    </p>
+    <p>
+      Tags:
+      <% unless todo_item.tag_list.blank? %>
+        <%= todo_item.tag_list %>
+      <% else %>
+        -
+      <% end %>
+    </p>
+    <%= button_to 'Delete TodoItem', todo_list_todo_item_path(todo_item.todo_list_id, todo_item), method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-item", class: "danger" %> </br>
+  </div>
 </li>
 
 

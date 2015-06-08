@@ -30,5 +30,25 @@ $(document).ready(function() {
     $('#form-for-item').removeClass("invisible");
   });
 
+  // $('.show').click(function() {
+  //   var parent = $(this).parent("li");
+  //   var $show = $("#show-item-dialog", parent)
+  //     .dialog({
+  //       autoOpen: false,
+  //       title: "TodoItem"
+  //     });
+  //   $show.dialog('open');
+  //   return false;
+  // });
+
+  $('.show').click(function() {
+    var parent = $(this).parent("li");
+    $("#show-item-dialog", parent).dialog();
+  });
+
+  $('.edit').click(function() {
+    var parent = $(this).parent("li");
+    $("#edit-item-dialog", parent).dialog({minWidth: 400});
+  })
 });
 

@@ -29,7 +29,7 @@ class TodoItemsController < ApplicationController
   def update
     if @todo_item.update_attributes(permitted_attributes(@todo_item))
       flash[:success] = "Updated todo list item."
-      redirect_to todo_list_todo_items_path
+      redirect_to todo_list_path(@todo_item.todo_list_id)
     else
       flash[:error] = "That todo item could not be saved."
       render action: :edit

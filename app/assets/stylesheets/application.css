@@ -9,7 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require jquery-ui
+ *= require jquery-ui/dialog
  *= require_tree .
  */
 
@@ -90,13 +90,13 @@ a {
   margin: 10px 0 0 0;
 }
 
-.edit {
+li .edit, li .show {
   float: right;
   display:none;
 }
 
-li:hover .edit {
-  display: inline-block;
+li:hover .edit, li:hover .show {
+  display: inline;
 }
 
 /* SECTIONS */
@@ -257,6 +257,10 @@ input#invitation_invited_user_email {
   border-radius: 5px;
 }
 
+/* dialogs */
+div#edit-item-dialog {
+  min-width: 800px;
+}
 
 
 
