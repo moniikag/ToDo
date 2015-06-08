@@ -20,10 +20,15 @@ $(document).ready(function() {
 
   $("#new-list").click(function() {
     $("#new-list-form").toggleClass("invisible");
-    $("#new-list").toggleClass("invisible");
-  })
+  });
 
   $("#new-invitation").click(function() {
     $("#invitation-form").toggleClass("invisible");
-  })
+  });
+
+  $('#form-for-item').parent().click(function() {
+    $('#form-for-item').removeClass("invisible");
+  });
+
 });
+

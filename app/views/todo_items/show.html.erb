@@ -1,13 +1,14 @@
 <section id="todo_lists">
-  <ul id="todo_lists">
+  <ul>
     <li>
       <%= link_to "#{@todo_list.title}", todo_list_path(@todo_list) %>
-      <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(@todo_list), class: "edit-todo-list" %>
+      <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(@todo_list), class: "edit" %>
     </li>
   </ul>
 </section>
+
 <section id="todo_items">
-  <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_todo_item_path(@todo_list, @todo_item), class: "edit-todo-item" %></br>
+  <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_todo_item_path(@todo_list, @todo_item), id: "edit-todo-item" %><br>
   <p> TodoItem: <%= @todo_item.content %> </p>
   <p>
     Deadline:

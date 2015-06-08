@@ -16,8 +16,6 @@ body {
   background: url('/assets/background6.jpg') no-repeat center center fixed;
 }
 
-
-
 div#wraper {
   width: 800px;
   background: white;
@@ -91,33 +89,40 @@ a {
   margin: 10px 0 0 0;
 }
 
-.submit-in-list {
-  display: none;
+.edit {
+  float: right;
+  display:none;
+}
+
+li:hover .edit {
+  display: inline-block;
 }
 
 /* SECTIONS */
 
 section#main {
   display: table;
+  height: 100%;
   width: 100%;
   border: solid #5e5e5e 1px;
   border-radius: 10px;
 }
 
 section#todo_lists {
-  width: 40%;
   display: table-cell;
-  float: left;
+  height: 100%;
+  width: 40%;
   border-right: solid #5e5e5e;
   background-color: #e5e5e5;
   border-radius: 10px;
   padding-right: 10px;
+  position: relative;
   }
 
 section#todo_items {
-  width: 50%;
   display: table-cell;
-  float: right;
+  height: 100%;
+  width: 60%;
   padding: 20px 15px;
 }
 
@@ -129,25 +134,17 @@ section#todo_items {
   font-family: Lucida Console;
 }
 
-ul#todo_lists li {
+section#todo_lists li {
+  margin-left: -20px;
   list-style: none;
   font-size: 20px;
   border-bottom: solid 1px #7a7a7a;
   min-height: 40px;
 }
 
-ul#todo_lists li a {
+section#todo_lists li a {
   text-decoration: none;
   color: black;
-}
-
-ul#todo_lists .edit-todo-list {
-  float: right;
-  opacity: 0;
-}
-
-ul#todo_lists li:hover .edit-todo-list {
-  opacity: 1;
 }
 
 #new-item, #delete-todo-item, #delete-todo-list, #new-invitation {
@@ -158,9 +155,11 @@ ul#todo_lists li:hover .edit-todo-list {
   display: none;
 }
 
-#new-list {
+div#new-list {
   float: left;
-  margin-left: 40px;
+  margin-left: 15px;
+  position: absolute;
+  bottom: 10px;
 }
 
 /* TODO ITEMS */
@@ -169,20 +168,16 @@ div#title {
   margin-left: 40px;
 }
 
-ul#todo_items li {
+section#todo_items li {
   list-style: none;
   font-size: 20px;
   border-bottom: solid 1px #ccc;
   min-height: 40px;
 }
 
-ul#todo_items li a {
+section#todo_items li a {
   text-decoration: none;
   color: black;
-}
-
-.edit-todo-item {
-  float: right;
 }
 
 div.deadline {
@@ -203,17 +198,8 @@ div#show-completed {
   color:green;
 }
 
-ul#todo_items .edit-todo-item {
+#edit-todo-item {
   float: right;
-  display:none;
-}
-
-ul#todo_items li:hover .edit-todo-item {
-  display: inline-block;
-}
-
-td#edit-todo-item, td#edit-todo-list {
-  padding: 0 20px;
 }
 
 /* checkboxes */
