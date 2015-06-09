@@ -10,18 +10,20 @@
  *
  *= require_self
  *= require jquery-ui/dialog
+ *= require font-awesome
  *= require_tree .
  */
 
 body {
   background: url('/assets/background6.jpg') no-repeat center center fixed;
+  font-family: helvetica;
 }
 
 div#wraper {
-  width: 800px;
+  width: 600px;
   background: white;
-  padding: 15px;
   margin: 40px auto;
+  border-radius: 10px;
 }
 
 header {
@@ -41,11 +43,6 @@ div#nav ul li {
 #logout {
   max-height: 18px;
   max-width: 18px;
-}
-
-#flash-messages {
-  padding-top: 3px;
-  padding-left: 10px;
 }
 
 footer {
@@ -90,13 +87,19 @@ a {
   margin: 10px 0 0 0;
 }
 
-li .edit, li .show {
+li .edit, li .show, li .share {
   float: right;
   display:none;
 }
 
-li:hover .edit, li:hover .show {
+li:hover .edit, li:hover .show, li:hover .share {
   display: inline;
+}
+
+.share {
+  max-width: 20px;
+  max-height: 20px;
+  margin-right: 2px;
 }
 
 /* SECTIONS */
@@ -104,46 +107,49 @@ li:hover .edit, li:hover .show {
 section#main {
   display: table;
   height: 100%;
-  width: 100%;
-  border: solid #5e5e5e 1px;
-  border-radius: 10px;
+  width:inherit;
 }
 
 section#todo_lists {
   display: table-cell;
   height: 100%;
-  width: 40%;
-  border-right: solid #5e5e5e;
-  background-color: #e5e5e5;
-  border-radius: 10px;
-  padding-right: 10px;
+  width: 185px;
+  background-color: #e5e6e8;
   position: relative;
-  }
+  border-right: solid #dbdbdb 1px;
+  border-top-left-radius:10px;
+  border-bottom-left-radius:10px;
+}
 
 section#todo_items {
   display: table-cell;
   height: 100%;
-  width: 60%;
   padding: 20px 15px;
 }
 
 /* TODO LISTS */
 
-#title {
-  color: green;
-  font-size: 20px;
-  font-family: Lucida Console;
+section#todo_lists ul {
+  width: auto;
+  -webkit-padding-start: 0;
 }
 
 section#todo_lists li {
-  margin-left: -20px;
+  padding-left: 20px;
   list-style: none;
-  font-size: 20px;
-  border-bottom: solid 1px #7a7a7a;
-  min-height: 40px;
+  height: 28px;
+}
+
+section#todo_lists li#selected {
+  background-color: #205ec1;
+}
+section#todo_lists li#selected a {
+  font-weight: 100;
+  color: white;
 }
 
 section#todo_lists li a {
+  font-size: 13px;
   text-decoration: none;
   color: black;
 }
@@ -157,23 +163,42 @@ section#todo_lists li a {
 }
 
 div#new-list {
+  font-size: 13px;
+  font-weight: normal;
+  vertical-align: middle;
   float: left;
   margin-left: 15px;
   position: absolute;
   bottom: 10px;
 }
 
+div#new-list img {
+  height: 15px;
+  width:15px;
+}
+
 /* TODO ITEMS */
 
 div#title {
-  margin-left: 40px;
+  margin-left: 10px;
+  border-bottom: solid 1px #e5e6e8;
+  padding-bottom: 5px;
+}
+
+#title a {
+  color: orange;
+  font-size: 28px;
 }
 
 section#todo_items li {
   list-style: none;
-  font-size: 20px;
-  border-bottom: solid 1px #ccc;
-  min-height: 40px;
+  font-size: 13px;
+  border-bottom: solid 1px #e5e6e8;
+  height: 35px;
+}
+
+section#todo_items ul {
+  margin-left: -30px;
 }
 
 section#todo_items li a {
@@ -182,21 +207,23 @@ section#todo_items li a {
 }
 
 div.deadline {
-  font-size: 15px;
+  font-size: 13px;
   margin-left: 30px;
 }
 
 div.urgent {
-  color: red;
+  color: orange;
 }
 
 div.alert {
-  color: #7a7a7a;
+  color: #ccc;
 }
 
 div#show-completed {
-  margin-bottom: 10px;
-  color:green;
+  font-size: 14px;
+  max-height: 15px;
+  border-bottom: solid 1px #e5e6e8;
+  padding-bottom: 8px;
 }
 
 #edit-todo-item {
