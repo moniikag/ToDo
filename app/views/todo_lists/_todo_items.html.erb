@@ -1,10 +1,10 @@
 <div id="title">
 <%= link_to "#{@todo_list.title}", edit_todo_list_path(@todo_list) %>
-<%= link_to image_tag("circle_plus.png"), new_todo_list_todo_item_path(@todo_list), id:"new-item" %>
+<%= link_to raw("<i class='fa fa-plus-square-o' id='new-item'></i>"), new_todo_list_todo_item_path(@todo_list) %>
 </div>
 
 <ul>
-  <div id='show-completed'> Completed: <%= @todo_items_complete.count %></div>
+  <div id='show-completed'><%= @todo_items_complete.count %> Completed</div>
   <div id="completed" class='invisible'>
     <% @todo_items_complete.each do |todo_item| %>
       <%= render :partial => "item_li", locals: { todo_item: todo_item} %>
@@ -16,7 +16,7 @@
         <%= render :partial => "item_li", locals: { todo_item: todo_item} %>
     <% end %>
 
-    <li>
+    <li id="for-item">
       <div id="form-for-item" class="invisible">
         <%= form_for [@todo_list, TodoItem.new] do |f| %>
           <%= f.text_field :content, class: "text-field-in-list" %>

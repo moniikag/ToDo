@@ -40,6 +40,10 @@ div#nav ul li {
   font-size: 15px;
 }
 
+div#nav ul li a {
+  color: #ccc;
+}
+
 #logout {
   max-height: 18px;
   max-width: 18px;
@@ -84,12 +88,14 @@ a {
   border-radius: 5px;
   font-size: 15px;
   padding: 2px;
-  margin: 10px 0 0 0;
 }
 
 li .edit, li .show, li .share {
   float: right;
   display:none;
+  font-size: 20px;
+  margin-left: 2px;
+  color: #6a6b6d;
 }
 
 li:hover .edit, li:hover .show, li:hover .share {
@@ -131,19 +137,23 @@ section#todo_items {
 
 section#todo_lists ul {
   width: auto;
+  padding-left: 0;
   -webkit-padding-start: 0;
 }
 
 section#todo_lists li {
+  padding-top: 4px;
   padding-left: 20px;
   list-style: none;
-  height: 28px;
+  height: 22px;
 }
 
 section#todo_lists li#selected {
   background-color: #205ec1;
 }
-section#todo_lists li#selected a {
+section#todo_lists li#selected a,
+section#todo_lists li#selected .edit,
+section#todo_lists li#selected .share {
   font-weight: 100;
   color: white;
 }
@@ -152,6 +162,10 @@ section#todo_lists li a {
   font-size: 13px;
   text-decoration: none;
   color: black;
+}
+
+section#todo_lists li input#todo_list_title {
+  font-size: 13px;
 }
 
 #new-item, #delete-todo-item, #delete-todo-list, #new-invitation {
@@ -164,17 +178,27 @@ section#todo_lists li a {
 
 div#new-list {
   font-size: 13px;
-  font-weight: normal;
-  vertical-align: middle;
   float: left;
   margin-left: 15px;
   position: absolute;
-  bottom: 10px;
+  bottom: 15px;
 }
 
-div#new-list img {
-  height: 15px;
-  width:15px;
+div#new-list i.fa-plus-circle {
+  color: #6a6b6d;
+  font-size: 18px;
+}
+
+i#new-item {
+  color: #6a6b6d;
+  font-size: 30px;
+}
+
+div#add-list {
+  vertical-align: top;
+  display: inline;
+  bottom: -2px;
+  position: relative;
 }
 
 /* TODO ITEMS */
@@ -186,19 +210,31 @@ div#title {
 }
 
 #title a {
-  color: orange;
+  color: #f49630;
   font-size: 28px;
 }
 
 section#todo_items li {
   list-style: none;
   font-size: 13px;
+  height: 35px;
+}
+
+
+section#todo_items li#for-item {
   border-bottom: solid 1px #e5e6e8;
   height: 35px;
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+section#todo_items div#form-for-item {
+  padding-top: 7px;
 }
 
 section#todo_items ul {
   margin-left: -30px;
+  -webkit-margin-before: 0;
 }
 
 section#todo_items li a {
@@ -206,13 +242,47 @@ section#todo_items li a {
   color: black;
 }
 
-div.deadline {
+section#todo_items li div.for-checkbox {
+  display:inline-block;
+  /*margin: 5px 10px 5px 0;*/
+  /*padding-top: 5px;*/
+  padding: 5px 0px 5px 0;
+  margin-bottom: 10px;
+}
+
+section#todo_items li div.for-item {
+  display:inline-block;
+  vertical-align: top;
+  margin-top: 10px;
+}
+
+section#todo_items li div.with-deadline {
+  padding-top: 3px;
+  vertical-align: initial;
+  margin-top: 0;
+}
+
+section#todo_items li div.for-glyphicons {
+  display:inline-block;
+  float: right;
+  padding-top: 8px;
+}
+
+section#todo_items li div.border {
+  display: inline-block;
+  vertical-align:top;
+  width: 90%;
+  margin-left: 0px;
+  height:100%;
+  border-bottom: solid 1px #e5e6e8;
+}
+
+section#todo_items li input#todo_item_content {
   font-size: 13px;
-  margin-left: 30px;
 }
 
 div.urgent {
-  color: orange;
+  color: #f49630;
 }
 
 div.alert {
@@ -221,9 +291,9 @@ div.alert {
 
 div#show-completed {
   font-size: 14px;
-  max-height: 15px;
+  height: 25px;
   border-bottom: solid 1px #e5e6e8;
-  padding-bottom: 8px;
+  -webkit-padding-before: 10px;
 }
 
 #edit-todo-item {
@@ -241,27 +311,20 @@ input[type=checkbox] + label {
   width: 0px;
   height: 0px;
   float: left;
-  margin: 5px 30px 5px 0;
-}
-
-input[type=checkbox]:checked + label {
-  display: block;
-  float: left;
-  margin: 5px 30px 5px 0;
+  margin: 5px 25px 5px 0;
 }
 
 input[type=checkbox] + label:before {
   display: block;
-  height: 20px;
-  width: 20px;
-  background: url('/assets/tag-not-tagged.png');
-  background-size: 20px 20px;
+  height: 15px;
+  width: 15px;
+  border: solid #aaa 1px;
+  border-radius: 50%;
   content: ""
 }
 
 input[type=checkbox]:checked + label:before {
-  background:url('/assets/tag-tagged-green.png');
-  background-size: 20px 20px;
+  background-color: #f49630;
 }
 
 /* INVITATION IN LIST#SHOW */

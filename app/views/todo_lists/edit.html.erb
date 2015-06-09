@@ -2,7 +2,7 @@
   <ul>
     <li>
       <%= link_to "#{@todo_list.title}", todo_list_path(@todo_list) %>
-      <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(@todo_list), class: "edit" %>
+      <%= link_to raw("<i class='fa fa-pencil-square-o edit'></i>"), edit_todo_list_path(@todo_list) %>
     </li>
   </ul>
 </section>

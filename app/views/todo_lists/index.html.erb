@@ -3,7 +3,8 @@
     <% @todo_lists.each do |todo_list| %>
       <li>
         <%= link_to todo_list.title, todo_list_path(todo_list) %>
-        <%= link_to image_tag("glyphicons_edit.png"), edit_todo_list_path(todo_list), class: "edit" %>
+        <%= link_to raw("<i class='fa fa-pencil-square-o edit'></i>"), edit_todo_list_path(todo_list) %>
+        <i class="fa fa-rss share"></i>
       </li>
     <% end %>
     <li class='invisible' id="new-list-form">
@@ -14,7 +15,9 @@
     </li>
   </ul><br><br>
 
-  <div id="new-list"><img src='assets/circle_plus.png'> </div>
+  <div id="new-list">
+    <i class="fa fa-plus-circle"></i><div id="add-list"> Add List</div>
+  </div>
 </section>
 
 <section id="todo_items">

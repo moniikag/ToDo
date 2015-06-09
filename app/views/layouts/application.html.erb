@@ -8,38 +8,31 @@
 </head>
 
 <body>
-  <div id='wraper'>
-
-    <header>
-      <div id="nav">
-        <ul>
-          <% if current_user %>
-            <li><%= link_to link_to image_tag("logout.png", {id:"logout"}), user_sessions_path, method: :delete, id: "log-out-link" %></li>
-            <li><%= link_to "#{current_user.email}", edit_user_path(current_user), id: "edit-user-link" %></li>
-          <% else %>
-            <li><%= link_to "Sign Up", new_user_path, id: "sign-up-link" %></li>
-            <li><%= link_to "Log In", new_user_sessions_path, id: "log-in-link" %></li>
-          <% end %>
-        </ul>
-      </div></br>
-      <h2><i><%= link_to "TodoListMVC", root_path %></i></h2>
-      <div id="flash-messages">
-        <% flash.each do |type, message| %>
-          <div class="alert flash <%= type %>">
-            <%= message %>
-          </div>
+  <header>
+    <div id="nav">
+      <ul>
+        <% if current_user %>
+          <li><%= link_to raw("<i class='fa fa-sign-out'></i>"), user_sessions_path, method: :delete, id: "log-out-link" %></li>
+          <li><%= link_to "#{current_user.email}", edit_user_path(current_user), id: "edit-user-link" %></li>
+        <% else %>
+          <li><%= link_to "Sign Up", new_user_path, id: "sign-up-link" %></li>
+          <li><%= link_to "Log In", new_user_sessions_path, id: "log-in-link" %></li>
         <% end %>
-      </div>
-    </header>
+      </ul>
+    </div></br>
+    <div id="flash-messages">
+      <% flash.each do |type, message| %>
+        <div class="alert flash <%= type %>">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
+  </header>
 
+  <div id='wraper'>
     <section id='main'>
       <%= yield %>
-    </section><br><br>
-
-    <footer>
-      <i> page made by mon </i>
-    </footer>
-
+    </section>
   </div>
 </body>
 </html>

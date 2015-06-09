@@ -11,7 +11,7 @@ $(document).ready(function() {
       $("#incomplete").prepend(li);
     };
     var count = $("#completed li").length;
-    $("#show-completed").html('Completed: ' + count);
+    $("#show-completed").html(count + ' Completed');
   });
 
   $("#show-completed").click(function() {
@@ -30,6 +30,33 @@ $(document).ready(function() {
     $('#form-for-item').removeClass("invisible");
   });
 
+
+
+  $('.edit').click(function() {
+    console.log('edit');
+    var parent = $(this).parent("li");
+    $("#edit-item-dialog", parent).dialog({minWidth: 400});
+  })
+
+  // $('.edit').click(function() {
+  //   var parent = $(this).parent("li");
+  //   $("#edit-item-dialog", parent).dialog(open);
+  //   return false;
+  // })
+
+  $('.show').click(function() {
+    console.log('show');
+    var parent = $(this).parent("li");
+    $("#show-item-dialog", parent).dialog();
+  });
+
+  // $('.show').click(function() {
+  //   var parent = $(this).parent("li");
+  //   $("#show-item-dialog", parent).dialog({
+  //     modal: true,
+  //   }).open();
+  // });
+
   // $('.show').click(function() {
   //   var parent = $(this).parent("li");
   //   var $show = $("#show-item-dialog", parent)
@@ -41,14 +68,6 @@ $(document).ready(function() {
   //   return false;
   // });
 
-  $('.show').click(function() {
-    var parent = $(this).parent("li");
-    $("#show-item-dialog", parent).dialog();
-  });
-
-  $('.edit').click(function() {
-    var parent = $(this).parent("li");
-    $("#edit-item-dialog", parent).dialog({minWidth: 400});
-  })
 });
 
+      // buttons: { Close: function() {$("#show-item-dialog", parent).dialog("destroy");}}
