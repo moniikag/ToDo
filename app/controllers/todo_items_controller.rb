@@ -1,4 +1,5 @@
 class TodoItemsController < ApplicationController
+  include TodoItemsHelper
 
   before_action :get_resources, except: [:complete]
 
@@ -27,6 +28,7 @@ class TodoItemsController < ApplicationController
   end
 
   def update
+    @todo_item.deadline = deadline_from_form unless deadline_from_form==nil
     if @todo_item.update_attributes(permitted_attributes(@todo_item))
       flash[:success] = "Updated todo list item."
       redirect_to todo_list_path(@todo_item.todo_list_id)

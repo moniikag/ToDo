@@ -30,44 +30,16 @@ $(document).ready(function() {
     $('#form-for-item').removeClass("invisible");
   });
 
-
-
-  $('.edit').click(function() {
-    console.log('edit');
-    var parent = $(this).parent("li");
-    $("#edit-item-dialog", parent).dialog({minWidth: 400});
-  })
-
-  // $('.edit').click(function() {
-  //   var parent = $(this).parent("li");
-  //   $("#edit-item-dialog", parent).dialog(open);
-  //   return false;
-  // })
-
   $('.show').click(function() {
     console.log('show');
-    var parent = $(this).parent("li");
-    $("#show-item-dialog", parent).dialog();
+    var parent = $(this).closest('li')
+    $(".details", parent).toggleClass("invisible");
   });
 
-  // $('.show').click(function() {
-  //   var parent = $(this).parent("li");
-  //   $("#show-item-dialog", parent).dialog({
-  //     modal: true,
-  //   }).open();
-  // });
-
-  // $('.show').click(function() {
-  //   var parent = $(this).parent("li");
-  //   var $show = $("#show-item-dialog", parent)
-  //     .dialog({
-  //       autoOpen: false,
-  //       title: "TodoItem"
-  //     });
-  //   $show.dialog('open');
-  //   return false;
-  // });
+  $(function() {
+    $('.datepicker').datepicker({
+      dateFormat: 'dd/mm/yy'
+    });
+  });
 
 });
-
-      // buttons: { Close: function() {$("#show-item-dialog", parent).dialog("destroy");}}

@@ -10,6 +10,7 @@
  *
  *= require_self
  *= require jquery-ui/dialog
+ *= require jquery-ui/datepicker
  *= require font-awesome
  *= require_tree .
  */
@@ -42,11 +43,6 @@ div#nav ul li {
 
 div#nav ul li a {
   color: #ccc;
-}
-
-#logout {
-  max-height: 18px;
-  max-width: 18px;
 }
 
 footer {
@@ -91,21 +87,15 @@ a {
 }
 
 li .edit, li .show, li .share {
-  float: right;
   display:none;
-  font-size: 20px;
+  float: right;
   margin-left: 2px;
+  font-size: 20px;
   color: #6a6b6d;
 }
 
 li:hover .edit, li:hover .show, li:hover .share {
   display: inline;
-}
-
-.share {
-  max-width: 20px;
-  max-height: 20px;
-  margin-right: 2px;
 }
 
 /* SECTIONS */
@@ -118,10 +108,10 @@ section#main {
 
 section#todo_lists {
   display: table-cell;
+  position: relative;
   height: 100%;
   width: 185px;
   background-color: #e5e6e8;
-  position: relative;
   border-right: solid #dbdbdb 1px;
   border-top-left-radius:10px;
   border-bottom-left-radius:10px;
@@ -142,26 +132,27 @@ section#todo_lists ul {
 }
 
 section#todo_lists li {
-  padding-top: 4px;
-  padding-left: 20px;
   list-style: none;
   height: 22px;
+  padding-top: 4px;
+  padding-left: 20px;
+}
+
+section#todo_lists li a {
+  /*text-decoration: none;*/
+  font-size: 13px;
+  color: black;
 }
 
 section#todo_lists li#selected {
   background-color: #205ec1;
 }
+
 section#todo_lists li#selected a,
 section#todo_lists li#selected .edit,
 section#todo_lists li#selected .share {
   font-weight: 100;
   color: white;
-}
-
-section#todo_lists li a {
-  font-size: 13px;
-  text-decoration: none;
-  color: black;
 }
 
 section#todo_lists li input#todo_list_title {
@@ -244,8 +235,6 @@ section#todo_items li a {
 
 section#todo_items li div.for-checkbox {
   display:inline-block;
-  /*margin: 5px 10px 5px 0;*/
-  /*padding-top: 5px;*/
   padding: 5px 0px 5px 0;
   margin-bottom: 10px;
 }
@@ -298,6 +287,74 @@ div#show-completed {
 
 #edit-todo-item {
   float: right;
+}
+
+/* ITEM DETAILS */
+
+div.details {
+  border-radius: 5px;
+  margin-left: 394px;
+  position: absolute;
+  background-color: #ccc;
+  padding: 10px;
+  margin-top: -70px;
+  max-width: 240px;
+}
+
+div.details:before {
+  content:"";
+  position: absolute;
+  right: 100%;
+  top: 80px;
+  border-top: 10px solid transparent;
+  border-right: 13px solid #ccc;
+  border-bottom: 10px solid transparent;
+}
+
+div.details div.content {
+  width: 90%;
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: solid 1px #9a9a9a;
+  margin-bottom: 10px;
+  padding: 5px 5px 10px 5px;
+}
+
+div.details #save-todo-item {
+  float: right;
+  width: 70px;
+  max-height: 14px;
+  margin: 20px 4px 4px 4px;
+}
+
+td.labels {
+  text-align: right;
+  padding-right: 5px;
+}
+
+div.details td input {
+  background-color: #ccc;
+  min-width: 10%;
+  outline-style: none;
+  border: none;
+  font-size: 13px;
+  padding-bottom: 2px;
+}
+
+div.details select {
+  background-color: #ccc;
+}
+
+div.details input.datepicker {
+  max-width: 70px;
+}
+
+div.details div.hour {
+  display: inline;
+  max-width: 100px;
+}
+div.details div.hour input{
+  max-width: 15px;
 }
 
 /* checkboxes */

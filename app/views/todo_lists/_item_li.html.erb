@@ -1,4 +1,27 @@
 <li class="<%= 'urgent' if todo_item.urgent?%>">
+  <div class='details invisible'>
+    <div class='content'><%= todo_item.content %> </div>
+    <%= form_for [@todo_list, todo_item] do |form| %>
+      <table>
+        <tr>
+          <td class='labels'>content</td>
+          <td><%= form.text_field :content %></td>
+        </tr>
+        <tr>
+          <td class='labels'>deadline</td>
+
+          <td><%= form.text_field :date, class: "datepicker", id: "datepicker_#{todo_item.id}", placeholder: "dd/mm/yy" %>
+          <div class='hour'><%= form.text_field :hour, placeholder: " h" %>:<%= form.text_field :minutes, placeholder: " m" %></td></div>
+        </tr>
+        <tr>
+          <td class='labels'>tags</td>
+          <td><%= form.text_field :tag_list %></td>
+        </tr>
+      </table>
+      <%= form.submit "Done", id: "save-todo-item"  %>
+    <% end %>
+  </div>
+
   <div class="for-checkbox">
     <%= check_box_tag "", todo_item.id, todo_item.completed?, class: "checkbox-completed", id: "checkbox-#{todo_item.id}" %>
     <label for="checkbox-<%= todo_item.id %>"></label>
@@ -9,48 +32,15 @@
       <%= link_to todo_item.content, todo_list_todo_item_path(@todo_list, todo_item) %>
       <div class="deadline <%= 'urgent' if todo_item.urgent? %>">
         <% if todo_item.deadline.present? %>
-          <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
+          <%= todo_item.deadline.strftime('%d/%m/%Y %H:%M') %>
         <% end %>
       </div>
     </div>
 
     <div class='for-glyphicons'>
-      <i class='fa fa-pencil-square-o edit'></i>
       <i class='fa fa-info-circle show'></i>
     </div>
   </div>
-
-  <div id="edit-item-dialog" class="invisible" title="Editing TodoItem">
-    <%= form_for [@todo_list, todo_item] do |form| %>
-      Content <%= form.text_field :content %><br><br>
-      Deadline <%= form.datetime_select :deadline, :default => 3.days.from_now %><br><br>
-      Tags <%= form.text_field :tag_list %><br><br>
-      <%= form.submit "Save", id: "save-todo-item"  %>
-    <% end %>
-    <%= button_to 'Delete TodoItem', todo_list_todo_item_path(todo_item.todo_list_id, todo_item), method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-item", class: "danger" %>
-  </div>
-
-  <div id="show-item-dialog" class="invisible" >
-    <p> TodoItem: <%= todo_item.content %> </p>
-    <p>
-      Deadline:
-      <% if todo_item.deadline.present? %>
-        <%= todo_item.deadline.strftime('%d-%m-%Y %H:%M') %>
-      <% else %>
-        -
-      <% end %>
-    </p>
-    <p>
-      Tags:
-      <% unless todo_item.tag_list.blank? %>
-        <%= todo_item.tag_list %>
-      <% else %>
-        -
-      <% end %>
-    </p>
-    <%= button_to 'Delete TodoItem', todo_list_todo_item_path(todo_item.todo_list_id, todo_item), method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-item", class: "danger" %> </br>
-  </div>
 </li>
-
 
 
