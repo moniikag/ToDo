@@ -291,7 +291,8 @@ div#show-completed {
 
 /* ITEM DETAILS */
 
-div.details {
+li div.details {
+  display: none;
   border-radius: 5px;
   margin-left: 394px;
   position: absolute;
@@ -301,7 +302,11 @@ div.details {
   max-width: 240px;
 }
 
-div.details:before {
+li.with-details div.details {
+  display: initial;
+}
+
+li div.details:before {
   content:"";
   position: absolute;
   right: 100%;
@@ -323,7 +328,7 @@ div.details div.content {
 div.details #save-todo-item {
   float: right;
   width: 70px;
-  max-height: 14px;
+  max-height: 20px;
   margin: 20px 4px 4px 4px;
 }
 
@@ -341,8 +346,8 @@ div.details td input {
   padding-bottom: 2px;
 }
 
-div.details select {
-  background-color: #ccc;
+div.details td input:focus {
+  background-color: white;
 }
 
 div.details input.datepicker {

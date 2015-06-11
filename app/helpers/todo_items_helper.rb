@@ -1,15 +1,16 @@
 module TodoItemsHelper
 
   def deadline_from_form
-    date = params[:todo_item][:date].split('/')
-    day = date[0]
-    month = date[1]
-    year = date[2]
+    date = Date.parse(params[:todo_item][:date])
+    day = date.day
+    month = date.month
+    year = date.year
     hour = params[:todo_item][:hour]
     minutes = params[:todo_item][:minutes]
-    deadline = Time.new(year, month, day, hour, minutes)+ 2.hours
+    deadline = Time.new(year, month, day, hour, minutes)
   rescue
     return nil
   end
 
 end
+

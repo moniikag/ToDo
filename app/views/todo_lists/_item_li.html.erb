@@ -1,7 +1,7 @@
 <li class="<%= 'urgent' if todo_item.urgent?%>">
-  <div class='details invisible'>
+  <div class='details'>
     <div class='content'><%= todo_item.content %> </div>
-    <%= form_for [@todo_list, todo_item] do |form| %>
+    <%= form_for [todo_item.todo_list, todo_item] do |form| %>
       <table>
         <tr>
           <td class='labels'>content</td>
@@ -29,7 +29,7 @@
 
   <div class="border">
     <div class="for-item <%= 'with-deadline' if todo_item.deadline.present? %>">
-      <%= link_to todo_item.content, todo_list_todo_item_path(@todo_list, todo_item) %>
+      <%= link_to todo_item.content, todo_list_todo_item_path(todo_item.todo_list, todo_item) %>
       <div class="deadline <%= 'urgent' if todo_item.urgent? %>">
         <% if todo_item.deadline.present? %>
           <%= todo_item.deadline.strftime('%d/%m/%Y %H:%M') %>

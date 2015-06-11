@@ -20,6 +20,7 @@ $(document).ready(function() {
 
   $("#new-list").click(function() {
     $("#new-list-form").toggleClass("invisible");
+    $("input#todo_list_title").focus();
   });
 
   $("#new-invitation").click(function() {
@@ -28,12 +29,18 @@ $(document).ready(function() {
 
   $('#form-for-item').parent().click(function() {
     $('#form-for-item').removeClass("invisible");
+    $('input#todo_item_content').focus();
   });
 
   $('.show').click(function() {
-    console.log('show');
     var parent = $(this).closest('li')
-    $(".details", parent).toggleClass("invisible");
+    if (parent.hasClass('with-details')) {
+      parent.removeClass('with-details');
+    }
+    else {
+      $('section#todo_items li').removeClass('with-details');
+      parent.addClass('with-details');
+    }
   });
 
   $(function() {
