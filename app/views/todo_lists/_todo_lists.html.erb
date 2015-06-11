@@ -7,7 +7,6 @@
   <% @todo_lists.each do |todo_list| %>
     <li id=<%="selected" if @todo_list && todo_list.id == @todo_list.id %>>
       <%= link_to todo_list.title, todo_list_path(todo_list) %>
-      <%= link_to raw("<i class='fa fa-pencil-square-o edit'></i>"), edit_todo_list_path(todo_list) %>
       <i class="fa fa-rss share"></i>
     </li>
   <% end %>

@@ -6,6 +6,17 @@ class TodoListsController < ApplicationController
     @todo_lists = policy_scope(TodoList)
   end
 
+  def search
+    @todo_lists = policy_scope(TodoList)
+    authorize TodoList
+    @search = params[:search].downcase
+
+    @todo_items = policy_scope(TodoList).flat_map(&:todo_items)
+      .select { |item| item.content.downcase.start_with?(@search)}
+      .map { |item| TodoItemPresenter.new(item) }
+      .group_by{ |item| item.todo_list }
+  end
+
   def new
     authorize TodoList
     @todo_list = current_user.todo_lists.new
@@ -23,8 +34,8 @@ class TodoListsController < ApplicationController
 
   def show
     @todo_lists = policy_scope(TodoList)
-    @todo_items_complete = @todo_list.todo_items.complete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
-    @todo_items_incomplete = @todo_list.todo_items.incomplete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+    @todo_items_complete = @todo_list.todo_items.complete.map { |todo_item| TodoItemPresenter.new(todo_item) }
+    @todo_items_incomplete = @todo_list.todo_items.incomplete.map { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
   def send_reminder

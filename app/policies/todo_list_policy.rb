@@ -15,6 +15,10 @@ class TodoListPolicy < ApplicationPolicy
     !!@user
   end
 
+  def search?
+    index?
+  end
+
   def new?
     !!@user
   end

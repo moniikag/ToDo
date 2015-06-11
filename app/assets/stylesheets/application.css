@@ -89,7 +89,7 @@ a {
 li .edit, li .show, li .share {
   display:none;
   float: right;
-  margin-left: 2px;
+  margin-right: 5px;
   font-size: 20px;
   color: #6a6b6d;
 }
@@ -207,10 +207,13 @@ div#title {
 
 section#todo_items li {
   list-style: none;
-  font-size: 13px;
+  font-size: 12px;
   height: 35px;
 }
 
+section#todo_items li.completed {
+  color: #8e8e8e;
+}
 
 section#todo_items li#for-item {
   border-bottom: solid 1px #e5e6e8;
@@ -267,11 +270,19 @@ section#todo_items li div.border {
 }
 
 section#todo_items li input#todo_item_content {
-  font-size: 13px;
+  font-size: 12px;
 }
 
-div.urgent {
+li div.deadline {
+  color: #8e8e8e;
+}
+
+li div.deadline.urgent {
   color: #f49630;
+}
+
+li.completed div.deadline {
+  color: #8e8e8e;
 }
 
 div.alert {
@@ -414,8 +425,32 @@ div#edit-item-dialog {
   min-width: 800px;
 }
 
+/* SEARCH  */
 
+#search-form {
+  padding: 0 15px;
+}
+#search-form input {
+  width: 100%;
+  padding: 2px;
+  background-color: #e2e0e0;
+  border: solid 1px #bfbfbf;
+  border-radius: 5px;
+}
 
+div#search-results {
+  font-size: 25px;
+  color: red;
+  margin-bottom: 10px;
+}
+
+div#title-in-search {
+  width: 98%;
+  color: #8e8e8e;
+  font-size: 12px;
+  padding-bottom: 4px;
+  border-bottom: solid 1px #e5e6e8 ;
+}
 
 
 
