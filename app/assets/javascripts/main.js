@@ -49,4 +49,19 @@ $(document).ready(function() {
     });
   });
 
+  $('.editable-title').editable(function(value, settings) {
+    var id = $('li#selected div.editable-title').attr('data-list-id');
+    $.ajax({
+      url:'./'+ id,
+      method:"PATCH",
+      data: { todo_list: { title: value } }
+    });
+    $("#title").html(value);
+    return(value);
+    }, {}
+  );
+
+
 });
+
+

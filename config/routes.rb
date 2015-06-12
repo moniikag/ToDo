@@ -16,6 +16,7 @@ Odot::Application.routes.draw do
     collection do
       post :send_reminder
       get :search
+      put :update_field
     end
 
     resources :todo_items do

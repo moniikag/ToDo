@@ -6,7 +6,8 @@
 <ul>
   <% @todo_lists.each do |todo_list| %>
     <li id=<%="selected" if @todo_list && todo_list.id == @todo_list.id %>>
-      <%= link_to todo_list.title, todo_list_path(todo_list) %>
+      <div class='list-title'><%= link_to todo_list.title, todo_list_path(todo_list) %></div>
+      <div class='editable-title' data-list-id=<%=todo_list.id%> ><%= todo_list.title %></div>
       <i class="fa fa-rss share"></i>
     </li>
   <% end %>

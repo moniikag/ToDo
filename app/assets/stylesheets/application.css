@@ -133,26 +133,51 @@ section#todo_lists ul {
 
 section#todo_lists li {
   list-style: none;
-  height: 22px;
-  padding-top: 4px;
+  padding: 2px 0;
   padding-left: 20px;
 }
 
+section#todo_lists li div.editable-title {
+  display: none;
+}
+
 section#todo_lists li a {
-  /*text-decoration: none;*/
-  font-size: 13px;
+  font-size: 12px;
   color: black;
+}
+
+section#todo_lists div.list-title {
+  display: inline;
+  margin-right: 20px;
 }
 
 section#todo_lists li#selected {
   background-color: #205ec1;
 }
 
-section#todo_lists li#selected a,
-section#todo_lists li#selected .edit,
 section#todo_lists li#selected .share {
-  font-weight: 100;
   color: white;
+}
+
+section#todo_lists li#selected a {
+  display: none;
+}
+
+section#todo_lists li#selected div.editable-title {
+  display: inline-block;
+  color: white;
+  font-size: 12px;
+  font-weight: 100;
+  width: 80%;
+  margin-right: 15px;
+  margin-left: -20px;
+  max-width: 70%
+}
+
+section#todo_lists li#selected div.editable-title input {
+  min-width: 100%;
+  margin: 0;
+  padding: 0 4px;
 }
 
 section#todo_lists li input#todo_list_title {
@@ -195,31 +220,33 @@ div#add-list {
 /* TODO ITEMS */
 
 div#title {
+  display: inline-block;
   margin-left: 10px;
-  border-bottom: solid 1px #e5e6e8;
   padding-bottom: 5px;
-}
-
-#title a {
   color: #f49630;
   font-size: 28px;
+  max-width: 85%;
+}
+div#title-plus-edit {
+  border-bottom: solid 1px #e5e6e8;
+  margin-right: 9px;
 }
 
 section#todo_items li {
   list-style: none;
   font-size: 12px;
-  height: 35px;
+  padding: 5px 0;
 }
 
 section#todo_items li.completed {
   color: #8e8e8e;
 }
 
-section#todo_items li#for-item {
-  border-bottom: solid 1px #e5e6e8;
-  height: 35px;
-  margin-left: 30px;
-  margin-right: 10px;
+section#todo_items li div.for-item {
+  display:inline-block;
+  vertical-align: top;
+  max-width: 90%;
+  padding: 5px 0;
 }
 
 section#todo_items div#form-for-item {
@@ -231,33 +258,20 @@ section#todo_items ul {
   -webkit-margin-before: 0;
 }
 
-section#todo_items li a {
-  text-decoration: none;
-  color: black;
-}
-
 section#todo_items li div.for-checkbox {
   display:inline-block;
-  padding: 5px 0px 5px 0;
+  /*padding: 5px 0px 5px 0;*/
   margin-bottom: 10px;
 }
 
-section#todo_items li div.for-item {
-  display:inline-block;
-  vertical-align: top;
-  margin-top: 10px;
-}
-
 section#todo_items li div.with-deadline {
-  padding-top: 3px;
-  vertical-align: initial;
-  margin-top: 0;
+  vertical-align: middle;
 }
 
 section#todo_items li div.for-glyphicons {
   display:inline-block;
   float: right;
-  padding-top: 8px;
+  padding-top: 2px;
 }
 
 section#todo_items li div.border {
@@ -265,7 +279,7 @@ section#todo_items li div.border {
   vertical-align:top;
   width: 90%;
   margin-left: 0px;
-  height:100%;
+  min-height: 27px;
   border-bottom: solid 1px #e5e6e8;
 }
 
@@ -290,8 +304,9 @@ div.alert {
 }
 
 div#show-completed {
-  font-size: 14px;
-  height: 25px;
+  font-size: 13px;
+  padding: 10px 0;
+  margin-right: 9px;
   border-bottom: solid 1px #e5e6e8;
   -webkit-padding-before: 10px;
 }

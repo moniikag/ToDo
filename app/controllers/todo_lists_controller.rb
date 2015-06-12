@@ -51,7 +51,10 @@ class TodoListsController < ApplicationController
 
   def update
     if @todo_list.update_attributes(permitted_attributes(@todo_list))
-      redirect_to @todo_list, notice: 'Todo list was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
+        format.json { }
+      end
     else
       render action: 'edit'
     end
