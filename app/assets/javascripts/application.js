@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require jquery-ui/dialog
 //= require jquery-ui/datepicker
+//= require jeditable.min.js
 //= require_tree .
