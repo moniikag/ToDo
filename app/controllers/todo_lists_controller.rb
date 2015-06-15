@@ -7,12 +7,15 @@ class TodoListsController < ApplicationController
   end
 
   def search
-    @todo_lists = policy_scope(TodoList)
     authorize TodoList
+    @todo_lists = policy_scope(TodoList)
     @search = params[:search].downcase
 
-    @todo_items = policy_scope(TodoList).flat_map(&:todo_items)
+    todo_items_by_tag = policy_scope(TodoItem).tagged_with(@search)
+    todo_items_by_content = policy_scope(TodoList).flat_map(&:todo_items)
       .select { |item| item.content.downcase.start_with?(@search)}
+
+    @todo_items = (todo_items_by_content + todo_items_by_tag).flatten
       .map { |item| TodoItemPresenter.new(item) }
       .group_by{ |item| item.todo_list }
   end

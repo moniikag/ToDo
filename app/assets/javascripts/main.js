@@ -48,6 +48,17 @@ $(document).ready(function() {
     }
   });
 
+  $('.share').click(function() {
+    var parent = $(this).closest('li')
+    if (parent.hasClass('with-invitation')) {
+      parent.removeClass('with-invitation');
+    }
+    else {
+      $('section#todo_lists li').removeClass('with-invitation');
+      parent.addClass('with-invitation');
+    }
+  });
+
   $(function() {
     $('.datepicker').datepicker({
       dateFormat: 'dd/mm/yy'

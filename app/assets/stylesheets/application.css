@@ -373,7 +373,7 @@ li div.details {
   position: absolute;
   background-color: #ccc;
   padding: 10px;
-  margin-top: -70px;
+  margin-top: -80px;
   max-width: 240px;
 }
 
@@ -404,7 +404,7 @@ div.details form {
   width: 100%;
 }
 
-div.details #save-todo-item {
+div.details .save-todo-item {
   float: right;
   width: 70px;
   max-height: 20px;
@@ -444,6 +444,70 @@ div.details div.hour input{
   max-width: 15px;
 }
 
+/* TodoList Invitation */
+
+li div.invitation {
+  display: none;
+  border-radius: 5px;
+  margin-left: 175px;
+  position: absolute;
+  background-color: #f2efef;
+  padding: 10px;
+  margin-top: -45px;
+  width: 200px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid #ccc;
+}
+
+li.with-invitation div.invitation {
+  display: initial;
+}
+
+li div.invitation:before {
+  content:"";
+  position: absolute;
+  right: 100%;
+  top: 45px;
+  border-top: 10px solid transparent;
+  border-right: 13px solid #f2efef;
+  border-bottom: 10px solid transparent;
+}
+
+div.invitation form {
+  width: 100%;
+}
+
+div.invitation input#invitation_invited_user_email {
+  width: 95%;
+  outline-style: none;
+  margin-top: 5px;
+  border: solid 1px #ccc;
+  font-size: 12px;
+  padding: 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div.invitation input:focus {
+  background-color: white;
+}
+
+div.invitation div.share-info {
+  font-size: 10px;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+div.invitation .save-invitation {
+  float: right;
+  font-size: 10px;
+  padding: 0 10px;
+  margin: 10px 0 0 0 ;
+  /*margin: 20px 4px 4px 4px;*/
+}
+
 /* checkboxes */
 
 .checkbox-completed {
@@ -473,7 +537,7 @@ input[type=checkbox]:checked + label:before {
 
 /* INVITATION IN LIST#SHOW */
 
-div#new-invitation {
+/*div#new-invitation {
   display: block;
   border: solid 1px #ccc;
   border-radius: 5px;
@@ -490,7 +554,7 @@ input#invitation_invited_user_email {
   font-size: 15px;
   border-radius: 5px;
 }
-
+*/
 /* dialogs */
 div#edit-item-dialog {
   min-width: 800px;

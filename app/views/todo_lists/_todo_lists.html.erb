@@ -6,6 +6,17 @@
 <ul>
   <% @todo_lists.each do |todo_list| %>
     <li id=<%="selected" if @todo_list && todo_list.id == @todo_list.id %>>
+      <div class='invitation'>
+        Share "<%= todo_list.title %>" with:
+
+        <%= form_for [todo_list, Invitation.new] do |f| %>
+          <%= f.text_field :invited_user_email, placeholder: "email@example.com" %>
+          <div class='share-info'>People sharing this list can add, update and delete reminders.</div>
+          <%= f.submit "Done", class: 'save-invitation' %>
+        <% end %>
+
+      </div>
+
       <div class='list-title'><%= link_to todo_list.title, todo_list_path(todo_list) %></div>
       <div class='editable-title' data-list-id=<%=todo_list.id%> ><%= todo_list.title %></div>
       <i class="fa fa-rss share"></i>
