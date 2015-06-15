@@ -3,11 +3,11 @@ class TodoItemsController < ApplicationController
 
   before_action :get_resources, except: [:complete]
 
-  def index
-    @todo_items = policy_scope(@todo_list.todo_items)
-    @todo_items_complete = @todo_items.complete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
-    @todo_items_incomplete = @todo_items.incomplete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
-  end
+  # def index
+  #   @todo_items = policy_scope(@todo_list.todo_items)
+  #   @todo_items_complete = @todo_items.complete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+  #   @todo_items_incomplete = @todo_items.incomplete.map! { |todo_item| TodoItemPresenter.new(todo_item) }
+  # end
 
   def new
     @todo_item = @todo_list.todo_items.new
@@ -21,8 +21,8 @@ class TodoItemsController < ApplicationController
     redirect_to todo_list_path(@todo_list)
   end
 
-  def show
-  end
+  # def show
+  # end
 
   def edit
   end
