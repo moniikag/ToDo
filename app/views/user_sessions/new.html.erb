@@ -1,12 +1,21 @@
-<h1>Log In</h1>
+<section id="todo_lists">
+  <h1 id='welcome'>Welcome to TodoListMVC!</h1>
+</section>
+
+<section id="todo_items">
+<h4>Please Log In</h4>
 <%= form_tag user_sessions_path do %>
-	<%= label_tag :email, "Email Address" %>
-	<%= text_field_tag :email, params[:email] %>
-	</br></br>
+  <div class='field'>
+    <%= label_tag :email, "Email Address" %>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
 
-	<%= label_tag :password, "Password" %>
-	<%= password_field_tag :password %>
-	</br></br>
+  <div class='field'>
+  <%= label_tag :password, "Password" %>
+  <%= password_field_tag :password %>
+  </div>
 
-	<%= submit_tag "Log In" %>
+  <%= submit_tag "Log In", class: 'button' %>
 <% end %>
+</section>
+

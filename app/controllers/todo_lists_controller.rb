@@ -53,7 +53,7 @@ class TodoListsController < ApplicationController
     if @todo_list.update_attributes(permitted_attributes(@todo_list))
       respond_to do |format|
         format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
-        format.json { }
+        format.json { render json: @todo_list }
       end
     else
       render action: 'edit'

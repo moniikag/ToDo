@@ -32,6 +32,11 @@ $(document).ready(function() {
     $('input#todo_item_content').focus();
   });
 
+  $("#new-item").click(function() {
+    $("#form-for-item").toggleClass("invisible");
+    $("input#todo_item_content").focus();
+  });
+
   $('.show').click(function() {
     var parent = $(this).closest('li')
     if (parent.hasClass('with-details')) {
@@ -52,7 +57,7 @@ $(document).ready(function() {
   $('.editable-title').editable(function(value, settings) {
     var id = $('li#selected div.editable-title').attr('data-list-id');
     $.ajax({
-      url:'./'+ id,
+      url:'./'+ id + '.json',
       method:"PATCH",
       data: { todo_list: { title: value } }
     });

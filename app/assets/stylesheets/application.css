@@ -79,6 +79,28 @@ a {
   display: none;
 }
 
+#welcome {
+  margin: 25px;
+}
+
+#button {
+  padding: 0 20px;
+}
+
+div.field {
+  width: 70%;
+  display: table;
+  margin-bottom: 15px;
+}
+
+div.field label {
+  display: table-cell;
+}
+
+div.field input {
+  display: table-cell;
+  width: 100%;
+}
 /* TodoLists & TodoItems */
 .text-field-in-list {
   border-radius: 5px;
@@ -133,23 +155,28 @@ section#todo_lists ul {
 
 section#todo_lists li {
   list-style: none;
-  padding: 2px 0;
   padding-left: 20px;
+  max-height: 25px;
+  max-width: 185px;
 }
 
 section#todo_lists li div.editable-title {
   display: none;
 }
 
+section#todo_lists div.list-title {
+  display: inline-block;
+  margin-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 120px;
+  text-overflow: ellipsis;
+}
+
 section#todo_lists li a {
   font-size: 12px;
   color: black;
-}
-
-section#todo_lists div.list-title {
-  display: inline;
-  margin-right: 20px;
-}
+  }
 
 section#todo_lists li#selected {
   background-color: #205ec1;
@@ -159,25 +186,27 @@ section#todo_lists li#selected .share {
   color: white;
 }
 
-section#todo_lists li#selected a {
+section#todo_lists li#selected div.list-title {
   display: none;
 }
 
 section#todo_lists li#selected div.editable-title {
   display: inline-block;
+  padding: 4px 0 0 0;
   color: white;
   font-size: 12px;
   font-weight: 100;
-  width: 80%;
-  margin-right: 15px;
-  margin-left: -20px;
-  max-width: 70%
+  white-space: nowrap;
+  overflow: hidden;
+  width: 135px;
+  text-overflow: ellipsis;
 }
 
 section#todo_lists li#selected div.editable-title input {
   min-width: 100%;
   margin: 0;
   padding: 0 4px;
+  max-height: 15px;
 }
 
 section#todo_lists li input#todo_list_title {
@@ -225,8 +254,12 @@ div#title {
   padding-bottom: 5px;
   color: #f49630;
   font-size: 28px;
-  max-width: 85%;
-}
+  white-space: nowrap;
+  overflow: hidden;
+  width: 330px;
+  text-overflow: ellipsis;
+  }
+
 div#title-plus-edit {
   border-bottom: solid 1px #e5e6e8;
   margin-right: 9px;
@@ -235,11 +268,13 @@ div#title-plus-edit {
 section#todo_items li {
   list-style: none;
   font-size: 12px;
-  padding: 5px 0;
+  padding: 2px 0;
+  height: 30px;
 }
 
 section#todo_items li.completed {
-  color: #8e8e8e;
+  color: #7c7c7c;
+  font-weight: 400;
 }
 
 section#todo_items li div.for-item {
@@ -247,10 +282,14 @@ section#todo_items li div.for-item {
   vertical-align: top;
   max-width: 90%;
   padding: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 330px;
+  text-overflow: ellipsis;
 }
 
 section#todo_items div#form-for-item {
-  padding-top: 7px;
+  padding-top: 5px;
 }
 
 section#todo_items ul {
@@ -260,18 +299,19 @@ section#todo_items ul {
 
 section#todo_items li div.for-checkbox {
   display:inline-block;
-  /*padding: 5px 0px 5px 0;*/
+  padding: 0px 0px 5px 0;
   margin-bottom: 10px;
 }
 
 section#todo_items li div.with-deadline {
   vertical-align: middle;
+  padding: 0 0 2px 0;
 }
 
 section#todo_items li div.for-glyphicons {
   display:inline-block;
   float: right;
-  padding-top: 2px;
+  padding-top: 1px;
 }
 
 section#todo_items li div.border {
@@ -279,8 +319,14 @@ section#todo_items li div.border {
   vertical-align:top;
   width: 90%;
   margin-left: 0px;
-  min-height: 27px;
   border-bottom: solid 1px #e5e6e8;
+}
+
+section#todo_items li#for-item {
+  border-bottom: solid 1px #e5e6e8;
+  height: 30px;
+  margin-left: 30px;
+  margin-right: 10px;
 }
 
 section#todo_items li input#todo_item_content {
@@ -288,7 +334,8 @@ section#todo_items li input#todo_item_content {
 }
 
 li div.deadline {
-  color: #8e8e8e;
+  color: #7c7c7c;
+  font-weight: 400;
 }
 
 li div.deadline.urgent {
@@ -296,7 +343,8 @@ li div.deadline.urgent {
 }
 
 li.completed div.deadline {
-  color: #8e8e8e;
+  color: #7c7c7c;
+  font-weight: 400;
 }
 
 div.alert {
@@ -305,7 +353,8 @@ div.alert {
 
 div#show-completed {
   font-size: 13px;
-  padding: 10px 0;
+  max-height: 34px;
+  padding: 0 0 10px 0;
   margin-right: 9px;
   border-bottom: solid 1px #e5e6e8;
   -webkit-padding-before: 10px;
@@ -343,12 +392,16 @@ li div.details:before {
 }
 
 div.details div.content {
-  width: 90%;
+  width: 100%;
   font-size: 14px;
   font-weight: bold;
   border-bottom: solid 1px #9a9a9a;
   margin-bottom: 10px;
   padding: 5px 5px 10px 5px;
+}
+
+div.details form {
+  width: 100%;
 }
 
 div.details #save-todo-item {
@@ -365,11 +418,14 @@ td.labels {
 
 div.details td input {
   background-color: #ccc;
-  min-width: 10%;
+  width: 100%;
   outline-style: none;
   border: none;
-  font-size: 13px;
+  font-size: 12px;
   padding-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 div.details td input:focus {
@@ -461,7 +517,8 @@ div#search-results {
 
 div#title-in-search {
   width: 98%;
-  color: #8e8e8e;
+  color: #7c7c7c;
+  font-weight: 400;
   font-size: 12px;
   padding-bottom: 4px;
   border-bottom: solid 1px #e5e6e8 ;
