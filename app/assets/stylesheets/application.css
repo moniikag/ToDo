@@ -81,6 +81,11 @@ a {
 
 #welcome {
   margin: 25px;
+  line-height: 150%;
+}
+
+div.field label {
+  color: #888;
 }
 
 #button {
@@ -114,6 +119,10 @@ li .edit, li .show, li .share {
   margin-right: 5px;
   font-size: 20px;
   color: #6a6b6d;
+}
+
+li .show {
+    padding-top: 3px;
 }
 
 li:hover .edit, li:hover .show, li:hover .share {
@@ -252,8 +261,8 @@ div#title {
   display: inline-block;
   margin-left: 10px;
   padding-bottom: 5px;
-  color: #f49630;
-  font-size: 28px;
+  color: #ffa500;
+  font-size: 24px;
   white-space: nowrap;
   overflow: hidden;
   width: 330px;
@@ -294,6 +303,8 @@ section#todo_items div#form-for-item {
 
 section#todo_items ul {
   margin-left: -30px;
+  margin-top: 0px;
+  margin-bottom: 15px;
   -webkit-margin-before: 0;
 }
 
@@ -318,6 +329,7 @@ section#todo_items li div.border {
   display: inline-block;
   vertical-align:top;
   width: 90%;
+  min-height: 29px;
   margin-left: 0px;
   border-bottom: solid 1px #e5e6e8;
 }
@@ -339,12 +351,17 @@ li div.deadline {
 }
 
 li div.deadline.urgent {
-  color: #f49630;
+  color: #ffa500;
 }
 
-li.completed div.deadline {
+li.completed div.deadline.urgent {
   color: #7c7c7c;
   font-weight: 400;
+}
+
+li div.tags {
+  display: inline;
+  color: #7c7c7c;
 }
 
 div.alert {
@@ -354,7 +371,7 @@ div.alert {
 div#show-completed {
   font-size: 13px;
   max-height: 34px;
-  padding: 0 0 10px 0;
+  padding: 12px 0 8px 0;
   margin-right: 9px;
   border-bottom: solid 1px #e5e6e8;
   -webkit-padding-before: 10px;
@@ -419,10 +436,13 @@ td.labels {
 div.details td input {
   background-color: #ccc;
   width: 100%;
-  outline-style: none;
   border: none;
   font-size: 12px;
   padding-bottom: 2px;
+  outline-style: none;
+}
+
+div.details td input#todo_item_content {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -532,32 +552,7 @@ input[type=checkbox] + label:before {
 }
 
 input[type=checkbox]:checked + label:before {
-  background-color: #f49630;
-}
-
-/* INVITATION IN LIST#SHOW */
-
-/*div#new-invitation {
-  display: block;
-  border: solid 1px #ccc;
-  border-radius: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  font-family: arial;
-}
-
-div#invitation-form {
-  float: right;
-}
-
-input#invitation_invited_user_email {
-  font-size: 15px;
-  border-radius: 5px;
-}
-*/
-/* dialogs */
-div#edit-item-dialog {
-  min-width: 800px;
+  background-color: #ffa500;
 }
 
 /* SEARCH  */
@@ -566,11 +561,21 @@ div#edit-item-dialog {
   padding: 0 15px;
 }
 #search-form input {
-  width: 100%;
+  width: 85%;
   padding: 2px;
+  padding-left: 20px;
   background-color: #e2e0e0;
   border: solid 1px #bfbfbf;
   border-radius: 5px;
+}
+
+i.fa-search{
+  display: inline-block;
+  position: fixed;
+  color: #888;
+  padding-top: 3px;
+  padding-left: 5px;
+  font-size:12px;
 }
 
 div#search-results {

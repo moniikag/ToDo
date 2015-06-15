@@ -1,6 +1,7 @@
 <%= form_tag (search_todo_lists_path), :method => 'get', id:"search-form" do %>
+  <i class="fa fa-search"></i>
   <%= text_field_tag :search, nil, placeholder: ' search' %>
-  <% submit_tag "Search" %>
+<% submit_tag "Search" %>
 <% end %>
 
 <ul>
@@ -10,7 +11,7 @@
         Share "<%= todo_list.title %>" with:
 
         <%= form_for [todo_list, Invitation.new] do |f| %>
-          <%= f.text_field :invited_user_email, placeholder: "email@example.com" %>
+          <%= f.text_field :invited_user_email, placeholder: "email@example.com", type: 'email' %>
           <div class='share-info'>People sharing this list can add, update and delete reminders.</div>
           <%= f.submit "Done", class: 'save-invitation' %>
         <% end %>
