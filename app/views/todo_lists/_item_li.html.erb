@@ -1,6 +1,7 @@
 <li class="<%= 'urgent' if todo_item.urgent?; 'completed' if todo_item.completed? %>">
   <div class='details'>
     <div class='content'><%= todo_item.content %> </div>
+    <div class='tag_list'><%= todo_item.tag_list %></div>
     <%= form_for [todo_item.todo_list, todo_item] do |form| %>
       <table>
         <tr>
