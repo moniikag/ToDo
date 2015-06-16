@@ -15,7 +15,6 @@
           <div class='share-info'>People sharing this list can add, update and delete reminders.</div>
           <%= f.submit "Done", class: 'save-invitation' %>
         <% end %>
-
       </div>
 
       <div class='list-title'><%= link_to todo_list.title, todo_list_path(todo_list) %></div>
@@ -25,7 +24,7 @@
   <% end %>
   <li class='invisible' id="new-list-form">
     <%= form_for TodoList.new do |f| %>
-      <%= f.text_field :title, class: "text-field-in-list" %>
+      <%= f.text_field :title, class: "text-field-in-list", required: true %>
       <%= f.submit "Add new TodoList", class: "invisible" %>
     <% end %>
   </li>

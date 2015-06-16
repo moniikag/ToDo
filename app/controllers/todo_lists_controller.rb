@@ -11,8 +11,8 @@ class TodoListsController < ApplicationController
     @todo_lists = policy_scope(TodoList)
     @search = params[:search].downcase
     @todo_items = SearchItems.call(
+      lists: @todo_lists,
       items: policy_scope(TodoItem),
-      lists: policy_scope(TodoList),
       searched_fraze: @search)
   end
 

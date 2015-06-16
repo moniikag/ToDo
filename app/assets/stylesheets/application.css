@@ -83,6 +83,13 @@ i.fa-times {
   display: none;
 }
 
+/*input[type="submit"] .input-button {
+  height: 20px;
+  padding: 3px 5px;
+  border: 1px solid black;
+  background-color: #ccc;
+}*/
+
 #welcome {
   margin: 25px;
   line-height: 150%;
@@ -111,26 +118,6 @@ div.field input {
   width: 100%;
 }
 
-div#error_explanation {
-  color: #ffa500;
-  font-size: 15px;
-  line-height: 100%;
-}
-
-section#todo_items div#error_explanation li {
-  height: 15px;
-}
-
-section#todo_items .delete-list {
-  display: block;
-  position: absolute;
-  float: right;
-  font-size: 20px;
-  color: #ccc;
-  bottom: 10px;
-  right:25px;
-}
-
 /* TodoLists & TodoItems */
 .text-field-in-list {
   border-radius: 5px;
@@ -138,12 +125,13 @@ section#todo_items .delete-list {
   padding: 2px;
 }
 
-li .edit, li .show, li .share {
+li .show, li .share {
   display:none;
   float: right;
   margin-right: 5px;
   font-size: 20px;
   color: #6a6b6d;
+  cursor: pointer; cursor: hand;
 }
 
 li .show {
@@ -174,6 +162,7 @@ section#todo_lists {
 }
 
 section#todo_items {
+  position: relative;
   display: table-cell;
   height: 100%;
   padding: 20px 15px;
@@ -190,8 +179,10 @@ section#todo_lists ul {
 section#todo_lists li {
   list-style: none;
   padding-left: 20px;
-  max-height: 25px;
+  padding-top: 3px;
+  height: 24px;
   max-width: 185px;
+  box-sizing: border-box;
 }
 
 section#todo_lists li div.editable-title {
@@ -200,16 +191,18 @@ section#todo_lists li div.editable-title {
 
 section#todo_lists div.list-title {
   display: inline-block;
-  margin-right: 20px;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 120px;
-  text-overflow: ellipsis;
 }
 
 section#todo_lists li a {
+  display: block;
+  width: 140px;
+  padding-top: 4px;
+  vertical-align: center;
   font-size: 12px;
   color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   }
 
 section#todo_lists li#selected {
@@ -240,6 +233,7 @@ section#todo_lists li#selected div.editable-title input {
   min-width: 100%;
   margin: 0;
   padding: 0 4px;
+  margin-top: -5px;
   max-height: 15px;
 }
 
@@ -247,8 +241,9 @@ section#todo_lists li input#todo_list_title {
   font-size: 13px;
 }
 
-#new-item, #delete-todo-item, #delete-todo-list, #new-invitation {
+#new-item {
   float: right;
+  cursor: pointer; cursor: hand;
 }
 
 #send-reminder {
@@ -261,6 +256,7 @@ div#new-list {
   margin-left: 15px;
   position: absolute;
   bottom: 15px;
+  cursor: pointer; cursor: hand;
 }
 
 div#new-list i.fa-plus-circle {
@@ -284,14 +280,13 @@ div#add-list {
 
 div#title {
   display: inline-block;
-  margin-left: 10px;
+  width: 330px;
   padding-bottom: 5px;
+  margin-left: 10px;
   color: #ffa500;
   font-size: 24px;
   white-space: nowrap;
-  overflow: hidden;
-  width: 330px;
-  text-overflow: ellipsis;
+  overflow-x: auto;
   }
 
 div#title-plus-edit {
@@ -400,12 +395,33 @@ div#show-completed {
   margin-right: 9px;
   border-bottom: solid 1px #e5e6e8;
   -webkit-padding-before: 10px;
+  cursor: pointer; cursor: hand;
 }
 
-#edit-todo-item {
+section#todo_items div#error_explanation {
+  color: #ffa500;
+  font-size: 15px;
+  line-height: 100%;
+}
+
+section#todo_items div#error_explanation li {
+  height: 15px;
+}
+
+section#todo_items .delete-list {
+  display: block;
+  position: absolute;
   float: right;
+  font-size: 20px;
+  color: #ccc;
+  bottom: 10px;
+  right:25px;
 }
 
+i#new-item {
+  font-size: 20px;
+  margin-top: 2px;
+}
 /* ITEM DETAILS */
 
 li div.details {
@@ -466,11 +482,16 @@ div.details form {
 }
 
 div.details .save-todo-item {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   float: right;
-  width: 70px;
   height: 20px;
+  background-color: white;
   margin: 10px 5px 5px 0px;
-  padding: 3px 5px;
+  padding: 2px 15px;
+  border: 1px solid #8e8e8e;
+  border-radius: 5px;
+  cursor: pointer; cursor: hand;
 }
 
 td.labels {
@@ -527,6 +548,7 @@ li div.invitation {
 
 li.with-invitation div.invitation {
   display: initial;
+  z-index: 1000;
 }
 
 li div.invitation:before {
@@ -566,11 +588,16 @@ div.invitation div.share-info {
 }
 
 div.invitation .save-invitation {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   float: right;
-  font-size: 10px;
-  padding: 0 10px;
-  margin: 10px 0 0 0 ;
-  /*margin: 20px 4px 4px 4px;*/
+  height: 20px;
+  background-color: white;
+  margin: 10px 5px 0px 0px;
+  padding: 2px 15px;
+  border: 1px solid #8e8e8e;
+  border-radius: 5px;
+  cursor: pointer; cursor: hand;
 }
 
 /* checkboxes */
@@ -616,11 +643,12 @@ input[type=checkbox]:checked + label:before {
 
 i.fa-search{
   display: inline-block;
-  position: fixed;
+  position: relative;
   color: #888;
   padding-top: 3px;
   padding-left: 5px;
-  font-size:12px;
+  font-size: 12px;
+  top: 19px;
 }
 
 div#search-results {

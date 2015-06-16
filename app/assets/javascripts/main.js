@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
   $('input[type=checkbox]').change(function() {
     var checkbox = $(this);
     var li = checkbox.closest('li');

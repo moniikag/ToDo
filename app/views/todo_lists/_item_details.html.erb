@@ -1,0 +1,28 @@
+<div class='details'>
+  <div class='content'>
+    <%= link_to raw("<i class='fa fa-trash-o delete-item'></i>"), todo_list_todo_item_path(todo_item.todo_list_id, todo_item),
+        method: :delete, data: { confirm: "Are you sure?" } %>
+    <%= todo_item.content %>
+  </div>
+  <div class='tag_list'><%= todo_item.tag_list %></div>
+  <%= form_for [todo_item.todo_list, todo_item] do |form| %>
+    <table>
+      <tr>
+        <td class='labels'>content</td>
+        <td><%= form.text_field :content, required: true %></td>
+      </tr>
+      <tr>
+        <td class='labels'>deadline</td>
+
+        <td><%= form.text_field :date, class: "datepicker", id: "datepicker_#{todo_item.id}", placeholder: "dd/mm/yy" %>
+        <div class='hour'><%= form.text_field :hour, placeholder: " h" %>:<%= form.text_field :minutes, placeholder: " m" %></td></div>
+      </tr>
+      <tr>
+        <td class='labels'>tags</td>
+        <td><%= form.text_field :tag_list %></td>
+      </tr>
+    </table>
+    <%= form.submit "Done", class: "save-todo-item"  %>
+  <% end %>
+</div>
+
