@@ -241,11 +241,6 @@ section#todo_lists li input#todo_list_title {
   font-size: 13px;
 }
 
-#new-item {
-  float: right;
-  cursor: pointer; cursor: hand;
-}
-
 #send-reminder {
   display: none;
 }
@@ -264,11 +259,6 @@ div#new-list i.fa-plus-circle {
   font-size: 18px;
 }
 
-i#new-item {
-  color: #6a6b6d;
-  font-size: 30px;
-}
-
 div#add-list {
   vertical-align: top;
   display: inline;
@@ -277,6 +267,11 @@ div#add-list {
 }
 
 /* TODO ITEMS */
+
+#new-item {
+  float: right;
+  cursor: pointer; cursor: hand;
+}
 
 div#title {
   display: inline-block;
@@ -425,9 +420,11 @@ section#todo_items .delete-list {
 }
 
 i#new-item {
+  color: #6a6b6d;
   font-size: 20px;
   margin-top: 2px;
 }
+
 /* ITEM DETAILS */
 
 li div.details {
@@ -672,6 +669,117 @@ div#title-in-search {
   border-bottom: solid 1px #e5e6e8 ;
 }
 
+@media (max-width: 615px) {
+
+  div#wraper {
+  width: 90%;
+  }
+  section#main {
+    display: block;
+    width: 100%;
+  }
+  section#todo_lists {
+    display: block;
+    width: inherit;
+    border-bottom-left-radius: initial;
+    border-top-right-radius: 10px;
+  }
+  section#todo_items {
+    display: block;
+    width: 95%;
+  }
+
+  /* TODO LISTS media */
+
+section#todo_lists ul {
+  display: inline-block;
+  margin-left: 30%;
+  width: 70%;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  border-left: 1px solid #bdbdbd;
+}
+
+section#todo_lists li {
+  padding-left: 5px;
+  max-width: 100%;
+  width: 100%;
+}
+
+section#todo_lists div.list-title {
+  max-width: iherit;
+  width: 80%;
+}
+section#todo_lists li a {
+  width: 100%;
+  }
+
+section#todo_lists li#selected div.editable-title {
+  min-width: 85%;
+}
+
+div#new-list {
+  bottom: 21px;
+  left: 6px;
+}
+
+div#add-list {
+  display: none;
+}
+
+/* SEARCH  media*/
+form#search-form {
+  width: 25%;
+  display: inline;
+  position: absolute;
+  margin-top: 35px;
+}
+#search-form input {
+  width: 70%;
+  padding-left: 2px;
+}
+
+i.fa-search{
+  display: none;
+}
+
+div#search-results {
+  font-size: 25px;
+  color: red;
+  margin-bottom: 10px;
+}
+
+div#title-in-search {
+  width: 98%;
+  color: #7c7c7c;
+  font-weight: 400;
+  font-size: 12px;
+  padding-bottom: 4px;
+  border-bottom: solid 1px #e5e6e8 ;
+}
+
+/* ITEMS media */
+div#title {
+  width: 80%;
+  }
+
+/*section#todo_items li {
+  list-style: none;
+  font-size: 12px;
+  padding: 2px 0;
+  height: 30px;
+}
+*/
+
+section#todo_items li div.for-item {
+  max-width: 75%;
+}
+
+section#todo_items li div.border {
+  width: 75%;
+}
+
+}
 
 
 
