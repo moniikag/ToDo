@@ -10,20 +10,12 @@ class TodoItemPolicy < ApplicationPolicy
     [:content, :tag_list]
   end
 
-  def index?
-    !!@user
-  end
-
   def new?
     !!@user
   end
 
   def create?
     new?
-  end
-
-  def show?
-    edit?
   end
 
   def edit?
@@ -36,6 +28,10 @@ class TodoItemPolicy < ApplicationPolicy
 
   def complete?
     edit?
+  end
+
+  def prioritize?
+    !!@user
   end
 
   def destroy?

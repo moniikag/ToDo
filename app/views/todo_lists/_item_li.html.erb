@@ -1,4 +1,4 @@
-<li class="<%= 'urgent' if todo_item.urgent?; 'completed' if todo_item.completed? %>">
+<li class="<%= 'urgent' if todo_item.urgent?; 'completed' if todo_item.completed? %>" data-id="<%= todo_item.id %>">
   <%= render :partial => 'item_details', locals: { todo_item: todo_item } %>
 
   <div class="for-checkbox">

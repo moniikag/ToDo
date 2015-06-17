@@ -76,6 +76,14 @@ $(document).ready(function() {
     }, {}
   );
 
+  $(function() {
+    $("#incomplete").sortable({
+      update: function(event, ui){
+        var ids_arr = $("#incomplete").sortable('toArray', {attribute: 'data-id'});
+        $.post("/todo_items/prioritize", { ordered_ids: ids_arr} );
+      }
+    });
+  });
 
 });
 

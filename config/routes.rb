@@ -3,6 +3,7 @@ Odot::Application.routes.draw do
   root 'todo_lists#index'
 
   post 'todo_items/:id/complete' => 'todo_items#complete'
+  post 'todo_items/prioritize' => 'todo_items#prioritize'
 
   resources :users, except: [:index, :show] do
     collection do
@@ -24,7 +25,6 @@ Odot::Application.routes.draw do
         patch :complete
       end
     end
-
 
     resources :invitations, only: [:new, :create] do
       collection do

@@ -34,7 +34,9 @@ class TodoListsController < ApplicationController
   def show
     @todo_lists = policy_scope(TodoList)
     @todo_items_complete = @todo_list.todo_items.complete.map { |todo_item| TodoItemPresenter.new(todo_item) }
-    @todo_items_incomplete = @todo_list.todo_items.incomplete.map { |todo_item| TodoItemPresenter.new(todo_item) }
+    @todo_items_incomplete = @todo_list.todo_items.incomplete
+      .order('priority ASC')
+      .map { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
   def send_reminder
