@@ -16,18 +16,13 @@ class TodoListsController < ApplicationController
       searched_fraze: @search)
   end
 
-  def new
-    authorize TodoList
-    @todo_list = current_user.todo_lists.new
-  end
-
   def create
     authorize TodoList
     @todo_list = current_user.todo_lists.new(permitted_attributes(TodoList.new))
     if @todo_list.save
-      redirect_to @todo_list
+      redirect_to todo_list_path(@todo_list)
     else
-      render action: 'new'
+      redirect_to todo_lists_path
     end
   end
 
@@ -44,10 +39,6 @@ class TodoListsController < ApplicationController
     @todo_lists = policy_scope(TodoList)
     SendReminder.call(current_user: current_user, todo_lists: @todo_lists)
     redirect_to todo_lists_path, notice: 'Reminder was successfully sent.'
-  end
-
-  def edit
-    @todo_lists = policy_scope(TodoList)
   end
 
   def update

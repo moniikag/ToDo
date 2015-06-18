@@ -4,6 +4,6 @@
 
 <section id="todo_items">
   <%= render :partial => "todo_items" %>
-  <%= link_to raw("<i class='fa fa-trash-o delete-list'></i>"), todo_list_path(@todo_list),
+  <%= link_to raw("<i class='fa fa-trash-o' id='delete-list'></i>"), todo_list_path(@todo_list),
     method: :delete, data: { confirm: "Are you sure?" } %>
 </section>

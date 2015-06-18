@@ -7,12 +7,10 @@ describe "Signing up: " do
 		click_link "sign-up-link"
 		expect(page).to have_content("Register")
 
-		fill_in "user_first_name", with: "Name"
-		fill_in "user_last_name", with: "Surname"
 		fill_in "user_email", with: "example@example.tom"
 		fill_in "user_password", with: "12345abcd"
 		fill_in "user_password_confirmation", with: "12345abcd"
-		click_button "sign-up"
+		click_button "Sign Up"
 
 		expect(current_path).to eq(new_user_sessions_path)
 		expect(page).to have_content("User was successfully created. Please confirm your email.")

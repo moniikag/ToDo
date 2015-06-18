@@ -3,19 +3,12 @@ class TodoItemsController < ApplicationController
 
   before_action :get_resources, except: [:complete, :prioritize]
 
-  def new
-    @todo_item = @todo_list.todo_items.new
-  end
-
   def create
     @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
     unless @todo_item.save
       flash[:error] = "There was a problem adding that todo list item."
     end
     redirect_to todo_list_path(@todo_list)
-  end
-
-  def edit
   end
 
   def update
@@ -30,7 +23,7 @@ class TodoItemsController < ApplicationController
   end
 
   def complete
-    @todo_item = TodoItem.find(params[:id])
+    @todo_item = policy_scope(TodoItem).find(params[:id])
     authorize @todo_item
     if params[:completed] == "true"
       @todo_item.update_attributes(completed_at: Time.now, priority: nil)

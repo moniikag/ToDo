@@ -510,7 +510,7 @@ section#todo_items li div#form-for-item {
   padding-top: 3px;
 }
 
-section#todo_items .delete-list {
+section#todo_items #delete-list {
   display: block;
   position: absolute;
   float: right;

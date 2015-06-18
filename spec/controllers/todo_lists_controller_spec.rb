@@ -28,24 +28,6 @@ RSpec.describe TodoListsController do
     end
   end
 
-  context "GET new: " do
-    context "if user not signed in: " do
-      it "redirects to new user session path" do
-        get :new
-        expect(response).to redirect_to(new_user_sessions_path)
-      end
-    end
-
-    context "if user signed in: " do
-      it "renders template new & assigns new TodoList" do
-        get :new, { }, valid_session
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:new)
-        expect(assigns(:todo_list)).to be_a_new(TodoList)
-      end
-    end
-  end
-
   context "POST create: " do
     context "if user not signed in: " do
       it "redirects to new user session path" do
@@ -59,28 +41,22 @@ RSpec.describe TodoListsController do
         expect {
           post :create, { todo_list: valid_todo_list_params }, valid_session
         }.to change { TodoList.count }.by(1)
-        todo_list = user.todo_lists.where(title: valid_todo_list_params[:title]).first
-        expect(response).to redirect_to(todo_list)
       end
 
-      it "given invalid params it doesn't create todo list and it renders template new" do
+      it "given invalid params it doesn't create todo list" do
         valid_todo_list_params.delete(:title)
         expect {
           post :create, { todo_list: valid_todo_list_params }, valid_session
         }.to change { TodoList.count }.by(0)
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:new)
-        expect(assigns(:todo_list)).to be_a_new(TodoList)
+        expect(response.status).to eq(302)
       end
 
-      it "given extra param it creates todo_list and redirects to created todo_list" do
+      it "given extra param it creates todo_list" do
         invalid_todo_list_params = valid_todo_list_params.dup
         invalid_todo_list_params[:extra] = "urgent todo list"
         expect {
           post :create, { todo_list: invalid_todo_list_params }, valid_session
         }.to change { TodoList.count }.by(1)
-        todo_list = user.todo_lists.where(title: valid_todo_list_params[:title]).first
-        expect(response).to redirect_to(todo_list)
       end
     end
   end
@@ -94,9 +70,9 @@ RSpec.describe TodoListsController do
     end
 
     context "if user signed in" do
-      it "redirects to action: index, controller: todo items" do
+      it "displays show view and assigns the todo list" do
         get :show, { id: subject.id }, valid_session
-        expect(response).to redirect_to(todo_list_todo_items_path(subject))
+        expect(response).to render_template(:show)
         expect(assigns(:todo_list)).to eq(subject)
       end
 
@@ -124,30 +100,6 @@ RSpec.describe TodoListsController do
     end
   end
 
-  context "GET edit: " do
-    context "if user not signed in: " do
-      it "redirects to new user session path" do
-        get :edit, id: subject.id
-        expect(response).to redirect_to(new_user_sessions_path)
-      end
-    end
-
-    context "if user signed in: " do
-      it "raises an error on attempt to edit todo list that doesn't belong to the user" do
-        expect {
-          get :edit, { id: other_todo_list.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it "renders template edit & assigns proper todo list" do
-        get :edit, { id: subject.id }, valid_session
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:edit)
-        expect(assigns(:todo_list)).to eq(subject)
-      end
-    end
-  end
-
   context "PUT update: " do
     context "if user not signed in: " do
       it "redirects to new user session path" do
@@ -166,15 +118,6 @@ RSpec.describe TodoListsController do
         expect {
           put :update, { id: other_todo_list.id, todo_list: valid_todo_list_params }, valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it "given invalid params renders template edit & assings the todo list" do
-        invalid_todo_list_params = valid_todo_list_params.dup
-        invalid_todo_list_params[:title] = ''
-        put :update, { id: subject.id, todo_list: invalid_todo_list_params }, valid_session
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:edit)
-        expect(assigns(:todo_list)).to eq(subject)
       end
     end
   end
@@ -206,5 +149,4 @@ RSpec.describe TodoListsController do
       end
     end
   end
-
 end
