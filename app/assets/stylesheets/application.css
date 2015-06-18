@@ -79,7 +79,7 @@ i.fa-times {
   color: red;
 }
 
-.invisible {
+.invisible, .fa.invisible {
   display: none;
 }
 
@@ -288,6 +288,12 @@ div#title {
   white-space: nowrap;
   overflow-x: auto;
   }
+
+i.fa-check-circle-o {
+  cursor: pointer; cursor: hand;
+  padding-right: 5px;
+  padding-top: 3px;
+}
 
 div#title-plus-edit {
   border-bottom: solid 1px #e5e6e8;

@@ -1,5 +1,6 @@
 <div id='title-plus-edit'>
   <div id="title">
+    <i class="fa fa-check-circle-o <%= 'invisible' if @todo_items_incomplete.empty? %>" id='done' list-id="<%=@todo_list.id%>"></i>
     <%= @todo_list.title %>
   </div>
   <i class='fa fa-plus-square-o' id='new-item'></i>

@@ -43,6 +43,10 @@ class TodoListPolicy < ApplicationPolicy
     edit?
   end
 
+  def done?
+    edit?
+  end
+
   def destroy?
     edit?
   end

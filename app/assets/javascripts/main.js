@@ -8,6 +8,9 @@ $(document).ready(function() {
     } else {
       $.post('/todo_items/' + checkbox.val() +'/complete', { completed: false } );
       $("#incomplete").prepend(li);
+      if ($("#done").is(':hidden')) {
+        $("#done").show(800);
+      };
     };
     var count = $("#completed li").length;
     $("#show-completed").html(count + ' Completed');
@@ -85,6 +88,22 @@ $(document).ready(function() {
       }
     });
   });
+
+  $("#done").click(function() {
+    if (confirm("Have you completed all the TodoItems?")) {
+      var list_id = $(this).attr('list-id');
+      $.post("./done", { id: list_id} );
+
+      var incomplete = $('div#incomplete').children();
+      $(':checkbox').prop("checked", true);
+      $('div#completed').append(incomplete);
+      $('div#incomplete').append($('li#for-item'));
+
+      var count = $("#completed li").length;
+      $("#show-completed").html(count + ' Completed');
+      $("#done").hide(800);
+    };
+  })
 
 });
 

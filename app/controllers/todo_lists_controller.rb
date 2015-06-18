@@ -61,6 +61,13 @@ class TodoListsController < ApplicationController
     end
   end
 
+  def done
+    @todo_list.todo_items.map {
+      |item| item.update_attribute(:completed_at, Time.now) if item.completed_at == nil
+    }
+    render nothing: true
+  end
+
   def destroy
     @todo_lists = policy_scope(TodoList)
     if @todo_list.destroy
