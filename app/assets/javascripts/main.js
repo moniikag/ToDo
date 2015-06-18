@@ -97,7 +97,7 @@ $(document).ready(function() {
       var incomplete = $('div#incomplete').children();
       $(':checkbox').prop("checked", true);
       $('div#completed').append(incomplete);
-      $('div#incomplete').append($('li#for-item'));
+      $('div#incomplete').append($('li#for-form'));
 
       var count = $("#completed li").length;
       $("#show-completed").html(count + ' Completed');
