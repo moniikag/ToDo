@@ -1,7 +1,7 @@
 class TodoItemsController < ApplicationController
   include TodoItemsHelper
 
-  before_action :get_resources, except: [:complete, :prioritize]
+  before_action :get_resources, except: [:complete]
 
   def create
     @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
@@ -30,12 +30,6 @@ class TodoItemsController < ApplicationController
     else
       @todo_item.update_attributes(completed_at: nil, priority: 0)
     end
-    render nothing: true
-  end
-
-  def prioritize
-    authorize TodoItem
-    PrioritizeItems.call(items: policy_scope(TodoItem), ids_in_order: params[:ordered_ids])
     render nothing: true
   end
 

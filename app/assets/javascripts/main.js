@@ -83,8 +83,9 @@ $(document).ready(function() {
   $(function() {
     $("#incomplete").sortable({
       update: function(event, ui){
-        var ids_arr = $("#incomplete").sortable('toArray', {attribute: 'data-id'});
-        $.post("/todo_items/prioritize", { ordered_ids: ids_arr} );
+        var list_id = location.pathname.split('/')[2];
+        var items_arr = $("#incomplete").sortable('toArray', {attribute: 'data-id'});
+        $.post("./"+list_id+"/prioritize", { ordered_items_ids: items_arr} );
       }
     });
   });

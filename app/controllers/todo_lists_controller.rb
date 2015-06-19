@@ -48,8 +48,13 @@ class TodoListsController < ApplicationController
         format.json { render json: @todo_list }
       end
     else
-      render action: 'edit'
+      render nothing: true
     end
+  end
+
+  def prioritize
+    PrioritizeItems.call(items: @todo_list.todo_items, ids_in_order: params[:ordered_items_ids])
+    render nothing: true
   end
 
   def done
@@ -77,5 +82,4 @@ class TodoListsController < ApplicationController
       authorize TodoList
     end
   end
-
 end

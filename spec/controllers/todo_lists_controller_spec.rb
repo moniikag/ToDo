@@ -6,6 +6,7 @@ RSpec.describe TodoListsController do
   let(:valid_session) { { user_id: user.id } }
 
   let!(:subject) { FactoryGirl.create(:todo_list, user: user) }
+  let(:todo_item) { FactoryGirl.create(:todo_item, todo_list: subject) }
 
   let(:valid_todo_list_params) { { title: "Another Todo List", description: "Yet another todo list" } }
 
@@ -84,22 +85,6 @@ RSpec.describe TodoListsController do
     end
   end
 
-  context "POST send_reminder: " do
-    context "if user not signed in: " do
-      it "redirects to new user session path" do
-        post :send_reminder
-        expect(response).to redirect_to(new_user_sessions_path)
-      end
-    end
-
-    context "if user signed in: " do
-      it "sends reminder" do
-        post :send_reminder, { }, valid_session
-        expect(response).to redirect_to(todo_lists_path)
-      end
-    end
-  end
-
   context "PUT update: " do
     context "if user not signed in: " do
       it "redirects to new user session path" do
@@ -118,6 +103,28 @@ RSpec.describe TodoListsController do
         expect {
           put :update, { id: other_todo_list.id, todo_list: valid_todo_list_params }, valid_session
         }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  context "POST prioritize: " do
+     context "if user not signed in: " do
+      it "redirects to new user session path" do
+        post :prioritize, { id: subject.id, ordered_items_ids: [todo_item.id] }
+        expect(response).to redirect_to(new_user_sessions_path)
+      end
+    end
+
+    context "if user signed in: " do
+      it "raises an error on attempt to prioritize todo item from todo list that doesn't belong to the user" do
+        expect {
+          post :prioritize, { id: other_todo_list.id, ordered_items_ids: [todo_item.id] }, valid_session
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "returns status 200 after prioritizing list" do
+        post :prioritize, { id: subject.id, ordered_items_ids: [todo_item.id] }, valid_session
+        expect(response.status).to eq(200)
       end
     end
   end

@@ -10,32 +10,24 @@ class TodoItemPolicy < ApplicationPolicy
     [:content, :tag_list]
   end
 
-  def new?
-    !!@user
-  end
-
   def create?
-    new?
-  end
-
-  def edit?
-    @user && (@record.todo_list.user_id == @user.id || @record.todo_list.invited_user_ids.include?(@user.id))
+    !!@user
   end
 
   def update?
-    edit?
+    @user && (@record.todo_list.user_id == @user.id || @record.todo_list.invited_user_ids.include?(@user.id))
   end
 
   def complete?
-    edit?
+    update?
   end
 
   def prioritize?
-    !!@user
+    update?
   end
 
   def destroy?
-    edit?
+    update?
   end
 
 end

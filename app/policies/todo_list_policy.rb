@@ -19,36 +19,28 @@ class TodoListPolicy < ApplicationPolicy
     index?
   end
 
-  def new?
+  def create?
     !!@user
   end
 
-  def create?
-    new?
-  end
-
   def show?
-    edit?
-  end
-
-  def send_reminder?
-    index?
-  end
-
-  def edit?
-    @user && ((@record.user_id == @user.id) || @record.invited_user_ids.include?(@user.id))
+    update?
   end
 
   def update?
-    edit?
+    @user && ((@record.user_id == @user.id) || @record.invited_user_ids.include?(@user.id))
+  end
+
+  def prioritize?
+    update?
   end
 
   def done?
-    edit?
+    update?
   end
 
   def destroy?
-    edit?
+    update?
   end
 
 end
