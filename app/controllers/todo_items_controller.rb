@@ -1,7 +1,7 @@
 class TodoItemsController < ApplicationController
   include TodoItemsHelper
 
-  before_action :get_resources, except: [:complete]
+  before_action :get_resources
 
   def create
     @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
@@ -23,7 +23,6 @@ class TodoItemsController < ApplicationController
   end
 
   def complete
-    @todo_item = policy_scope(TodoItem).find(params[:id])
     authorize @todo_item
     if params[:completed] == "true"
       @todo_item.update_attributes(completed_at: Time.now, priority: nil)
@@ -48,5 +47,4 @@ class TodoItemsController < ApplicationController
     @todo_item = policy_scope(@todo_list.todo_items).find(params[:id]) if params[:id]
     authorize @todo_item || TodoItem
   end
-
 end

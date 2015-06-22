@@ -10,7 +10,11 @@ RSpec.describe TodoItemsController do
   let!(:subject) { FactoryGirl.create(:todo_item, todo_list: todo_list) }
   let(:valid_todo_item_params) { { content: "Yet another content", deadline: "2015-05-25 10:52:00" } }
 
-  let(:other_todo_item) { FactoryGirl.create(:todo_item) }
+  let(:other_todo_list) { FactoryGirl.create(:todo_list) }
+  let(:other_todo_item) { FactoryGirl.create(:todo_item, todo_list: other_todo_list) }
+
+  let(:invited_todo_item) { FactoryGirl.create(:todo_item) }
+  let(:invitation) { FactoryGirl.create(:invitation, todo_list: invited_todo_item.todo_list, invited_user_email: user.email)}
 
   context "POST create: " do
     context "if user not signed in" do
@@ -72,13 +76,13 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to update todo item that doesn't belong to the user" do
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: subject.id, todo_item: valid_todo_item_params }, valid_session
-        }.to raise_error()
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "raises an error on attempt to update todo item from todo list that doesn't belong to the user" do
         expect {
           put :update, { todo_list_id: other_todo_list.id, id: other_todo_item.id, todo_item: valid_todo_item_params}, valid_session
-        }.to raise_error()
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "given extra param it creates todo_list and redirects to created todo_list" do
@@ -88,6 +92,21 @@ RSpec.describe TodoItemsController do
         subject.reload
         expect(subject.completed_at).to be(nil)
         expect(response).to redirect_to(todo_list_path(subject.todo_list_id))
+      end
+
+      context "todo item from invited-todo-list:" do
+        it "updates item if invitation confirmed" do
+          invitation.update_attribute(:invitation_token, nil)
+          put :update, { todo_list_id: invited_todo_item.todo_list_id, id: invited_todo_item.id, todo_item: valid_todo_item_params }, valid_session
+          expect(response).to redirect_to(todo_list_path(invited_todo_item.todo_list_id))
+        end
+
+        it "doesn't allow to update item if invitation not confirmed" do
+          invitation
+          expect {
+            put :update, { todo_list_id: invited_todo_item.todo_list_id, id: invited_todo_item.id, todo_item: valid_todo_item_params}, valid_session
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
   end
@@ -103,16 +122,34 @@ RSpec.describe TodoItemsController do
     context "if user signed in: " do
       it "raises an error on attempt to mark complete todo item that doesn't belong to the user" do
         expect {
-          patch :complete, { id: other_todo_item.id }, valid_session
-        }.to raise_error()
+          patch :complete, { todo_list_id: other_todo_item.todo_list_id, id: other_todo_item.id, completed: 'true' }, valid_session
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "marks todo item complete" do
         expect(subject.completed_at).to be(nil)
-        patch :complete, { id: subject.id, completed: 'true' }, valid_session
+        patch :complete, { todo_list_id: todo_list.id, id: subject.id, completed: 'true' }, valid_session
         expect(response.status).to eq(200)
         subject.reload
         expect(subject.completed_at).to_not be(nil)
+      end
+
+      context "todo item from invited-todo-list:" do
+        it "raises an error on attempt to mark complete todo item if invitation not confirmed" do
+          invitation
+          expect {
+            patch :complete, { todo_list_id: invited_todo_item.todo_list_id, id: invited_todo_item.id, completed: 'true' }, valid_session
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        it "marks todo item complete if invitation confirmed" do
+          invitation.update_attribute(:invitation_token, nil)
+          expect(invited_todo_item.completed_at).to be(nil)
+          patch :complete, { todo_list_id: invited_todo_item.todo_list_id, id: invited_todo_item.id, completed: 'true' }, valid_session
+          expect(response.status).to eq(200)
+          invited_todo_item.reload
+          expect(invited_todo_item.completed_at).to_not be(nil)
+        end
       end
     end
   end
@@ -129,10 +166,11 @@ RSpec.describe TodoItemsController do
       it "raises an error on attempt to edit todo item from todo list that doesn't belong to the user" do
         expect {
           delete :destroy, { todo_list_id: other_todo_list.id, id: subject.id  }, valid_session
-        }.to raise_error()
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "doesn't destroy todo item & raises an error on attempt to destroy todo item that doesn't belong to the user" do
+        other_todo_item
         expect {
           expect {
             delete :destroy, { todo_list_id: other_todo_list.id, id: other_todo_item.id }, valid_session
@@ -146,7 +184,25 @@ RSpec.describe TodoItemsController do
         }.to change { TodoItem.count }.by(-1)
         expect(response).to redirect_to(todo_list_path(subject.todo_list_id))
       end
+
+      context "todo item from invited-todo-list:" do
+        it "updates item if invitation confirmed" do
+          invitation.update_attribute(:invitation_token, nil)
+          expect {
+            delete :destroy, { todo_list_id: invited_todo_item.todo_list_id, id: invited_todo_item.id }, valid_session
+          }.to change { TodoItem.count }.by(-1)
+          expect(response).to redirect_to(todo_list_path(invited_todo_item.todo_list_id))
+        end
+
+        it "doesn't allow to update item if invitation not confirmed" do
+          invitation
+          expect {
+            expect {
+              delete :destroy, { todo_list_id: invited_todo_item.todo_list_id, id: invited_todo_item.id }, valid_session
+            }.to raise_error()
+          }.to change { TodoItem.count }.by(0)
+        end
+      end
     end
   end
-
 end

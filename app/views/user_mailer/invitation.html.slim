@@ -2,7 +2,6 @@ p Hi #{ @invitation.invited_user_email }
 
 p User #{@user.email} invited you to join TodoList: #{@invitation.todo_list.title}.
 br
-br
 
 - if @invitation.new_user?
   p In order to join this TodoList please register in our Service using the following link:

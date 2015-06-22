@@ -6,16 +6,6 @@ class TodoListsController < ApplicationController
     @todo_lists = policy_scope(TodoList)
   end
 
-  def search
-    authorize TodoList
-    @todo_lists = policy_scope(TodoList)
-    @search = params[:search].downcase
-    @todo_items = SearchItems.call(
-      lists: @todo_lists,
-      items: policy_scope(TodoItem),
-      searched_fraze: @search)
-  end
-
   def create
     authorize TodoList
     @todo_list = current_user.todo_lists.new(permitted_attributes(TodoList.new))
@@ -34,11 +24,14 @@ class TodoListsController < ApplicationController
       .map { |todo_item| TodoItemPresenter.new(todo_item) }
   end
 
-  def send_reminder
+  def search
     authorize TodoList
     @todo_lists = policy_scope(TodoList)
-    SendReminder.call(current_user: current_user, todo_lists: @todo_lists)
-    redirect_to todo_lists_path, notice: 'Reminder was successfully sent.'
+    @search = params[:search].downcase
+    @todo_items = SearchItems.call(
+      lists: @todo_lists,
+      items: policy_scope(TodoItem),
+      searched_fraze: @search)
   end
 
   def update

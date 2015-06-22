@@ -10,7 +10,7 @@ class TodoItem < ActiveRecord::Base
   acts_as_taggable
 
   def urgent?
-    self.deadline < 25.hours.from_now if self.deadline.present?
+    self.deadline < 24.hours.from_now if self.deadline.present?
   end
 
 end

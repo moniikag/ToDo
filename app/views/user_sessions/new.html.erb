@@ -1,5 +1,5 @@
 <section id="todo_lists">
-  <h1 id='welcome'>Welcome to TodoListMVC!</h1>
+  <div id='welcome'>Welcome to TodoListMVC!</div>
 </section>
 
 <section id="todo_items">
@@ -10,11 +10,13 @@
   </div>
 
   <div class='field'>
-  <%= label_tag :password, "Password" %>
-  <%= password_field_tag :password %>
+    <%= label_tag :password, "Password" %>
+    <%= password_field_tag :password %>
   </div>
 
-  <%= submit_tag "Log In", class: 'button' %>
+  <div class="field">
+    <%= submit_tag "Log In", class: 'button' %>
+  </div>
 <% end %>
 </section>
 

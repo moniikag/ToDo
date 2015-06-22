@@ -93,15 +93,26 @@ div.alert {
   padding: 25px;
   line-height: 150%;
   margin: 0px;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+#register {
+  margin-left: 8%;
+  padding-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 div.field {
-  width: 70%;
+  width: 100%;
   display: table;
   margin-bottom: 15px;
 }
 
 div.field label {
+  text-align: right;
+  width: 40%;
   color: #888;
   display: table-cell;
   padding-right: 10px;
@@ -109,17 +120,33 @@ div.field label {
 
 div.field input {
   display: table-cell;
-  width: 100%;
+  width: 60%;
+}
+
+div.field input[type=submit] {
+  margin-left: 40%;
+  width: initial;
+  color: #888;
+  border: 1px solid #888;
 }
 
 section#todo_items div#error_explanation {
   color: #ffa500;
   font-size: 15px;
   line-height: 100%;
+  float: center;
+  display: block;
+  width: 310px;
+  margin: auto;
+  border: solid 1px #FFA500;
+  padding: 0 15px;
+  margin-bottom: 19px;
+  border-radius: 10px;
 }
 
 section#todo_items div#error_explanation li {
   height: 15px;
+  margin-left: -10px;
 }
 
 /* SECTIONS */
@@ -145,7 +172,7 @@ section#todo_items {
   position: relative;
   display: table-cell;
   height: 100%;
-  padding: 20px 15px;
+  padding: 20px 15px 25px 15px;
 }
 
 /* TodoLists & TodoItems */
@@ -387,13 +414,15 @@ div#title-plus-new {
 
 div#title {
   display: inline-block;
-  width: 330px;
-  padding-bottom: 5px;
+  width: 95%;
+  max-width: 330px;
   margin-left: 10px;
+  padding-bottom: 5px;
   color: #ffa500;
   font-size: 24px;
   white-space: nowrap;
-  overflow-x: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
   }
 
 i.fa-check-circle-o {
@@ -528,7 +557,7 @@ section#todo_items #delete-list {
 
 input[type=checkbox] + label {
   display: block;
-  width: 0px;
+  width: 1px;
   height: 0px;
   float: left;
   margin: 5px 25px 5px 0;
@@ -700,9 +729,22 @@ div.details div.hour input{
       width: 95%;
     }
 
-    h4 {
-      margin-top: 0;
+    #register {
+      width:100%;
+      text-align: center;
+      margin-left: initial;
     }
+
+    #welcome {
+      width:100%;
+      text-align: center;
+      padding-left: initial;
+    }
+
+    section#todo_items div#error_explanation {
+      max-width: 70%;
+    }
+
   /* TODO LISTS media */
 
     section#todo_lists ul {
@@ -756,6 +798,11 @@ div.details div.hour input{
 
     i.fa-search{
       display: none;
+    }
+
+    div#searched-fraze {
+      width:100%;
+      text-align: center;
     }
 
     div#search-results {

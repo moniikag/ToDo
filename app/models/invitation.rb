@@ -8,7 +8,7 @@ class Invitation < ActiveRecord::Base
   validates :invited_user_email, presence: true,
     format: { with: /\A[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]+\z/ },
     uniqueness: { scope: :todo_list_id, message: "This User have already been invited to the TodoList" }
-  validate :not_inviting_self, on: :create
+  validate :not_inviting_self
 
   before_validation :downcase_email
 

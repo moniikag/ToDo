@@ -2,11 +2,12 @@ $(document).ready(function() {
   $('input[type=checkbox]').change(function() {
     var checkbox = $(this);
     var li = checkbox.closest('li');
+    var list_id = location.pathname.split('/')[2];
     if (checkbox.is (':checked')) {
-      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: true } );
+      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: true, todo_list_id: list_id } );
       $("#completed").append(li);
     } else {
-      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: false } );
+      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: false, todo_list_id: list_id } );
       $("#incomplete").prepend(li);
       if ($("#done").is(':hidden')) {
         $("#done").show(800);

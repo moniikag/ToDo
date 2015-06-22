@@ -22,12 +22,22 @@ describe 'Todo items: ' do
     expect(page).to have_content(subject.content)
   end
 
-  it "set item's class 'urgent' if item's deadline is in less than 24 h" do
+  it "sets item's class 'urgent' if item's deadline is in less than 24 h" do
     subject.update_attribute("deadline", 5.hours.from_now)
     visit "/todo_lists/#{todo_list.id}"
     within("section#todo_items") {
       within(first("li")) {
         expect(page).to have_selector("div.urgent")
+      }
+    }
+  end
+
+  it "doesn't set item's class 'urgent' if item's deadline is in more than 24 h" do
+    subject.update_attribute("deadline", 25.hours.from_now)
+    visit "/todo_lists/#{todo_list.id}"
+    within("section#todo_items") {
+      within(first("li")) {
+        expect(page).to_not have_selector("div.urgent")
       }
     }
   end
@@ -63,13 +73,12 @@ describe 'Todo items: ' do
     expect(page).to have_content(todo_item_params[:tag])
   end
 
-  xit "allows user to mark item complete", js: true do
+  it "allows user to mark item complete", js: true do
     within("#completed", :visible => false) {
       expect(page).to_not have_content(subject.content)
     }
-    within("div.for-checkbox") {
-      find(:css, "label:before").click
-    }
+    page.driver.execute_script('$("div.for-checkbox label").click()')
+
     expect(subject.completed_at).to_not be_nil
     within("#completed", :visible => false) {
       expect(page).to have_content(subject.content)

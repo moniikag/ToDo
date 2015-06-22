@@ -84,4 +84,9 @@ describe User do
     end
   end
 
+  context "#generate_activation_token" do
+    it "creates user and automaticaly generates activation_token" do
+      expect(subject.activation_token).to_not be_nil
+    end
+  end
 end

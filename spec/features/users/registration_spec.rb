@@ -4,7 +4,7 @@ describe "Signing up: " do
 	it "allows a user to sign up for the site and creates the object in the same database" do
 
 		visit "/"
-		click_link "sign-up-link"
+		click_link "sign-up"
 		expect(page).to have_content("Register")
 
 		fill_in "user_email", with: "example@example.tom"
