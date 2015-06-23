@@ -3,6 +3,9 @@ class TodoItemsController < ApplicationController
 
   before_action :get_resources
 
+  def show
+  end
+
   def create
     @todo_item = @todo_list.todo_items.new(permitted_attributes(TodoItem.new))
     unless @todo_item.save
@@ -13,12 +16,24 @@ class TodoItemsController < ApplicationController
 
   def update
     @todo_item.deadline = deadline_from_form unless deadline_from_form==nil
-    if @todo_item.update_attributes(permitted_attributes(@todo_item))
-      flash[:success] = "Updated todo list item."
-      redirect_to todo_list_path(@todo_item.todo_list_id)
-    else
-      flash[:error] = "That todo item could not be saved."
-      render action: :edit
+    respond_to do |format|
+      if @todo_item.update_attributes(permitted_attributes(@todo_item))
+        format.html {
+          flash[:success] = "Updated todo list item."
+          redirect_to todo_list_path(@todo_item.todo_list_id)
+        }
+        format.json { render :json => @todo_item.attributes.merge({
+          "tag_list" => @todo_item.tag_list,
+          "formatted_deadline" => @todo_item.deadline.try(:strftime, '%d/%m/%Y %H:%M'),
+          "urgent" => @todo_item.urgent? })
+        }
+      else
+        format.html {
+          flash[:error] = "That todo item could not be saved."
+          redirect_to todo_list_path(@todo_item.todo_list_id)
+        }
+        format.json {}
+      end
     end
   end
 

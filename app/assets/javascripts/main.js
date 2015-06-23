@@ -40,26 +40,22 @@ $(document).ready(function() {
     $("input#todo_item_content").focus();
   });
 
-  $('.show').click(function() {
-    var parent = $(this).closest('li')
-    if (parent.hasClass('with-details')) {
-      parent.removeClass('with-details');
-    }
-    else {
-      $('section#todo_items li').removeClass('with-details');
-      parent.addClass('with-details');
-    }
-  });
-
   $('.share').click(function() {
     var parent = $(this).closest('li')
-    if (parent.hasClass('with-invitation')) {
-      parent.removeClass('with-invitation');
-    }
-    else {
-      $('section#todo_lists li').removeClass('with-invitation');
-      parent.addClass('with-invitation');
-    }
+    parent.addClass('with-invitation');
+    $('#transparent').removeClass('invisible');
+  });
+
+  $('.show-details').click(function() {
+    var parent = $(this).closest('li')
+    parent.addClass('with-details');
+    $('#transparent').removeClass('invisible');
+  });
+
+  $('#transparent').click(function(){
+    $(this).addClass('invisible');
+    $('#todo_lists li').removeClass('with-invitation');
+    $('#todo_items li').removeClass('with-details');
   });
 
   $(function() {
@@ -105,7 +101,36 @@ $(document).ready(function() {
       $("#show-completed").html(count + ' Completed');
       $("#done").hide(800);
     };
-  })
+  });
+
+  $('form.edit_todo_item').submit(function() {
+    var thisel = $(this);
+    var parentli = thisel.closest('li');
+    var valuesToSubmit = $(this).serialize();
+    $.ajax({
+      type: "POST",
+      url: $(this).attr('action'),
+      data: valuesToSubmit,
+      dataType: "JSON"
+    }).success(function(data) {
+      console.log("bla"+ JSON.stringify(data));
+      $('.content-in-list', parentli).html(data.content);
+      $('.content', parentli).html(data.content);
+      $('.tag_list', parentli).html(data.tag_list)
+      if (data.deadline != null) {
+        $('.deadline', parentli).html(data.formatted_deadline)
+      };
+      if (data.urgent == true) {
+        if (!$('.deadline', parentli).hasClass('urgent'))
+        { $('.deadline', parentli).addClass('urgent') };
+      } else {
+        if ($('.deadline', parentli).hasClass('urgent'))
+        { $('.deadline', parentli).removeClass('urgent') };
+      };
+      (parentli).removeClass('with-details');
+    });
+    return false;
+  });
 
 });
 

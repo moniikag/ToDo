@@ -20,6 +20,13 @@ body {
   font-family: helvetica;
 }
 
+div#transparent{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+
 div#wraper {
   width: 600px;
   background: white;
@@ -66,6 +73,7 @@ a {
 
 i.fa-times {
   float: right;
+  margin-right: 10px;
 }
 
 .invisible, .fa.invisible {
@@ -85,6 +93,10 @@ div.alert {
   border: 1px solid #8e8e8e;
   border-radius: 5px;
   cursor: pointer; cursor: hand;
+}
+
+div#flash-messages {
+  margin-top: 15px;
 }
 
 /* LOG IN, SIGN UP */
@@ -183,7 +195,7 @@ section#todo_items {
   padding: 2px;
 }
 
-li .show, li .share {
+li .show-details, li .share {
   display:none;
   float: right;
   margin-right: 5px;
@@ -192,11 +204,11 @@ li .show, li .share {
   cursor: pointer; cursor: hand;
 }
 
-li .show {
+li .show-details {
     padding-top: 3px;
 }
 
-li:hover .show, li:hover .share {
+li:hover .show-details, li:hover .share {
   display: inline;
 }
 
@@ -294,6 +306,7 @@ div#new-list div#add-list {
 
 section#todo_lists li input#todo_list_title {
   font-size: 13px;
+  max-width: 90%;
 }
 
 /* TodoList Invitation */
@@ -473,9 +486,13 @@ section#todo_items li div.for-item {
   vertical-align: top;
   max-width: 90%;
   padding: 5px 0;
+  width: 330px;
+}
+
+section#todo_items li div.for-item span.content-in-list {
   white-space: nowrap;
   overflow: hidden;
-  width: 330px;
+  width: 310px;
   text-overflow: ellipsis;
 }
 
@@ -585,7 +602,7 @@ li div.details {
   position: absolute;
   background-color: #e5e5e5;
   padding: 10px;
-  margin-top: -80px;
+  margin-top: -77px;
   width: 200px;
   z-index: 1000;
 }
@@ -606,7 +623,7 @@ li div.details:before {
 
 div.details div.content {
   position: relative;
-  width: 90%;
+  width: 85%;
   font-size: 14px;
   font-weight: bold;
   padding: 5px 30px 0px 5px;
@@ -628,8 +645,9 @@ div.details i.delete-item {
   font-size: 18px;
   float: right;
   right: 15px;
-  top: 3px;
+  top: 15px;
   color: #8e8e8e;
+  z-index: 1900;
 }
 
 div.details form {
@@ -723,7 +741,9 @@ div.details div.hour input{
       width: inherit;
       border-bottom-left-radius: initial;
       border-top-right-radius: 10px;
+      min-height: 100px;
     }
+
     section#todo_items {
       display: block;
       width: 95%;
@@ -782,6 +802,9 @@ div.details div.hour input{
     div#new-list div#add-list {
       display: none;
     }
+    div#new-list:after {
+      content: 'Add';
+    }
 
   /* search  media*/
 
@@ -789,8 +812,9 @@ div.details div.hour input{
       width: 25%;
       display: inline;
       position: absolute;
-      margin-top: 35px;
+      margin-top: 25px;
     }
+
     #search-form input {
       width: 70%;
       padding-left: 2px;
@@ -838,7 +862,10 @@ div.details div.hour input{
       }
 
     section#todo_items li div.for-item {
-      max-width: 80%;
+      max-width: 85%;
+    }
+    section#todo_items li div.for-item span.content-in-list {
+      max-width: 100%;
     }
 
     section#todo_items li div.border {
