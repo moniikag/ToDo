@@ -24,6 +24,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'byebug'
   gem 'rspec-rails', '~> 2.0'
 end
 
