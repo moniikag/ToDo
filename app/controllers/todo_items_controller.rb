@@ -15,6 +15,7 @@ class TodoItemsController < ApplicationController
   end
 
   def update
+    puts "asaafdsf"
     @todo_item.deadline = deadline_from_form unless deadline_from_form==nil
     respond_to do |format|
       if @todo_item.update_attributes(permitted_attributes(@todo_item))
@@ -22,11 +23,7 @@ class TodoItemsController < ApplicationController
           flash[:success] = "Updated todo list item."
           redirect_to todo_list_path(@todo_item.todo_list_id)
         }
-        format.json { render :json => @todo_item.attributes.merge({
-          "tag_list" => @todo_item.tag_list,
-          "formatted_deadline" => @todo_item.deadline.try(:strftime, '%d/%m/%Y %H:%M'),
-          "urgent" => @todo_item.urgent? })
-        }
+        format.json { render :json => @todo_item }
       else
         format.html {
           flash[:error] = "That todo item could not be saved."

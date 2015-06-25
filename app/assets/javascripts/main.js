@@ -113,14 +113,14 @@ $(document).ready(function() {
       data: valuesToSubmit,
       dataType: "JSON"
     }).success(function(data) {
-      console.log("bla"+ JSON.stringify(data));
-      $('.content-in-list', parentli).html(data.content);
-      $('.content', parentli).html(data.content);
-      $('.tag_list', parentli).html(data.tag_list)
-      if (data.deadline != null) {
-        $('.deadline', parentli).html(data.formatted_deadline)
+      console.log(JSON.stringify(data));
+      $('.content-in-list', parentli).html(data.todo_item.content);
+      $('.content', parentli).html(data.todo_item.content);
+      $('.tag_list', parentli).html(data.todo_item.tag_list)
+      if (data.todo_item.deadline != null) {
+        $('.deadline', parentli).html(data.todo_item.deadline_formatted)
       };
-      if (data.urgent == true) {
+      if ((Date.parse(data.todo_item.deadline)-Date.now()) < 86400000 ) {
         if (!$('.deadline', parentli).hasClass('urgent'))
         { $('.deadline', parentli).addClass('urgent') };
       } else {
