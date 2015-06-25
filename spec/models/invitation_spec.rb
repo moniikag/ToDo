@@ -56,6 +56,11 @@ describe Invitation do
       invitation.valid?
       expect(invitation.invited_user_email).to eq('camelcase@email.com')
     end
+
+    it "validates not_inviting_self" do
+      invitation.invited_user_email = invitation.todo_list.user.email
+      expect(invitation).to_not be_valid
+    end
   end
 
   context "#generate_invitation_token" do

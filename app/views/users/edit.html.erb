@@ -1,42 +1,40 @@
-<h1>Editing user</h1>
+<section id="todo_lists">
+  <div id='welcome'>Editing User</div>
+</section>
+
+<section id="todo_items">
 
 <%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
+      <p><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</p>
       <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="field">
-    <%= f.label :first_name, "First Name" %><br>
-    <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name, "Last Name" %><br>
-    <%= f.text_field :last_name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
+    <%= f.label :email %>
     <%= f.text_field :email %>
   </div>
   <div class="field">
-    <%= f.label :password %><br>
+    <%= f.label :password %>
     <%= f.password_field :password %>
   </div>
   <div class="field">
-    <%= f.label :password_confirmation, "Password (again)" %><br>
+    <%= f.label :password_confirmation, "Password (again)" %>
     <%= f.password_field :password_confirmation %>
   </div>
   <div class="actions">
-    <%= f.submit "Update", id: "update" %>
+    <%= f.submit "Update User" %>
   </div>
 <% end %>
+<%= link_to raw("<i class='fa fa-times'></i>"), todo_lists_path %>
+</section>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+
+
+
