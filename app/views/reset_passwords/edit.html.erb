@@ -1,0 +1,35 @@
+<section id="todo_lists">
+  <div id='welcome'>ToDoMVC</div>
+</section>
+
+<section id="todo_items">
+  <%= form_tag reset_password_path(@user), method: :patch do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <p><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</p>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= label_tag :email, "Email Address" %>
+      <%= text_field_tag :email %>
+    </div>
+    <div class="field">
+      <%= label_tag :password, "Password" %>
+      <%= password_field_tag :password %>
+    </div>
+    <div class="field">
+      <%= label_tag :password_confirmation, "Password (again)" %>
+      <%= password_field_tag :password_confirmation %>
+    </div>
+    <%= hidden_field_tag :token, params[:token] %>
+    <div class="actions">
+      <%= submit_tag "Reset password", class: 'button' %>
+    </div>
+  <% end %>
+</section>

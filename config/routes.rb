@@ -12,6 +12,12 @@ Odot::Application.routes.draw do
 
   resource :user_sessions, only: [:new, :create, :destroy]
 
+  resources :reset_passwords, only: [:new, :create, :update] do
+    collection do
+      get 'new_password' => 'reset_passwords#edit', as: :new_password
+    end
+  end
+
   resources :todo_lists do
     collection do
       post :send_reminder

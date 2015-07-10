@@ -161,6 +161,13 @@ section#todo_items div#error_explanation li {
   margin-left: -10px;
 }
 
+a#forgot-password {
+  font-size: 11px;
+  color: #888;
+  text-decoration: underline;
+  float: right;
+}
+
 /* SECTIONS */
 
 section#main {
