@@ -15,7 +15,6 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    puts "asaafdsf"
     @todo_item.deadline = deadline_from_form unless deadline_from_form==nil
     respond_to do |format|
       if @todo_item.update_attributes(permitted_attributes(@todo_item))

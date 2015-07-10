@@ -1,0 +1,17 @@
+<section id="todo_lists">
+  <div id='welcome'>ToDoMVC</div>
+</section>
+
+<section id="todo_items">
+  <%= form_tag reset_passwords_path, method: :post do %>
+    <div class='field'>
+      <%= label_tag :email, "Email Address" %>
+      <%= text_field_tag :email, params[:email] %>
+    </div>
+
+    <div class="field">
+      <%= submit_tag "Reset password", class: 'button' %>
+    </div>
+  <% end %>
+</section>
+
