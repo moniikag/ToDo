@@ -3,7 +3,7 @@
 </section>
 
 <section id="todo_items">
-  <%= form_tag reset_password_path(@user), method: :patch do |f| %>
+  <%= form_tag reset_passwords_path(@user), method: :patch do |f| %>
     <% if @user.errors.any? %>
       <div id="error_explanation">
         <p><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</p>

@@ -1,5 +1,6 @@
 class ResetPasswordsController < ApplicationController
   skip_before_action :authenticate_user
+  before_action :ensure_no_user
   before_action :pundit_authorize_user
 
   def new

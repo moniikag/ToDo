@@ -20,4 +20,8 @@ module Authenticate
     redirect_to new_user_sessions_path unless current_user
   end
 
+  def ensure_no_user
+    redirect_to root_path if current_user
+  end
+
 end
