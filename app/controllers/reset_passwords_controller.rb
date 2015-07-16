@@ -18,15 +18,16 @@ class ResetPasswordsController < ApplicationController
   end
 
   def edit
-    @user = User.find_by_password_token(params[:token])
+    @user = User.where(password_token: params[:token]).first
   end
 
   def update
-    @user = User.find_by_password_token(params[:token])
-    if @user && @user.email == params[:email]
-      update_password
+    @user = User.where(password_token: params[:token]).first
+    if @user && @user.email == params[:email] && @user.update_attributes(user_params)
+      @user.update_attributes(password_token: nil, password_token_generated: nil)
+      redirect_to root_path, notice: 'Your password was successfully updated. You can now log in.'
     else
-      flash[:error] = "You must have provided wrong email. Plesae try again."
+      flash[:error] = "Plesae try again."
       render :edit
     end
   end
@@ -36,17 +37,7 @@ class ResetPasswordsController < ApplicationController
     params.permit(:password, :password_confirmation)
   end
 
-  def update_password
-    if @user.update_attributes(user_params)
-      @user.update_attributes(password_token: nil, password_token_generated: nil)
-      redirect_to root_path, notice: 'Your password was successfully updated. You can now log in.'
-    else
-      flash[:error] = "Something went wrong. Plesae try again."
-      render action: 'edit'
-    end
-  end
-
   def pundit_authorize_user
-    authorize User, :new?
+    authorize :reset_password
   end
 end
