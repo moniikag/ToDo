@@ -64,8 +64,16 @@ Rspec.describe ResetPasswordsController do
         expect(assigns(:user)).to eq(user)
       end
 
-      it "renders action edit and doesn't assign user if wrong token given" do
+      it "renders action edit but doesn't assign user if wrong token given" do
         get :edit, { token: 'token' }
+        expect(response.status).to be(200)
+        expect(response).to render_template(:edit)
+        expect(assigns(:user)).to eq(nil)
+      end
+
+      it "renders action edit but doesn't assign user if too old token given" do
+        user.update_attribute('password_token_generated_at', 24.hours.ago)
+        get :edit, { token: user.password_token }
         expect(response.status).to be(200)
         expect(response).to render_template(:edit)
         expect(assigns(:user)).to eq(nil)
@@ -107,6 +115,14 @@ Rspec.describe ResetPasswordsController do
         expect(response.status).to be(200)
         expect(response).to render_template(:edit)
         expect(assigns(:user)).to eq(user)
+      end
+
+      it "renders edit for too old token" do
+        user.update_attribute('password_token_generated_at', 24.hours.ago)
+        patch :update, { email: user.email, password: 'secret', password_confirmation: 'secret', token: user.password_token }
+        expect(response.status).to be(200)
+        expect(response).to render_template(:edit)
+        expect(assigns(:user)).to eq(nil)
       end
     end
   end

@@ -19,13 +19,13 @@ class ResetPasswordsController < ApplicationController
   end
 
   def edit
-    @user = User.where(password_token: params[:token]).first
+    @user = User.where("password_token = ? AND password_token_generated_at > ?", params[:token], 2.hours.ago).first
   end
 
   def update
-    @user = User.where(password_token: params[:token]).first
+    @user = User.where("password_token = ? AND password_token_generated_at > ?", params[:token], 2.hours.ago).first
     if @user && @user.email == params[:email] && @user.update_attributes(user_params)
-      @user.update_attributes(password_token: nil, password_token_generated: nil)
+      @user.update_attributes(password_token: nil, password_token_generated_at: nil)
       redirect_to root_path, notice: 'Your password was successfully updated. You can now log in.'
     else
       flash[:error] = "Plesae try again."

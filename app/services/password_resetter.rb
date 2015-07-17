@@ -5,7 +5,7 @@ class PasswordResetter
   end
 
   def generate_token
-    @user.update_attributes(password_token: SecureRandom.hex(8), password_token_generated: Time.now)
+    @user.update_attributes(password_token: SecureRandom.hex(8), password_token_generated_at: Time.now)
   end
 
 end

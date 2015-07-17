@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20150710103748) do
     t.datetime "updated_at"
     t.string   "activation_token"
     t.string   "password_token"
-    t.datetime "password_token_generated"
+    t.datetime "password_token_generated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
