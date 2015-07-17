@@ -18,9 +18,8 @@ RSpec.describe "Invitation" do
     expect(mail.from).to eql(['app34940850@heroku.com'])
   end
 
-  it 'assigns invited user name' do
-    invited_user.update_attribute('first_name', "john")
-    expect(mail.body.encoded).to match("#{invitation.user.first_name}")
+  it 'assigns invited user email' do
+    expect(mail.body.encoded).to match("#{invitation.user.email}")
   end
 
   it 'assings inviting_user email' do
@@ -42,7 +41,7 @@ RSpec.describe "Invitation" do
   end
 
   it 'assigns todo_list_url' do
-    link = todo_list_todo_items_url(todo_list_id: invitation.todo_list_id)
+    link = todo_list_url(id: invitation.todo_list_id)
     expect(mail.body).to have_content(link)
   end
 end

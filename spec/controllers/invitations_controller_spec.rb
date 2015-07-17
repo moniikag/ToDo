@@ -9,38 +9,9 @@ RSpec.describe InvitationsController do
   let(:other_valid_session) { { user_id: other_user.id } }
   let(:other_todo_list) { FactoryGirl.create(:todo_list, user: other_user) }
 
-  let(:invitation_valid_params) { { invited_user_email: "email@email.email" } }
+  let(:invitation_valid_params) { { invited_user_email: other_user.email } }
   let(:invitation) { FactoryGirl.create(:invitation, todo_list: todo_list, invited_user_email: other_user.email) }
 
-  context "GET new: " do
-    context "if user not signed in: " do
-      it 'redirects to new_user_sessions_path' do
-        get :new, { todo_list_id: todo_list.id }
-        expect(response).to redirect_to(new_user_sessions_path)
-      end
-    end
-
-    context "if user signed in: " do
-      it 'renders template new and assigns new Invitation' do
-        get :new, { todo_list_id: todo_list.id }, valid_session
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:new)
-        expect(assigns(:invitation)).to be_a_new(Invitation)
-      end
-
-      it "raises an error on attempt to render template new for Invitation to other user's TodoList" do
-        expect {
-          get :new, { todo_list_id: other_todo_list.id }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it "raises an error on attempt to render template new for Invitation to non-existing TodoList" do
-        expect {
-          get :new, { todo_list_id: '1' }, valid_session
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-  end
 
   context "POST create: " do
     context "if user not signed in: " do
@@ -53,11 +24,12 @@ RSpec.describe InvitationsController do
     end
 
     context "if user signed in: " do
-      it "creates an invitation and redirects to todo_list_todo_items_path" do
+      it "creates an invitation and assigns invitation_token" do
         expect {
           post :create, { todo_list_id: todo_list.id, invitation: invitation_valid_params }, valid_session
         }.to change{Invitation.count}.by(1)
-        expect(response).to redirect_to(todo_list_todo_items_path(todo_list))
+        expect(response.status).to eq(302)
+        expect(Invitation.last.invitation_token).to_not be_nil
       end
 
       it "raises an error on attempt to create Invitation for other user's todo list" do
@@ -72,31 +44,30 @@ RSpec.describe InvitationsController do
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      it "given invalid params doesn't create Invitation and renders template new" do
+      it "given invalid params doesn't create Invitation" do
         invitation_invalid_params = invitation_valid_params.dup
         invitation_invalid_params[:invited_user_email] = 'email'
         expect {
           post :create, { todo_list_id: todo_list.id, invitation: invitation_invalid_params }, valid_session
         }.to change{ Invitation.count }.by(0)
-        expect(response.status).to eq(200)
-        expect(response).to render_template(:new)
-        expect(assigns(:invitation)).to be_a_new(Invitation)
+        expect(response.status).to eq(302)
       end
 
-      it "renders template new with flash[:error] on attempt to invite user himself" do
+      it "doesn't create invitation on attempt to invite user himself" do
         invitation_invalid_params = invitation_valid_params.dup
         invitation_invalid_params[:invited_user_email] = user.email
-        post :create, { todo_list_id: todo_list.id, invitation: invitation_invalid_params }, valid_session
-        expect(response).to render_template(:new)
+        expect {
+          post :create, { todo_list_id: todo_list.id, invitation: invitation_invalid_params }, valid_session
+        }.to change{ Invitation.count }.by(0)
       end
 
-      it "given extra params creates Invitation and redirects to todo_list_todo_items_path" do
+      it "given extra params creates Invitation" do
         invitation_invalid_params = invitation_valid_params.dup
         invitation_invalid_params[:invitation_token] = '12345'
         expect {
           post :create, { todo_list_id: todo_list.id, invitation: invitation_invalid_params }, valid_session
         }.to change{ Invitation.count }.by(1)
-        expect(response).to redirect_to(todo_list_todo_items_path(todo_list))
+        expect(response.status).to eq(302)
         the_invitation = Invitation.where(invited_user_email: invitation_invalid_params[:invited_user_email]).first
         expect(the_invitation.invitation_token).to_not eq(invitation_invalid_params[:invitation_token])
       end
@@ -210,5 +181,4 @@ RSpec.describe InvitationsController do
       end
     end
   end
-
 end

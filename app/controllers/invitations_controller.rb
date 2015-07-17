@@ -2,22 +2,16 @@ class InvitationsController < ApplicationController
   before_action :get_resources, except: [:confirm]
   skip_before_action :authenticate_user, only: [:confirm]
 
-
-  def new
-    @invitation = @todo_list.invitations.new
-    authorize @invitation
-  end
-
   def create
     authorize Invitation
     @invitation = @todo_list.invitations.new(permitted_attributes(Invitation.new))
     if @invitation.save
       UserMailer.invitation(@invitation, current_user).deliver
       flash[:success] = "Invitation was successfully sent. User now needs to confirm access to your TodoList"
-      redirect_to todo_list_todo_items_path(@todo_list)
     else
-      render action: :new
+      flash[:success] = "There was a problem sending your invitation."
     end
+    redirect_to todo_list_path(@todo_list)
   end
 
   def confirm #invited user accepts invitation to todo list
@@ -32,9 +26,6 @@ class InvitationsController < ApplicationController
   rescue Pundit::NotAuthorizedError
     flash[:error] = "You have already activated access to the todo list or the link is invalid"
     redirect_to root_path
-  end
-
-  def destroy
   end
 
   private

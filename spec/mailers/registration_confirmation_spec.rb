@@ -16,11 +16,6 @@ RSpec.describe "Registration confirmation" do
     expect(mail.from).to eql(['app34940850@heroku.com'])
   end
 
-  it 'assigns user name' do
-    user.update_attribute('first_name', "john")
-    expect(mail.body.encoded).to match("#{user.first_name}")
-  end
-
   it 'assigns confirmation_url' do
     link = confirm_email_users_url(email: user.email, token: user.activation_token)
     expect(mail.body).to have_content(link)

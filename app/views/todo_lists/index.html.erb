@@ -1,21 +1,7 @@
-<h1>Todo Lists</h1>
+<section id="todo_lists">
+  <%= render :partial => "todo_lists" %>
+</section>
 
-
-<% @todo_lists.each do |todo_list| %>
-<div class="todo_list" id="todo_list_<%= todo_list.id %>">
-  <h2><%= todo_list.title %></h2>
-  <p><%= todo_list.description %></p>
-  <ul class="functions">
-    <li><%= link_to "Show", todo_list_todo_items_path(todo_list), id: "todo-items-index-link" %></li>
-    <li><%= link_to 'Edit', edit_todo_list_path(todo_list), id: "edit-todo-list-link" %></li>
-    <li><%= link_to 'Delete', todo_list, method: :delete, data: { confirm: 'Are you sure?' }, id: "delete-todo-list-link" %></li>
-  </ul>
-  <br class="clear" />
-</div>
-<% end %>
-
-<br>
-
-<%= link_to 'New Todo list', new_todo_list_path, id: "new-todo-list-link" %>
-
-<p><%= button_to 'Send Reminder', { action: :send_reminder} , id: "send-reminder"  %></p>
+<section id="todo_items">
+  <p></p>
+</section>

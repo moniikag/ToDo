@@ -2,6 +2,8 @@ Odot::Application.routes.draw do
 
   root 'todo_lists#index'
 
+  post 'todo_items/:id/complete' => 'todo_items#complete'
+
   resources :users, except: [:index, :show] do
     collection do
       get :confirm_email
@@ -10,9 +12,22 @@ Odot::Application.routes.draw do
 
   resource :user_sessions, only: [:new, :create, :destroy]
 
+  resource :reset_passwords, only: [:new, :create, :update] do
+    collection do
+      get 'new_password' => 'reset_passwords#edit', as: :new_password
+    end
+  end
+
   resources :todo_lists do
     collection do
       post :send_reminder
+      get :search
+      put :update_field
+      post :done
+    end
+
+    member do
+      post :prioritize
     end
 
     resources :todo_items do
@@ -27,6 +42,7 @@ Odot::Application.routes.draw do
       end
     end
   end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
