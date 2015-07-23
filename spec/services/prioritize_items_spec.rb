@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe PrioritizeItems do
 
-  let(:todo_list) { FactoryGirl.create(:todo_list) }
-  let(:todo_item) { FactoryGirl.create(:todo_item, todo_list: todo_list) }
+  let!(:todo_list) { FactoryGirl.create(:todo_list) }
+  let!(:todo_item) { FactoryGirl.create(:todo_item, todo_list: todo_list) }
   let(:other_todo_item) { FactoryGirl.create(:todo_item, todo_list: todo_list) }
   let(:ordered_items_ids) { ["2", "1", ""]}
 
