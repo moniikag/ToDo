@@ -10,10 +10,6 @@ class UsersController < ApplicationController
     @token = params[:invitation_token] if params[:invitation_token]
   end
 
-  def edit
-    @user = current_user
-  end
-
   def create
     @user = User.new(permitted_attributes(User.new))
     if @user.save
@@ -40,6 +36,10 @@ class UsersController < ApplicationController
   rescue Pundit::NotAuthorizedError
     flash[:error] = 'The activation link has already been used or is invalid. Please try to log in.'
     redirect_to new_user_sessions_path
+  end
+
+  def edit
+    @user = current_user
   end
 
   def update

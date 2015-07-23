@@ -15,6 +15,7 @@ gem 'pundit'
 gem 'slim'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'font-awesome-rails'
+gem 'active_model_serializers'
 
 group :development do
   gem "letter_opener"
@@ -24,6 +25,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'byebug'
   gem 'rspec-rails', '~> 2.0'
 end
 

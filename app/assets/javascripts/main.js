@@ -2,11 +2,12 @@ $(document).ready(function() {
   $('input[type=checkbox]').change(function() {
     var checkbox = $(this);
     var li = checkbox.closest('li');
+    var list_id = location.pathname.split('/')[2];
     if (checkbox.is (':checked')) {
-      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: true } );
+      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: true, todo_list_id: list_id } );
       $("#completed").append(li);
     } else {
-      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: false } );
+      $.post('/todo_items/' + checkbox.val() +'/complete', { completed: false, todo_list_id: list_id } );
       $("#incomplete").prepend(li);
       if ($("#done").is(':hidden')) {
         $("#done").show(800);
@@ -39,26 +40,22 @@ $(document).ready(function() {
     $("input#todo_item_content").focus();
   });
 
-  $('.show').click(function() {
-    var parent = $(this).closest('li')
-    if (parent.hasClass('with-details')) {
-      parent.removeClass('with-details');
-    }
-    else {
-      $('section#todo_items li').removeClass('with-details');
-      parent.addClass('with-details');
-    }
-  });
-
   $('.share').click(function() {
     var parent = $(this).closest('li')
-    if (parent.hasClass('with-invitation')) {
-      parent.removeClass('with-invitation');
-    }
-    else {
-      $('section#todo_lists li').removeClass('with-invitation');
-      parent.addClass('with-invitation');
-    }
+    parent.addClass('with-invitation');
+    $('#transparent').removeClass('invisible');
+  });
+
+  $('.show-details').click(function() {
+    var parent = $(this).closest('li')
+    parent.addClass('with-details');
+    $('#transparent').removeClass('invisible');
+  });
+
+  $('#transparent').click(function(){
+    $(this).addClass('invisible');
+    $('#todo_lists li').removeClass('with-invitation');
+    $('#todo_items li').removeClass('with-details');
   });
 
   $(function() {
@@ -83,8 +80,9 @@ $(document).ready(function() {
   $(function() {
     $("#incomplete").sortable({
       update: function(event, ui){
-        var ids_arr = $("#incomplete").sortable('toArray', {attribute: 'data-id'});
-        $.post("/todo_items/prioritize", { ordered_ids: ids_arr} );
+        var list_id = location.pathname.split('/')[2];
+        var items_arr = $("#incomplete").sortable('toArray', {attribute: 'data-id'});
+        $.post("./"+list_id+"/prioritize", { ordered_items_ids: items_arr} );
       }
     });
   });
@@ -97,13 +95,42 @@ $(document).ready(function() {
       var incomplete = $('div#incomplete').children();
       $(':checkbox').prop("checked", true);
       $('div#completed').append(incomplete);
-      $('div#incomplete').append($('li#for-item'));
+      $('div#incomplete').append($('li#for-form'));
 
       var count = $("#completed li").length;
       $("#show-completed").html(count + ' Completed');
       $("#done").hide(800);
     };
-  })
+  });
+
+  $('form.edit_todo_item').submit(function() {
+    var thisel = $(this);
+    var parentli = thisel.closest('li');
+    var valuesToSubmit = $(this).serialize();
+    $.ajax({
+      type: "POST",
+      url: $(this).attr('action'),
+      data: valuesToSubmit,
+      dataType: "JSON"
+    }).success(function(data) {
+      console.log(JSON.stringify(data));
+      $('.content-in-list', parentli).html(data.todo_item.content);
+      $('.content', parentli).html(data.todo_item.content);
+      $('.tag_list', parentli).html(data.todo_item.tag_list)
+      if (data.todo_item.deadline != null) {
+        $('.deadline', parentli).html(data.todo_item.deadline_formatted)
+      };
+      if ((Date.parse(data.todo_item.deadline)-Date.now()) < 86400000 ) {
+        if (!$('.deadline', parentli).hasClass('urgent'))
+        { $('.deadline', parentli).addClass('urgent') };
+      } else {
+        if ($('.deadline', parentli).hasClass('urgent'))
+        { $('.deadline', parentli).removeClass('urgent') };
+      };
+      (parentli).removeClass('with-details');
+    });
+    return false;
+  });
 
 });
 

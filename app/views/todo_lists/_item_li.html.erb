@@ -8,14 +8,14 @@
 
   <div class="border">
     <div class="for-item <%= 'with-deadline' if todo_item.deadline.present? %>">
-      <%= todo_item.content %>
+      <span class='content-in-list'><%= todo_item.content %></span>
       <div class="deadline <%= 'urgent' if todo_item.urgent? %>">
         <%= todo_item.deadline.strftime('%d/%m/%Y %H:%M') if todo_item.deadline.present?%>
       </div>
     </div>
 
     <div class='for-glyphicons'>
-      <i class='fa fa-info-circle show'></i>
+      <i class='fa fa-info-circle show-details'></i>
     </div>
   </div>
 </li>

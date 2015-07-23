@@ -1,4 +1,4 @@
-<div id='title-plus-edit'>
+<div id='title-plus-new'>
   <div id="title">
     <i class="fa fa-check-circle-o <%= 'invisible' if @todo_items_incomplete.empty? %>" id='done' list-id="<%=@todo_list.id%>"></i>
     <%= @todo_list.title %>
@@ -18,7 +18,7 @@
         <%= render :partial => "item_li", locals: { todo_item: todo_item } %>
     <% end %>
 
-    <li id="for-item">
+    <li id="for-form">
       <div id="form-for-item" class="invisible">
         <%= form_for [@todo_list, TodoItem.new] do |f| %>
           <%= f.text_field :content, class: "text-field-in-list" %>

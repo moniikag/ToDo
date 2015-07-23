@@ -1,7 +1,6 @@
-p Hi #{ @invitation.user.email }
+p Hi #{ @invitation.invited_user_email }
 
 p User #{@user.email} invited you to join TodoList: #{@invitation.todo_list.title}.
-br
 br
 
 - if @invitation.new_user?
@@ -16,4 +15,4 @@ br
 br
 
 p You can then access the TodoList here:
-= todo_list_todo_items_url(todo_list_id: @invitation.todo_list_id)
+= todo_list_url(id: @invitation.todo_list_id)

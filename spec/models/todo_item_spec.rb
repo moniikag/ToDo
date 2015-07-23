@@ -19,4 +19,15 @@ describe TodoItem do
     end
   end
 
+  context "urgent" do
+    it "returns true if item's deadline is less then 24 hours" do
+      subject.update_attribute(:deadline, 23.hours.from_now)
+      expect(subject.urgent?).to be_true
+    end
+
+    it "returns false if item's deadline is 24 hours or more" do
+      subject.update_attribute(:deadline, 24.hours.from_now + 1.minute)
+      expect(subject.urgent?).to be_false
+    end
+  end
 end

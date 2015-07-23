@@ -2,12 +2,6 @@ class InvitationsController < ApplicationController
   before_action :get_resources, except: [:confirm]
   skip_before_action :authenticate_user, only: [:confirm]
 
-
-  def new
-    @invitation = @todo_list.invitations.new
-    authorize @invitation
-  end
-
   def create
     authorize Invitation
     @invitation = @todo_list.invitations.new(permitted_attributes(Invitation.new))
@@ -32,9 +26,6 @@ class InvitationsController < ApplicationController
   rescue Pundit::NotAuthorizedError
     flash[:error] = "You have already activated access to the todo list or the link is invalid"
     redirect_to root_path
-  end
-
-  def destroy
   end
 
   private
