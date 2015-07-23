@@ -2,8 +2,7 @@ class TodoItem < ActiveRecord::Base
 
   belongs_to :todo_list
 
-  validates :content, presence: true, length: { minimum: 2 }
-  validates :deadline, presence: true
+  validates :content, presence: true
 
   scope :complete, -> { where("completed_at is not null") }
   scope :incomplete, -> { where(completed_at: nil) }
@@ -11,7 +10,7 @@ class TodoItem < ActiveRecord::Base
   acts_as_taggable
 
   def urgent?
-    self.deadline < 25.hours.from_now
+    self.deadline < 24.hours.from_now if self.deadline.present?
   end
 
 end

@@ -1,0 +1,17 @@
+<section id="todo_lists">
+  <%= render :partial => "todo_lists" %>
+</section>
+
+<section id="todo_items">
+  <div id='searched-fraze'> Results for "<%= @search %>" </div>
+  <% @todo_items.each do |todo_list, items| %>
+    <div id="title-in-search"> <%=todo_list.title%> </div>
+    <ul>
+      <% items.each do |todo_item| %>
+        <%= render :partial => "item_li", locals: { todo_item: todo_item } %>
+      <% end %>
+    </ul>
+  <% end %>
+</section>
+
+

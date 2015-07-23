@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TodoList</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <title>TodoListsMVC</title>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag    "application", media: "all" %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
-
-  <div class="nav">
-    <h1><%= link_to "TodoList", root_path %></h1>
-    <ul>
-      <% if current_user %>
-        <li><%= link_to "Todo Lists", todo_lists_path %></li>
-        <li><%= link_to "#{current_user.email}", edit_user_path(current_user), id: "edit-user-link" %></li>
-        <li><%= link_to "Log Out", user_sessions_path, method: :delete, id: "log-out-link" %></li>
-      <% else %>
-        <li><%= link_to "Sign Up", new_user_path, id: "sign-up-link" %></li>
-        <li><%= link_to "Log In", new_user_sessions_path, id: "log-in-link" %></li>
+  <div id='transparent' class='invisible'></div>
+  <header>
+    <div id="nav">
+      <ul>
+        <% if current_user %>
+          <li><%= link_to raw("<i class='fa fa-sign-out'></i>"), user_sessions_path, method: :delete, id: "log-out" %></li>
+          <li><%= link_to "#{current_user.email}", edit_user_path(current_user), id: "edit-user-link" %></li>
+        <% else %>
+          <li><%= link_to "Sign Up", new_user_path, id: "sign-up" %></li>
+          <li><%= link_to "Log In", new_user_sessions_path, id: "log-in" %></li>
+        <% end %>
+      </ul>
+    </div></br>
+    <div id="flash-messages">
+      <% flash.each do |type, message| %>
+        <div class="alert flash <%= type %>">
+          <%= message %>
+        </div>
       <% end %>
-    </ul>
-    <br class="clear" />
+    </div>
+  </header>
+
+  <div id='wraper'>
+    <section id='main'>
+      <%= yield %>
+    </section>
   </div>
-
-  <% flash.each do |type, message| %>
-  <div class="alert flash <%= type %>">
-    <%= message %>
-  </div>
-  <% end %>
-
-<%= yield %>
-
 </body>
 </html>

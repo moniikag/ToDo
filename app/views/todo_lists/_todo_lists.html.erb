@@ -1,0 +1,35 @@
+<%= form_tag (search_todo_lists_path), :method => 'get', id:"search-form" do %>
+  <i class="fa fa-search"></i>
+  <%= text_field_tag :search, nil, placeholder: ' search' %>
+<% submit_tag "Search" %>
+<% end %>
+
+<ul>
+  <% @todo_lists.each do |todo_list| %>
+    <li id=<%="selected" if @todo_list && todo_list.id == @todo_list.id %>>
+      <div class='invitation'>
+        Share "<%= todo_list.title %>" with:
+
+        <%= form_for [todo_list, Invitation.new] do |f| %>
+          <%= f.text_field :invited_user_email, placeholder: "email@example.com", type: 'email' %>
+          <div class='share-info'>People sharing this list can add, update and delete reminders.</div>
+          <%= f.submit "Done", class: 'save-invitation' %>
+        <% end %>
+      </div>
+
+      <div class='list-title'><%= link_to todo_list.title, todo_list_path(todo_list) %></div>
+      <div class='editable-title' data-list-id=<%=todo_list.id%> ><%= todo_list.title %></div>
+      <i class="fa fa-rss share"></i>
+    </li>
+  <% end %>
+  <li class='invisible' id="new-list-form">
+    <%= form_for TodoList.new do |f| %>
+      <%= f.text_field :title, class: "text-field-in-list", required: true %>
+      <%= f.submit "Add new TodoList", class: "invisible" %>
+    <% end %>
+  </li>
+</ul><br><br>
+
+<div id="new-list">
+  <i class="fa fa-plus-circle"></i><div id="add-list"> Add List</div>
+</div>
