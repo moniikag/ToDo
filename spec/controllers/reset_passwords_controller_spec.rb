@@ -5,10 +5,10 @@ Rspec.describe ResetPasswordsController do
   let(:valid_session) { { user_id: user.id } }
 
   context "GET new" do
-    it "redirects to root path if user logged_in" do
+    it "redirects to todo_lists path if user logged_in" do
       get :new, {}, valid_session
       expect(response.status).to be(302)
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(todo_lists_path)
     end
 
     it "renders action new if no current_user" do
@@ -20,10 +20,10 @@ Rspec.describe ResetPasswordsController do
 
   context "POST create" do
     context "user logged in" do
-      it "redirects to root path if user logged_in" do
+      it "redirects to todo_lists path if user logged_in" do
         post :create, { email: user.email }, valid_session
         expect(response.status).to be(302)
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(todo_lists_path)
       end
     end
 
@@ -49,10 +49,10 @@ Rspec.describe ResetPasswordsController do
     end
 
     context "user logged in" do
-      it "redirects to root path if user logged_in" do
+      it "redirects to todo_lists path if user logged_in" do
         get :edit, { token: user.password_token }, valid_session
         expect(response.status).to be(302)
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(todo_lists_path)
       end
     end
 
@@ -70,14 +70,6 @@ Rspec.describe ResetPasswordsController do
         expect(response).to render_template(:edit)
         expect(assigns(:user)).to eq(nil)
       end
-
-      it "renders action edit but doesn't assign user if too old token given" do
-        user.update_attribute('password_token_generated_at', 24.hours.ago)
-        get :edit, { token: user.password_token }
-        expect(response.status).to be(200)
-        expect(response).to render_template(:edit)
-        expect(assigns(:user)).to eq(nil)
-      end
     end
   end
 
@@ -87,10 +79,10 @@ Rspec.describe ResetPasswordsController do
     end
 
     context "user logged in " do
-      it "redirects to root path if user logged_in, doesn't assing user" do
+      it "redirects to todo_lists path if user logged_in, doesn't assing user" do
         patch :update, { email: user.email, password: 'secret', password_confirmation: 'secret', token: user.password_token }, valid_session
         expect(response.status).to be(302)
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(todo_lists_path)
         expect(assigns(:user)).to eq(nil)
       end
     end
@@ -103,26 +95,19 @@ Rspec.describe ResetPasswordsController do
         expect(assigns(:user)).to eq(user)
       end
 
-      it "renders edit for invalid password" do
+      it "renders edit if password invalid" do
         patch :update, { email: user.email, password: 's', password_confirmation: 'secret', token: user.password_token }
         expect(response.status).to be(200)
         expect(response).to render_template(:edit)
         expect(assigns(:user)).to eq(user)
       end
 
-      it "renders edit if email doesn't match token" do
-        patch :update, { email: 'email', password: 'secret', password_confirmation: 'secret', token: user.password_token }
-        expect(response.status).to be(200)
-        expect(response).to render_template(:edit)
-        expect(assigns(:user)).to eq(user)
-      end
-
-      it "renders edit for too old token" do
-        user.update_attribute('password_token_generated_at', 24.hours.ago)
+      it "renders edit if token too old" do
+        user.update_attribute('password_token', Base64.encode64("#{SecureRandom.hex(12)}#{24.hours.ago}"))
+        user.reload
         patch :update, { email: user.email, password: 'secret', password_confirmation: 'secret', token: user.password_token }
         expect(response.status).to be(200)
         expect(response).to render_template(:edit)
-        expect(assigns(:user)).to eq(nil)
       end
     end
   end

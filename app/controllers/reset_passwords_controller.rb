@@ -1,7 +1,7 @@
 class ResetPasswordsController < ApplicationController
   skip_before_action :authenticate_user
   before_action :ensure_no_user
-  before_action :pundit_authorize_user
+  before_action :skip_authorization # pundit
 
   def new
   end
@@ -19,16 +19,16 @@ class ResetPasswordsController < ApplicationController
   end
 
   def edit
-    @user = User.where("password_token = ? AND password_token_generated_at > ?", params[:token], 2.hours.ago).first
+    @user = User.where(password_token: params[:token]).first
   end
 
   def update
-    @user = User.where("password_token = ? AND password_token_generated_at > ?", params[:token], 2.hours.ago).first
-    if @user && @user.email == params[:email] && @user.update_attributes(user_params)
-      @user.update_attributes(password_token: nil, password_token_generated_at: nil)
+    @user = User.where(password_token: params[:token]).first
+    if @user && token_still_valid?(@user.password_token) && @user.update_attributes(user_params)
+      @user.update_attribute(:password_token, nil)
       redirect_to root_path, notice: 'Your password was successfully updated. You can now log in.'
     else
-      flash[:error] = "Plesae try again."
+      flash[:error] = "Please try again."
       render :edit
     end
   end
@@ -38,7 +38,8 @@ class ResetPasswordsController < ApplicationController
     params.permit(:password, :password_confirmation)
   end
 
-  def pundit_authorize_user
-    authorize :reset_password
+  def token_still_valid?(token)
+    token_generated_at = PasswordResetter.new(token: token).decode_time
+    token_generated_at > Time.now - PASSWORD_TOKEN_VALID
   end
 end

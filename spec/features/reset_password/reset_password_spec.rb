@@ -31,7 +31,6 @@ describe "Resetting password" do
       PasswordResetter.new(user: user).generate_token
       visit new_password_reset_passwords_url(token: user.password_token)
       expect(page).to have_content("Password (again)")
-      fill_in "email", with: user.email
       fill_in "password", with: 'password'
       fill_in "password_confirmation", with: 'password'
       click_button "Reset password"
