@@ -21,11 +21,15 @@
     <%= f.text_field :email %>
   </div>
   <div class="field">
-    <%= f.label :password %>
+    <%= label :current_password, "Current password" %>
+    <%= text_field_tag :current_password %>
+  </div>
+  <div class="field">
+    <%= f.label :password, "New password" %>
     <%= f.password_field :password %>
   </div>
   <div class="field">
-    <%= f.label :password_confirmation, "Password (again)" %>
+    <%= f.label :password_confirmation, "Confirm password" %>
     <%= f.password_field :password_confirmation %>
   </div>
   <div class="actions">
