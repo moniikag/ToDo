@@ -78,18 +78,19 @@ describe 'Todo items: ' do
       expect(page).to_not have_content(subject.content)
     }
     page.driver.execute_script('$("div.for-checkbox label").click()')
-
-    expect(subject.completed_at).to_not be_nil
-    within("#completed", :visible => false) {
+    first('#show-completed').click
+    within("#completed") {
       expect(page).to have_content(subject.content)
     }
+    subject.reload
+    expect(subject.completed_at).to_not be_nil
   end
 
   it "allows user to delete todo item", js: true do
     expect(page).to have_content(subject.content)
     within("#todo_items") {
       first('li').hover
-      first('.show').click
+      first('.show-details').click
     }
     within(".details") {
       find("a").click

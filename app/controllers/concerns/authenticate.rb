@@ -20,4 +20,11 @@ module Authenticate
     redirect_to new_user_sessions_path unless current_user
   end
 
+  def ensure_no_user
+    if current_user
+      flash[:info] = "This action is only allowed for users that are not logged in."
+      redirect_to todo_lists_path
+    end
+  end
+
 end

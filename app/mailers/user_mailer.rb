@@ -17,5 +17,10 @@ class UserMailer < ApplicationMailer
     mail(to: invitation.invited_user_email, subject: "Invitation to TodoList")
   end
 
+  def password_reset(user)
+    @user = user
+    mail(to: @user.email, subject: "Password reset")
+  end
+
 end
 

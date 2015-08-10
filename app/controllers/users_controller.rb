@@ -43,9 +43,10 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(permitted_attributes(@user))
+    if @user.authenticate(params[:current_password]) && @user.update_attributes(permitted_attributes(@user))
       redirect_to root_path, notice: 'User was successfully updated.'
     else
+      flash[:error] = 'User update failed.'
       render action: 'edit'
     end
   end
