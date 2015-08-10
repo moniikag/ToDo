@@ -4,6 +4,10 @@ Odot::Application.routes.draw do
 
   post 'todo_items/:id/complete' => 'todo_items#complete'
 
+  match 'auth/:provider/callback', to: 'user_sessions#create_omni', via: [:get, :post]
+  match 'auth/failure', to: redirect('/'), via: [:get, :post]
+  match 'signout', to: 'user_sessions#destroy', as: 'signout', via: [:get, :post]
+
   resources :users, except: [:index, :show] do
     collection do
       get :confirm_email
@@ -42,6 +46,7 @@ Odot::Application.routes.draw do
       end
     end
   end
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

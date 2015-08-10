@@ -25,6 +25,13 @@ class UserSessionsController < ApplicationController
     end
   end
 
+  def create_omni
+    user = User.from_omniauth(env["omniauth.auth"])
+    sign_in(user)
+    flash[:success] = "Thanks for logging in!"
+    redirect_to todo_lists_path
+  end
+
   def destroy
     sign_out
     flash[:success] = "You have successfully logged out."

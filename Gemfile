@@ -17,6 +17,9 @@ gem 'acts-as-taggable-on', '~> 3.4'
 gem 'font-awesome-rails'
 gem 'active_model_serializers'
 
+gem 'omniauth'
+gem 'omniauth-facebook', '1.4.0'
+
 group :development do
   gem "letter_opener"
   gem "better_errors"
